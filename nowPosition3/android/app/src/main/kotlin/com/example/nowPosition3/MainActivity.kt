@@ -1,0 +1,6 @@
+package com.example.nowPosition3
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity: FlutterActivity() {
+}
