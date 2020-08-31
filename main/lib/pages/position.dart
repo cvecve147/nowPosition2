@@ -228,12 +228,13 @@ class _PositionState extends State<Position> {
         stream: FlutterBlue.instance.isScanning,
         initialData: false,
         builder: (c, snapshot) {
-          if (!condition) {
+          if (snapshot.data) {
             return FloatingActionButton(
               child: Icon(Icons.stop),
               onPressed: () async {
                 setState(() async {
                   condition = true;
+                  await FlutterBlue.instance.stopScan();
                   await storage.writeNext(-3, widget.position);
                 });
               },
@@ -243,6 +244,8 @@ class _PositionState extends State<Position> {
             return FloatingActionButton(
                 child: Icon(Icons.search),
                 onPressed: () async {
+                  FlutterBlue.instance
+                      .startScan(timeout: Duration(seconds: 999));
                   await storage.writeNext(0, widget.position);
                   String laTime = "";
                   setState(() {

@@ -38,6 +38,7 @@ class DataStorage {
 
   Future<File> writeNext(int thead, String position) async {
     final file = await _localFile;
+    print("Thead Change:" + thead.toString());
     return file.writeAsString(thead.toString() + "\n" + position);
   }
 }
