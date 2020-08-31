@@ -123,7 +123,7 @@ class _MyHomePageState extends State<MyHomePage> {
             timeout: Duration(seconds: 2),
             allowDuplicates: false,
             scanMode: ScanMode.lowLatency);
-        FlutterBlue.instance.scanResults.listen((results) {
+        await FlutterBlue.instance.scanResults.listen((results) {
           for (var item in results) {
             collectScanResult.add(item);
           }
@@ -141,9 +141,9 @@ class _MyHomePageState extends State<MyHomePage> {
             scanRes = encode;
             nowScanTimes++;
           });
-          storage.writeData(int.parse(data[0]), data[1], encode);
+          await storage.writeData(int.parse(data[0]), data[1], encode);
         } else {
-          storage.writeNext((int.parse(data[0]) + 1) % 3, data[1]);
+          await storage.writeNext((int.parse(data[0]) + 1) % 3, data[1]);
           break;
         }
       }
