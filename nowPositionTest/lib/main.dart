@@ -48,7 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
       await FlutterBlue.instance.startScan(
           timeout: Duration(seconds: 2),
           allowDuplicates: false,
-          scanMode: ScanMode.lowLatency);
+          scanMode: ScanMode.lowPower);
       await FlutterBlue.instance.scanResults.listen((results) async {
         for (var item in results) {
           await collectScanResult.add(item);
