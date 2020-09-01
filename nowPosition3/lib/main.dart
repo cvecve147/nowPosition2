@@ -81,7 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
       print("${item.device.id} ${item.rssi}");
     }
     if (snapshot.length >= 3) {
-      return snapshot.sublist(0, 3);
+      return snapshot.sublist(0, 3).toSet();
     }
     return snapshot.toSet();
   }

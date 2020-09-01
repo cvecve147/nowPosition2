@@ -5,9 +5,10 @@ A new Flutter project.
 ## class 介紹
 
 Device class
+
 ```dart
 class Device {
-  final String mac; //紀錄mac 
+  final String mac; //紀錄mac
   final double x;   //x座標
   final double y;   //y座標
   double distance;  //距離計算結果存放位置
@@ -37,8 +38,10 @@ class Device {
 ```
 
 ## 組件介紹
+
 canvas 組件
-```dart 
+
+```dart
 import 'package:flutter/material.dart';
 import 'package:image/image.dart' as image;
 import 'package:flutter/services.dart' show rootBundle;
@@ -149,7 +152,7 @@ class MyPainter extends CustomPainter {
           ..pushStyle(textStyle)
           ..addText(count.toString());
         final constraints = ui.ParagraphConstraints(width: 300);
-        
+
         final paragraph = paragraphBuilder.build();
         paragraph.layout(constraints);
         //將編號畫在canvas上
@@ -169,7 +172,7 @@ class MyPainter extends CustomPainter {
 
 ## 主程式
 
-```dart 
+```dart
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 import './components/canvas.dart';
@@ -201,7 +204,7 @@ void main() {
   }
 }
 
-//設定header 
+//設定header
 class MyApp extends StatelessWidget {
 
   @override
@@ -236,7 +239,7 @@ class _MyHomePageState extends State<MyHomePage> {
     double dist = sqrt(pow(prePointX - x, 2) + pow(prePointY - y, 2));
     return dist;
   }
-  /* 
+  /*
   計算是否有超過三個tag有收集到五個rssi 如果有 將這些點位相加後取絕對值 在剪掉最大最小值
   並且把tag的距離記錄下來並放入陣列中
   */
@@ -262,7 +265,7 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     }
     return point;
-  } 
+  }
   //利用上方calculationDist函式過濾掉得點位計算三角定位
   calculationPosition(point) {
     double X, Y;
@@ -323,7 +326,7 @@ class _MyHomePageState extends State<MyHomePage> {
       return a.rssi > b.rssi ? -1 : 1;
     });
     if (snapshot.length >= 3) {
-      return snapshot.sublist(0, 3);
+      return snapshot.sublist(0, 3).toSet();
     }
     return snapshot;
   }
