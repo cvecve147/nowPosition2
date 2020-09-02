@@ -46,7 +46,7 @@ class _MyHomePageState extends State<MyHomePage> {
     while (true) {
       collectScanResult.clear();
       await FlutterBlue.instance.startScan(
-          timeout: Duration(seconds: 2),
+          timeout: Duration(seconds: 6),
           allowDuplicates: false,
           scanMode: ScanMode.lowPower);
       await FlutterBlue.instance.scanResults.listen((results) async {
