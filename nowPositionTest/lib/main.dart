@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_blue/flutter_blue.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 void main() {
   runApp(MyApp());
@@ -34,12 +35,24 @@ class _MyHomePageState extends State<MyHomePage> {
   Set<ScanResult> collectScanResult;
   String scanRes = "", fetchFloor = "";
   int nowScanTimes = 0;
+
+  void _requestPerms() async {
+    Map<Permission, PermissionStatus> statuses = await [
+      Permission.locationWhenInUse,
+      Permission.locationAlways,
+      Permission.location,
+      Permission.accessMediaLocation
+    ].request();
+    print("statuses:" + statuses.toString());
+  }
+
   @override
   void initState() {
     super.initState();
     collectScanResult = Set<ScanResult>();
     macList = List<String>();
     startSearch();
+    _requestPerms();
   }
 
   void startSearch() async {
