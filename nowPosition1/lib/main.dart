@@ -157,21 +157,23 @@ class _MyHomePageState extends State<MyHomePage> {
           title: Text(widget.title + "-" + 1.toString() + "_" + floor),
         ),
         body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                "Thead" +
-                    thead.toString() +
-                    "\nFloor:" +
-                    floor +
-                    "\nScan:" +
-                    scanRes +
-                    "\nScanTimes" +
-                    nowScanTimes.toString(),
-              ),
-            ],
-          ),
+          child: ListView(children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  "Thead" +
+                      thead.toString() +
+                      "\nFloor:" +
+                      floor +
+                      "\nScan:" +
+                      scanRes +
+                      "\nScanTimes" +
+                      nowScanTimes.toString(),
+                ),
+              ],
+            ),
+          ]),
         ));
   }
 }
