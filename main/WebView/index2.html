@@ -33,7 +33,81 @@
         ></canvas>
         <div class="form-group ml-2">
           <h1>新增可走區域</h1>
-          <button class="btn btn-primary btn-block">show</button>
+          <div class="d-flex flex-row">
+            <div>
+              <label for="">X</label>
+              <input
+                type="text"
+                class="form-control"
+                aria-describedby="helpId"
+                placeholder=""
+                v-model="input.x"
+              />
+              <label for="">Y</label>
+              <input
+                type="text"
+                class="form-control"
+                aria-describedby="helpId"
+                placeholder=""
+                v-model="input.y"
+              />
+            </div>
+            <div>
+              <label for="">X1</label>
+              <input
+                type="text"
+                class="form-control"
+                aria-describedby="helpId"
+                placeholder=""
+                v-model="input.x1"
+              />
+              <label for="">Y1</label>
+              <input
+                type="text"
+                class="form-control"
+                aria-describedby="helpId"
+                placeholder=""
+                v-model="input.y1"
+              />
+            </div>
+            <div>
+              <label for="">X2</label>
+              <input
+                type="text"
+                class="form-control"
+                aria-describedby="helpId"
+                placeholder=""
+                v-model="input.x2"
+              />
+              <label for="">Y2</label>
+              <input
+                type="text"
+                class="form-control"
+                aria-describedby="helpId"
+                placeholder=""
+                v-model="input.y2"
+              />
+            </div>
+            <div>
+              <label for="">X3</label>
+              <input
+                type="text"
+                class="form-control"
+                aria-describedby="helpId"
+                placeholder=""
+                v-model="input.x3"
+              />
+              <label for="">Y3</label>
+              <input
+                type="text"
+                class="form-control"
+                aria-describedby="helpId"
+                placeholder=""
+                v-model="input.y3"
+              />
+            </div>
+          </div>
+          <hr />
           <label for="">X</label>
           <input
             type="text"
@@ -99,65 +173,54 @@
           },
           nowPointIndex: 0,
           tags: [],
+          Walk: [],
         },
         methods: {
           async PostWalk() {
             this.nextPoint()
-            console.log(this.input.x, this.input.y)
-            console.log(this.input.x1, this.input.y1)
-            console.log(this.input.x2, this.input.y2)
-            console.log(this.input.x3, this.input.y3)
-            // const res = await axios.post(
-            //   "http://120.105.161.209:3000/walk",
-            //   this.input
-            // )
-            // this.input = {
-            //  x: 0,
-            // y: 0,
-            // x1: 0,
-            // y1: 0,
-            // x2: 0,
-            // y2: 0,
-            // x3: 0,
-            // y3: 0,
-            // }
+            // console.log(this.input.x, this.input.y)
+            // console.log(this.input.x1, this.input.y1)
+            // console.log(this.input.x2, this.input.y2)
+            // console.log(this.input.x3, this.input.y3)
+            const res = await axios.post(
+              "http://120.105.161.209:3000/walk",
+              this.input
+            )
+            this.input = {
+              x: 0,
+              y: 0,
+              x1: 0,
+              y1: 0,
+              x2: 0,
+              y2: 0,
+              x3: 0,
+              y3: 0,
+            }
           },
           nextPoint() {
             switch (this.nowPointIndex) {
               case 0:
                 this.input.x = this.mouse.x
                 this.input.y = this.mouse.y
-                this.mouse = {
-                  x: 0,
-                  y: 0,
-                }
                 break
               case 1:
                 this.input.x1 = this.mouse.x
                 this.input.y1 = this.mouse.y
-                this.mouse = {
-                  x: 0,
-                  y: 0,
-                }
                 break
               case 2:
                 this.input.x2 = this.mouse.x
                 this.input.y2 = this.mouse.y
-                this.mouse = {
-                  x: 0,
-                  y: 0,
-                }
                 break
               case 3:
                 this.input.x3 = this.mouse.x
                 this.input.y3 = this.mouse.y
-                this.mouse = {
-                  x: 0,
-                  y: 0,
-                }
                 break
               default:
                 break
+            }
+            this.mouse = {
+              x: 0,
+              y: 0,
             }
             this.nowPointIndex++
             this.nowPointIndex %= 4
@@ -178,8 +241,8 @@
             var elem = document.querySelector("canvas")
             var position = this.getPosition(elem)
             this.mouse = {
-              x: ((event.pageX - position.x) / (8.27 * 2)).toFixed(2),
-              y: ((event.pageY - position.y) / (7.7 * 2)).toFixed(2),
+              x: ((event.pageX - position.x) / (8.46 * 2)).toFixed(2),
+              y: ((400 * 2 - event.pageY + position.y) / (7.7 * 2)).toFixed(2),
             }
           },
           async fetch() {
@@ -188,15 +251,17 @@
             )
             this.tags = res.data.data
           },
+          async fetch2() {
+            const res = await axios.get("http://120.105.161.209:3000/walk")
+            this.Walk = res.data.data
+          },
           draw() {
-            console.log(this.tags)
-            console.log("go draw")
             this.tags.forEach((el) => {
               let ctx7 = canvas.getContext("2d")
               ctx7.fillStyle = "#FF0000"
               ctx7.beginPath()
               ctx7.arc(
-                el.x * 8.27 * 2,
+                el.x * 8.46 * 2,
                 400 * 2 - el.y * 7.7 * 2,
                 2,
                 0,
@@ -204,6 +269,19 @@
               )
               ctx7.stroke()
               ctx7.fill()
+            })
+          },
+          draw2() {
+            console.log(this.Walk)
+            this.Walk.forEach((el) => {
+              let ctx7 = canvas.getContext("2d")
+              ctx7.fillStyle = "rgba(255,165,0,0.5)"
+              ctx7.fillRect(
+                el.x * 8.46 * 2,
+                400 * 2 - el.y * 7.7 * 2,
+                el.x1 * 8.46 * 2 - el.x * 8.46 * 2,
+                400 * 2 - el.y2 * 7.7 * 2 - (400 * 2 - el.y * 7.7 * 2)
+              )
             })
           },
           prePoint() {
@@ -222,12 +300,14 @@
                 await ctx.drawImage(this, 0, 0, c.scrollWidth, c.scrollHeight)
                 console.log("complete")
                 await app.draw()
+                await app.draw2()
               }
             }
           },
         },
         async created() {
           await this.fetch()
+          await this.fetch2()
           await this.push()
         },
       })
