@@ -57,7 +57,7 @@
           <button
             class="btn btn-primary d-flex align-items-center my-auto"
             @click="add"
-            style="height: 50px;"
+            style="height: 50px"
           >
             送出
           </button>
@@ -70,18 +70,31 @@
             <table class="table" v-if="TagData.length">
               <thead class="thead-inverse">
                 <tr>
-                  <th v-for="(item,index) in TagData[0]" v-if="index!='_id'">
+                  <th
+                    v-for="(item,index) in TagData[0]"
+                    v-if="index!='_id' && index!='updatedAt'"
+                  >
                     {{index}}
                   </th>
                   <th>刪除</th>
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(item,index1) in TagData">
-                  <template v-for="(item1,index) in TagData[0]">
-                    <td scope="row" v-if="index!='_id'">{{item[index]}}</td>
+                <tr v-for="(item1,index1) in TagData">
+                  <template v-for="(item,index) in TagData[0]">
+                    <td scope="row" v-if="index!='_id' && index!='updatedAt'">
+                      <input
+                        type="text"
+                        v-model="item1[index]"
+                        style="width: 70px"
+                        :style="{ width: index=='mac'?'150px':'50px'}"
+                      />
+                    </td>
                   </template>
                   <td>
+                    <button class="btn btn-info" @click="putTag(item1)">
+                      修改
+                    </button>
                     <button @click="del(item._id)" class="btn btn-danger">
                       刪除
                     </button>
@@ -117,6 +130,14 @@
               this.input
             )
             this.fecth()
+          },
+          async putTag(val) {
+            console.log(val)
+            const res = await axios.put(
+              "http://120.105.161.209:3000/position-tags/" + val._id,
+              val
+            )
+            await this.fecth()
           },
           async del(id) {
             console.log(id)

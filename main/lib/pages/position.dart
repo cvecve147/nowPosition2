@@ -2,12 +2,14 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:nowPosition/class/AcceptRssi.dart';
+import 'package:nowPosition/class/WalkSpace.dart';
 import '../components/canvas.dart';
 import 'dart:math';
 import '../class/Device.dart';
 import '../searchTag.dart';
 import 'package:dio/dio.dart';
 import '../class/DataStorage.dart';
+import '../class/Target.dart';
 
 List<Device> device = new List<Device>();
 List<Device> nowPosition = new List<Device>();
@@ -136,17 +138,20 @@ class _PositionState extends State<Position> {
 
   List<ScanResult> topThreeDate = new List();
   String position = "";
+  List<Target> targetList = List<Target>();
+  List<WalkSpace> walkSpaceList = List<WalkSpace>();
   DataStorage storage;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _getData();
     });
   }
 
+  Target _selectTarget;
   int thead = 0;
+  bool goMap = false;
   _getData() async {
     storage = DataStorage();
     await storage.writeNext(-1, widget.position);
@@ -157,6 +162,7 @@ class _PositionState extends State<Position> {
     nowPosition.clear();
     Response response = await dio.get(
         'http://120.105.161.209:3000/position-tags?query=%7B%22where%22%3A%7B%22position%22%3A%22${widget.position}%22%7D%7D');
+
     for (var item in response.data["data"]) {
       device.add(Device(
           mac: item["mac"],
@@ -164,9 +170,43 @@ class _PositionState extends State<Position> {
           y: double.parse(item["y"]),
           rssiDef: int.parse(item["rssi"])));
     }
+    String positionName = "";
+    if (widget.position == "Walk") {
+      positionName = "7F";
+    } else {
+      positionName = widget.position;
+    }
+
+    response = await dio.get(
+        'http://120.105.161.209:3000/target-point?query=%7B%22where%22%3A%7B%22position%22%3A%22${positionName}%22%7D%7D');
+    for (var item in response.data["data"]) {
+      targetList.add(Target(
+          position: item["position"],
+          x: double.parse(item["x"]),
+          y: double.parse(item["y"]),
+          targetName: item["targetName"]));
+    }
+    response = await dio.get(
+        'http://120.105.161.209:3000/walk?query=%7B%22where%22%3A%7B%22position%22%3A%22${positionName}%22%7D%7D');
+    for (var item in response.data["data"]) {
+      walkSpaceList.add(WalkSpace(
+          position: item["position"],
+          x: double.parse(item["x"]),
+          y: double.parse(item["y"]),
+          x1: double.parse(item["x1"]),
+          y1: double.parse(item["y1"]),
+          x2: double.parse(item["x2"]),
+          y2: double.parse(item["y2"]),
+          x3: double.parse(item["x3"]),
+          y3: double.parse(item["y3"])));
+    }
     setState(() {});
     this.position = "ok";
-    //
+    if (targetList.length > 0) {
+      _selectTarget = targetList[0];
+    } else {
+      _selectTarget = Target();
+    }
   }
 
   @override
@@ -197,6 +237,46 @@ class _PositionState extends State<Position> {
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  DropdownButton<Target>(
+                    value: this._selectTarget,
+                    iconSize: 24,
+                    elevation: 16,
+                    style: TextStyle(color: Colors.deepPurple),
+                    underline: Container(
+                      height: 2,
+                      color: Colors.deepPurpleAccent,
+                    ),
+                    onChanged: (Target newValue) {
+                      setState(() {
+                        _selectTarget = newValue;
+                      });
+                    },
+                    items: targetList
+                        .map<DropdownMenuItem<Target>>((Target value) {
+                      return DropdownMenuItem<Target>(
+                        value: value,
+                        child: Text(value.targetName),
+                      );
+                    }).toList(),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(left: 10.0, right: 10.0),
+                  ),
+                  RaisedButton(
+                      onPressed: () {
+                        this.setState(() {
+                          goMap = !goMap;
+                          print(goMap);
+                        });
+                      },
+                      textColor: Colors.white,
+                      color: Colors.blue,
+                      child: const Text('導航', style: TextStyle(fontSize: 16))),
+                ],
+              ),
               Container(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -216,7 +296,18 @@ class _PositionState extends State<Position> {
                           ],
                         ),
                     for (var item in topThreeDate) Text(item.rssi.toString()),
-                    canvasRoute(widget.image)
+                    if (!goMap)
+                      canvasRoute(
+                        widget.image,
+                        nowState: "0",
+                      ),
+                    if (goMap)
+                      canvasRoute(
+                        widget.image,
+                        targetPoint: this._selectTarget,
+                        space: this.walkSpaceList,
+                        nowState: "1",
+                      )
                   ],
                 ),
               )
