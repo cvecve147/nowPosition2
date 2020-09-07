@@ -31,9 +31,9 @@
           height="800px"
           @click="clickPosition"
         ></canvas>
-        <div class="form-group ml-2">
+        <div class="form-group ml-2" v-if="Walk">
           <h1>新增可走區域</h1>
-          <div class="d-flex flex-row">
+          <div class="d-flex flex-row justify-content-around">
             <div>
               <label for="">X</label>
               <input
@@ -124,13 +124,7 @@
             placeholder=""
             v-model="mouse.y"
           />
-          <button
-            class="btn btn-primary mt-2"
-            @click="prePoint()"
-            v-if="nowPointIndex>0"
-          >
-            上個點{{nowPointIndex}}
-          </button>
+
           <button
             class="btn btn-primary mt-2"
             @click="nextPoint()"
@@ -140,13 +134,141 @@
           </button>
           <button
             class="btn btn-primary mt-2"
+            @click="prePoint()"
+            v-if="nowPointIndex>0"
+          >
+            上個點{{nowPointIndex}}
+          </button>
+          <button
+            class="btn btn-primary mt-2"
             @click="PostWalk()"
             v-if="nowPointIndex==3"
           >
             送出
           </button>
+          <table class="table" v-if="Walk.length">
+            <thead>
+              <tr>
+                <th
+                  v-for="(item,index) in Walk[0]"
+                  v-if="index!='createdAt' && index!='updatedAt' && index!='__v' && index!='_id'"
+                >
+                  {{index}}
+                </th>
+                <th colspan="2" class="text-center">操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(item1,index1) in Walk">
+                <template
+                  v-for="(item,index) in Walk[0]"
+                  v-if="index!='createdAt' && index!='updatedAt' && index!='__v' && index!='_id'"
+                >
+                  <td scope="row" class="my-auto">
+                    <input
+                      type="text"
+                      v-model="item1[index]"
+                      style="width: 50px"
+                    />
+                  </td>
+                </template>
+                <td>
+                  <button class="btn btn-info" @click="putWalk(item1)">
+                    修改
+                  </button>
+                </td>
+                <td><button class="btn btn-danger">刪除</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div v-else class="mx-2">
+          <h1>新增目標位子</h1>
+          <div class="d-flex flex-column justify-content-around">
+            <div>
+              <label for="">X</label>
+              <input
+                type="text"
+                class="form-control"
+                aria-describedby="helpId"
+                v-model="mouse.x"
+              />
+            </div>
+            <div>
+              <label for="">Y</label>
+              <input
+                type="text"
+                class="form-control"
+                aria-describedby="helpId"
+                v-model="mouse.y"
+              />
+            </div>
+            <div>
+              <label for="">Name</label>
+              <input
+                type="text"
+                class="form-control"
+                v-model="targetinput.targetName"
+                placeholder="Name"
+              />
+            </div>
+            <div>
+              <label for="">Position</label>
+              <input
+                type="text"
+                class="form-control"
+                v-model="targetinput.position"
+                placeholder="Name"
+              />
+            </div>
+
+            <button class="btn btn-primary mt-2" @click="PostTarget()">
+              送出
+            </button>
+            <hr />
+            <table class="table" v-if="targetPoint.length">
+              <thead>
+                <tr>
+                  <th
+                    v-for="(item,index) in targetPoint[0]"
+                    v-if="index!='createdAt' && index!='updatedAt' && index!='__v' && index!='_id'"
+                  >
+                    {{index}}
+                  </th>
+                  <th colspan="2" class="text-center">操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item1,index1) in targetPoint">
+                  <template
+                    v-for="(item,index) in targetPoint[0]"
+                    v-if="index!='createdAt' && index!='updatedAt' && index!='__v' && index!='_id'"
+                  >
+                    <td scope="row" class="my-auto">
+                      <input
+                        type="text"
+                        v-model="item1[index]"
+                        style="width: 50px"
+                      />
+                    </td>
+                  </template>
+                  <td>
+                    <button class="btn btn-info" @click="putTarget(item1)">
+                      修改
+                    </button>
+                  </td>
+                  <td>
+                    <button class="btn btn-danger" @click="deletTarget(item1)">
+                      刪除
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
+      <button class="btn btn-primary mt-2" @click="Walk=!Walk">切換</button>
     </div>
 
     <!-- <drawing-board></drawing-board> -->
@@ -167,21 +289,53 @@
             x3: 0,
             y3: 0,
           },
+          Walk: true,
           mouse: {
             x: 0,
             y: 0,
           },
+          targetinput: {
+            x: 0,
+            y: 0,
+            position: "7F",
+            targetName: "",
+          },
+          targetPoint: [],
           nowPointIndex: 0,
           tags: [],
           Walk: [],
         },
         methods: {
+          async putWalk(val) {
+            console.log(val)
+            val.position = "7F"
+            const res = await axios.put(
+              "http://120.105.161.209:3000/walk/" + val._id,
+              val
+            )
+            await this.fecthAll()
+          },
+          async PostTarget() {
+            this.targetinput.x = this.mouse.x
+            this.targetinput.y = this.mouse.y
+            const res = await axios.post(
+              "http://120.105.161.209:3000/target-point",
+              this.targetinput
+            )
+            this.mouse = {
+              x: 0,
+              y: 0,
+            }
+            this.targetinput = {
+              x: 0,
+              y: 0,
+              position: "7F",
+              targetName: "",
+            }
+            await this.fecthAll()
+          },
           async PostWalk() {
             this.nextPoint()
-            // console.log(this.input.x, this.input.y)
-            // console.log(this.input.x1, this.input.y1)
-            // console.log(this.input.x2, this.input.y2)
-            // console.log(this.input.x3, this.input.y3)
             const res = await axios.post(
               "http://120.105.161.209:3000/walk",
               this.input
@@ -196,6 +350,14 @@
               x3: 0,
               y3: 0,
             }
+            await this.fecthAll()
+          },
+          async putTarget(val) {
+            const res = await axios.put(
+              "http://120.105.161.209:3000/target-point/" + val._id,
+              val
+            )
+            await this.fecthAll()
           },
           nextPoint() {
             switch (this.nowPointIndex) {
@@ -245,6 +407,12 @@
               y: ((400 * 2 - event.pageY + position.y) / (7.7 * 2)).toFixed(2),
             }
           },
+          async fecthAll() {
+            await this.fetch()
+            await this.fetch2()
+            await this.fetch3()
+            await this.push()
+          },
           async fetch() {
             const res = await axios.get(
               "http://120.105.161.209:3000/position-tags?query=%7B%22where%22%3A%7B%7D%2C%22limit%22%3A100%2C%22page%22%3A1%7D"
@@ -252,8 +420,16 @@
             this.tags = res.data.data
           },
           async fetch2() {
-            const res = await axios.get("http://120.105.161.209:3000/walk")
+            const res = await axios.get(
+              "http://120.105.161.209:3000/walk?query=%7B%22where%22%3A%7B%7D%2C%22limit%22%3A100%2C%22page%22%3A1%7D"
+            )
             this.Walk = res.data.data
+          },
+          async fetch3() {
+            const res = await axios.get(
+              "http://120.105.161.209:3000/target-point?query=%7B%22where%22%3A%7B%7D%2C%22limit%22%3A100%2C%22page%22%3A1%7D"
+            )
+            this.targetPoint = res.data.data
           },
           draw() {
             this.tags.forEach((el) => {
@@ -275,13 +451,29 @@
             console.log(this.Walk)
             this.Walk.forEach((el) => {
               let ctx7 = canvas.getContext("2d")
-              ctx7.fillStyle = "rgba(255,165,0,0.5)"
+              ctx7.fillStyle = "rgba(0,255,0,0.5)"
               ctx7.fillRect(
                 el.x * 8.46 * 2,
                 400 * 2 - el.y * 7.7 * 2,
                 el.x1 * 8.46 * 2 - el.x * 8.46 * 2,
                 400 * 2 - el.y2 * 7.7 * 2 - (400 * 2 - el.y * 7.7 * 2)
               )
+            })
+          },
+          draw3() {
+            this.targetPoint.forEach((el) => {
+              let ctx7 = canvas.getContext("2d")
+              ctx7.fillStyle = "#FFFF00"
+              ctx7.beginPath()
+              ctx7.arc(
+                el.x * 8.46 * 2,
+                400 * 2 - el.y * 7.7 * 2,
+                2,
+                0,
+                2 * Math.PI
+              )
+              ctx7.stroke()
+              ctx7.fill()
             })
           },
           prePoint() {
@@ -292,7 +484,6 @@
             var ctx = c.getContext("2d")
             ctx.translate(0.5, 0.5)
             ctx.imageSmoothingEnabled = false
-            // this.draw();
             var image = new Image()
             image.src = "http://120.105.161.209/Nursemaid/image/7F.png"
             image.onload = async function () {
@@ -301,14 +492,13 @@
                 console.log("complete")
                 await app.draw()
                 await app.draw2()
+                await app.draw3()
               }
             }
           },
         },
         async created() {
-          await this.fetch()
-          await this.fetch2()
-          await this.push()
+          await this.fecthAll()
         },
       })
     </script>
