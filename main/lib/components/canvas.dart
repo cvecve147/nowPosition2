@@ -143,10 +143,17 @@ class MyPainter extends CustomPainter {
   bfs(Point start, Point end, Canvas canvas) {
     double xCoefficient = 8.46;
     double yCoefficient = 7.7;
+    //邊界判斷 如果起點> 終點 需 交換計算路徑
+    if (start.x > end.x) {
+      Point tmp = start;
+      start = end;
+      end = tmp;
+    }
     int startX = (start.x * xCoefficient).toInt();
     int startY = (400 - start.y * yCoefficient).toInt();
     int endX = (end.x * xCoefficient).toInt();
     int endY = (400 - end.y * yCoefficient).toInt();
+
     path = List.generate(
         400, (i) => List.generate(400, (i) => Tuple3(-1, -1, "")));
     List<List<int>> g = List.generate(400, (i) => List.generate(400, (i) => 1));
