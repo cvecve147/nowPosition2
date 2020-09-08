@@ -118,12 +118,14 @@ class MyPainter extends CustomPainter {
     Point start;
     if (n > 0) {
       drawPoint(canvas, size, nowPosition[n - 1].x, nowPosition[n - 1].y, "",
-          Colors.transparent, Colors.lightBlueAccent[300], 4);
+          Colors.transparent, Colors.blue[300], 4);
       start = Point(
           x: nowPosition[n - 1].x * 8.46,
           y: size.height - nowPosition[n - 1].y * 7.7);
     } else {
       start = Point(x: 12.0, y: 13);
+      drawPoint(
+          canvas, size, 12, 13, "", Colors.transparent, Colors.blue[300], 4);
     }
     if (targetPoint != null && space != null) {
       Point end = Point(x: targetPoint.x, y: targetPoint.y);
@@ -144,11 +146,11 @@ class MyPainter extends CustomPainter {
     double xCoefficient = 8.46;
     double yCoefficient = 7.7;
     //邊界判斷 如果起點> 終點 需 交換計算路徑
-    if (start.x > end.x) {
-      Point tmp = start;
-      start = end;
-      end = tmp;
-    }
+    // if (start.x > end.x) {
+    //   Point tmp = start;
+    //   start = end;
+    //   end = tmp;
+    // }
     int startX = (start.x * xCoefficient).toInt();
     int startY = (400 - start.y * yCoefficient).toInt();
     int endX = (end.x * xCoefficient).toInt();
@@ -194,7 +196,7 @@ class MyPainter extends CustomPainter {
         }
       }
     }
-    while (endX >= startX || endY >= startY) {
+    while (d[endX][endY] > 0) {
       PointToInt start = PointToInt(x: endX, y: endY);
       var t = path[endX][endY];
 

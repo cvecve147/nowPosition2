@@ -307,39 +307,39 @@
         },
         methods: {
           async putWalk(val) {
-            console.log(val)
-            val.position = "7F"
+            console.log(val);
+            val.position = "7F";
             const res = await axios.put(
               "http://120.105.161.209:3000/walk/" + val._id,
               val
-            )
-            await this.fecthAll()
+            );
+            await this.fecthAll();
           },
           async PostTarget() {
-            this.targetinput.x = this.mouse.x
-            this.targetinput.y = this.mouse.y
+            this.targetinput.x = this.mouse.x;
+            this.targetinput.y = this.mouse.y;
             const res = await axios.post(
               "http://120.105.161.209:3000/target-point",
               this.targetinput
-            )
+            );
             this.mouse = {
               x: 0,
               y: 0,
-            }
+            };
             this.targetinput = {
               x: 0,
               y: 0,
               position: "7F",
               targetName: "",
-            }
-            await this.fecthAll()
+            };
+            await this.fecthAll();
           },
           async PostWalk() {
-            this.nextPoint()
+            this.nextPoint();
             const res = await axios.post(
               "http://120.105.161.209:3000/walk",
               this.input
-            )
+            );
             this.input = {
               x: 0,
               y: 0,
@@ -349,172 +349,172 @@
               y2: 0,
               x3: 0,
               y3: 0,
-            }
-            await this.fecthAll()
+            };
+            await this.fecthAll();
           },
           async putTarget(val) {
             const res = await axios.put(
               "http://120.105.161.209:3000/target-point/" + val._id,
               val
-            )
-            await this.fecthAll()
+            );
+            await this.fecthAll();
           },
           nextPoint() {
             switch (this.nowPointIndex) {
               case 0:
-                this.input.x = this.mouse.x
-                this.input.y = this.mouse.y
-                break
+                this.input.x = this.mouse.x;
+                this.input.y = this.mouse.y;
+                break;
               case 1:
-                this.input.x1 = this.mouse.x
-                this.input.y1 = this.mouse.y
-                break
+                this.input.x1 = this.mouse.x;
+                this.input.y1 = this.mouse.y;
+                break;
               case 2:
-                this.input.x2 = this.mouse.x
-                this.input.y2 = this.mouse.y
-                break
+                this.input.x2 = this.mouse.x;
+                this.input.y2 = this.mouse.y;
+                break;
               case 3:
-                this.input.x3 = this.mouse.x
-                this.input.y3 = this.mouse.y
-                break
+                this.input.x3 = this.mouse.x;
+                this.input.y3 = this.mouse.y;
+                break;
               default:
-                break
+                break;
             }
             this.mouse = {
               x: 0,
               y: 0,
-            }
-            this.nowPointIndex++
-            this.nowPointIndex %= 4
+            };
+            this.nowPointIndex++;
+            this.nowPointIndex %= 4;
           },
           getPosition(element) {
-            var x = 0
-            var y = 0
+            var x = 0;
+            var y = 0;
             // 搭配上面的示意圖可比較輕鬆理解為何要這麼計算
             while (element) {
-              x += element.offsetLeft - element.scrollLeft + element.clientLeft
-              y += element.offsetTop - element.scrollLeft + element.clientTop
-              element = element.offsetParent
+              x += element.offsetLeft - element.scrollLeft + element.clientLeft;
+              y += element.offsetTop - element.scrollLeft + element.clientTop;
+              element = element.offsetParent;
             }
 
-            return { x: x, y: y }
+            return { x: x, y: y };
           },
           clickPosition(event) {
-            var elem = document.querySelector("canvas")
-            var position = this.getPosition(elem)
+            var elem = document.querySelector("canvas");
+            var position = this.getPosition(elem);
             this.mouse = {
               x: ((event.pageX - position.x) / (8.46 * 2)).toFixed(2),
               y: ((400 * 2 - event.pageY + position.y) / (7.7 * 2)).toFixed(2),
-            }
+            };
           },
           async fecthAll() {
-            await this.fetch()
-            await this.fetch2()
-            await this.fetch3()
-            await this.push()
+            await this.fetch();
+            await this.fetch2();
+            await this.fetch3();
+            await this.push();
           },
           async fetch() {
             const res = await axios.get(
               "http://120.105.161.209:3000/position-tags?query=%7B%22where%22%3A%7B%7D%2C%22limit%22%3A100%2C%22page%22%3A1%7D"
-            )
-            this.tags = res.data.data
+            );
+            this.tags = res.data.data;
           },
           async fetch2() {
             const res = await axios.get(
               "http://120.105.161.209:3000/walk?query=%7B%22where%22%3A%7B%7D%2C%22limit%22%3A100%2C%22page%22%3A1%7D"
-            )
-            this.Walk = res.data.data
+            );
+            this.Walk = res.data.data;
           },
           async fetch3() {
             const res = await axios.get(
               "http://120.105.161.209:3000/target-point?query=%7B%22where%22%3A%7B%7D%2C%22limit%22%3A100%2C%22page%22%3A1%7D"
-            )
-            this.targetPoint = res.data.data
+            );
+            this.targetPoint = res.data.data;
           },
           draw() {
             this.tags.forEach((el) => {
-              let ctx7 = canvas.getContext("2d")
-              ctx7.fillStyle = "#FF0000"
-              ctx7.beginPath()
+              let ctx7 = canvas.getContext("2d");
+              ctx7.fillStyle = "#FF0000";
+              ctx7.beginPath();
               ctx7.arc(
                 el.x * 8.46 * 2,
                 400 * 2 - el.y * 7.7 * 2,
                 2,
                 0,
                 2 * Math.PI
-              )
-              ctx7.stroke()
-              ctx7.fill()
-              ctx7.fillStyle = "#000000"
-              ctx7.font = "14px Arial"
+              );
+              ctx7.stroke();
+              ctx7.fill();
+              ctx7.fillStyle = "#000000";
+              ctx7.font = "14px Arial";
               ctx7.fillText(
                 el.mac.substring(12, 17),
                 el.x * 8.46 * 2 - 15,
                 400 * 2 - el.y * 7.7 * 2 + 20
-              )
-            })
+              );
+            });
           },
           draw2() {
-            console.log(this.Walk)
+            console.log(this.Walk);
             this.Walk.forEach((el) => {
-              let ctx7 = canvas.getContext("2d")
-              ctx7.fillStyle = "rgba(0,255,0,0.5)"
+              let ctx7 = canvas.getContext("2d");
+              ctx7.fillStyle = "rgba(0,255,0,0.5)";
               ctx7.fillRect(
                 el.x * 8.46 * 2,
                 400 * 2 - el.y * 7.7 * 2,
                 el.x1 * 8.46 * 2 - el.x * 8.46 * 2,
                 400 * 2 - el.y2 * 7.7 * 2 - (400 * 2 - el.y * 7.7 * 2)
-              )
-            })
+              );
+            });
           },
           draw3() {
             this.targetPoint.forEach((el) => {
-              let ctx7 = canvas.getContext("2d")
-              ctx7.fillStyle = "#FFFF00"
-              ctx7.beginPath()
+              let ctx7 = canvas.getContext("2d");
+              ctx7.fillStyle = "#FFFF00";
+              ctx7.beginPath();
               ctx7.arc(
                 el.x * 8.46 * 2,
                 400 * 2 - el.y * 7.7 * 2,
-                2,
+                5,
                 0,
                 2 * Math.PI
-              )
-              ctx7.stroke()
-              ctx7.fill()
-              ctx7.fillStyle = "#000000"
-              ctx7.font = "14px Arial"
+              );
+              ctx7.stroke();
+              ctx7.fill();
+              ctx7.fillStyle = "#000000";
+              ctx7.font = "14px Arial";
               ctx7.fillText(
                 el.targetName,
                 el.x * 8.46 * 2 - 15,
                 400 * 2 - el.y * 7.7 * 2 + 20
-              )
-            })
+              );
+            });
           },
           prePoint() {
-            this.nowPointIndex--
+            this.nowPointIndex--;
           },
           async push() {
-            var c = document.getElementById("canvas")
-            var ctx = c.getContext("2d")
-            ctx.translate(0.5, 0.5)
-            ctx.imageSmoothingEnabled = false
-            var image = new Image()
-            image.src = "http://120.105.161.209/Nursemaid/image/7F.png"
+            var c = document.getElementById("canvas");
+            var ctx = c.getContext("2d");
+            ctx.translate(0.5, 0.5);
+            ctx.imageSmoothingEnabled = false;
+            var image = new Image();
+            image.src = "http://120.105.161.209/Nursemaid/image/7F.png";
             image.onload = async function () {
               if (image.complete) {
-                await ctx.drawImage(this, 0, 0, c.scrollWidth, c.scrollHeight)
-                console.log("complete")
-                await app.draw2()
-                await app.draw()
-                await app.draw3()
+                await ctx.drawImage(this, 0, 0, c.scrollWidth, c.scrollHeight);
+                console.log("complete");
+                await app.draw2();
+                await app.draw();
+                await app.draw3();
               }
-            }
+            };
           },
         },
         async created() {
-          await this.fecthAll()
+          await this.fecthAll();
         },
-      })
+      });
     </script>
   </body>
 </html>
