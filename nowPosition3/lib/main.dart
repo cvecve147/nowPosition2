@@ -44,7 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Device> device = List<Device>();
   String scanRes = "", fetchFloor = "";
   int nowScanTimes = 0;
-  int thead = 0;
+  int thread = 0;
   @override
   void initState() {
     super.initState();
@@ -104,12 +104,13 @@ class _MyHomePageState extends State<MyHomePage> {
     await pushMacList();
   }
 
+  int id = 2;
   void startSearch() async {
     while (true) {
       data = await storage.readData();
       if (data.length <= 1 || data[0] == "") continue;
       setState(() {
-        thead = int.parse(data[0]);
+        thread = int.parse(data[0]);
         floor = data[1];
       });
       nowScanTimes = 0;
@@ -117,18 +118,22 @@ class _MyHomePageState extends State<MyHomePage> {
         fetchFloor = floor;
         await _getData();
       }
-      while (data[0] == "2") {
+      while (data[0] == id.toString()) {
         collectScanResult.clear();
         await FlutterBlue.instance.startScan(
             timeout: Duration(seconds: 2),
             allowDuplicates: false,
             scanMode: ScanMode.lowLatency);
-        await FlutterBlue.instance.scanResults.listen((results) async {
+        FlutterBlue.instance.scanResults.listen((results) {
           for (var item in results) {
-            await collectScanResult.add(item);
+            collectScanResult.add(item);
           }
         });
         await FlutterBlue.instance.stopScan();
+        data = await storage.readData();
+        if (data[0] != id.toString()) {
+          break;
+        }
         if (collectScanResult.length > 0) {
           collectScanResult = topThree(collectScanResult.toList());
 
@@ -162,8 +167,8 @@ class _MyHomePageState extends State<MyHomePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  "Thead" +
-                      thead.toString() +
+                  "Thread" +
+                      thread.toString() +
                       "\nFloor:" +
                       floor +
                       "\nScan:" +

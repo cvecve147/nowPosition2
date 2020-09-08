@@ -22,12 +22,12 @@ class DataStorage {
   }
 
   Future<File> writeData(
-      int thead, String position, String bluetoothData) async {
+      int thread, String position, String bluetoothData) async {
     final file = await _localFile;
     DateTime now = new DateTime.now();
     DateTime date = new DateTime(now.year, now.month, now.day, now.hour,
         now.minute, now.second, now.millisecond);
-    return file.writeAsString(thead.toString() +
+    return file.writeAsString(thread.toString() +
         "\n" +
         position +
         "\n" +
@@ -36,9 +36,10 @@ class DataStorage {
         bluetoothData);
   }
 
-  Future<File> writeNext(int thead, String position) async {
+  Future<File> writeNext(int thread, String position) async {
     final file = await _localFile;
-    print("Thead Change:" + thead.toString());
-    return file.writeAsString(thead.toString() + "\n" + position);
+    print("Thread Change:" + thread.toString());
+    return file
+        .writeAsString(thread.toString() + "\n" + position + "\n" + "-1");
   }
 }

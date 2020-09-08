@@ -171,7 +171,7 @@ class _PositionState extends State<Position> {
   }
 
   Target _selectTarget = Target();
-  int thead = -1;
+  int thread = -1;
   bool goMap = false;
   _getData() async {
     storage = DataStorage();
@@ -304,7 +304,7 @@ class _PositionState extends State<Position> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     if (!condition) Text("開始掃描"),
-                    Text("Thead:" + thead.toString()),
+                    Text("Thread:" + thread.toString()),
                     Text(
                       position,
                       style: TextStyle(fontSize: 18),
@@ -361,6 +361,7 @@ class _PositionState extends State<Position> {
                   setState(() {
                     condition = false;
                   });
+                  int count = 0;
                   while (true) {
                     if (condition) {
                       break;
@@ -368,9 +369,19 @@ class _PositionState extends State<Position> {
                     List<String> data = await storage.readData();
                     if (data.length <= 1 || data[0] == "") continue;
                     setState(() {
-                      thead = int.parse(data[0]);
+                      thread = int.parse(data[0]);
                     });
+
+                    if (count >= 2) {
+                      position = "切換App!!!";
+                    }
+                    if (data.length >= 3 && data[2] == "-1") {
+                      count++;
+                      print(count);
+                      continue;
+                    }
                     if (data.length >= 3) {
+                      count = 0;
                       if (laTime != data[2]) {
                         List<dynamic> decode = jsonDecode(data[3]);
                         laTime = data[2];
