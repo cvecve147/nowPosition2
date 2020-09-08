@@ -13,6 +13,9 @@ import '../class/WalkSpace.dart';
 import '../class/Point.dart';
 import 'dart:ui' as ui;
 
+double xCoefficient = 8.46;
+double yCoefficient = 7.7;
+
 class canvasRoute extends StatefulWidget {
   String imageUrl = "";
   Target targetPoint = Target();
@@ -119,9 +122,7 @@ class MyPainter extends CustomPainter {
     if (n > 0) {
       drawPoint(canvas, size, nowPosition[n - 1].x, nowPosition[n - 1].y, "",
           Colors.transparent, Colors.blue[300], 4);
-      start = Point(
-          x: nowPosition[n - 1].x * 8.46,
-          y: size.height - nowPosition[n - 1].y * 7.7);
+      start = Point(x: nowPosition[n - 1].x, y: nowPosition[n - 1].y);
     } else {
       start = Point(x: 12.0, y: 13);
       drawPoint(
@@ -143,8 +144,6 @@ class MyPainter extends CustomPainter {
   }
 
   bfs(Point start, Point end, Canvas canvas) {
-    double xCoefficient = 8.46;
-    double yCoefficient = 7.7;
     //邊界判斷 如果起點> 終點 需 交換計算路徑
     // if (start.x > end.x) {
     //   Point tmp = start;
@@ -160,9 +159,11 @@ class MyPainter extends CustomPainter {
         400, (i) => List.generate(400, (i) => Tuple3(-1, -1, "")));
     List<List<int>> g = List.generate(400, (i) => List.generate(400, (i) => 1));
     for (var item in space) {
-      for (int i = (item.x * 8.46).toInt(); i < (item.x1 * 8.46).toInt(); i++) {
-        for (int j = (400 - item.y * 7.7).toInt();
-            j < (400 - item.y2 * 7.7).toInt();
+      for (int i = (item.x * xCoefficient).toInt();
+          i < (item.x1 * xCoefficient).toInt();
+          i++) {
+        for (int j = (400 - item.y * yCoefficient).toInt();
+            j < (400 - item.y2 * yCoefficient).toInt();
             j++) {
           g[i][j] = 0;
         }
@@ -196,6 +197,7 @@ class MyPainter extends CustomPainter {
         }
       }
     }
+    print(d[endX][endY]);
     while (d[endX][endY] > 0) {
       PointToInt start = PointToInt(x: endX, y: endY);
       var t = path[endX][endY];
@@ -224,7 +226,7 @@ class MyPainter extends CustomPainter {
       ..style = PaintingStyle.fill
       ..color = pointColor;
     canvas.drawCircle(
-      Offset(x * 8.46, size.height - y * 7.7),
+      Offset(x * xCoefficient, size.height - y * yCoefficient),
       pointSize,
       painter,
     );
@@ -241,8 +243,8 @@ class MyPainter extends CustomPainter {
     final constraints = ui.ParagraphConstraints(width: 300);
     final paragraph = paragraphBuilder.build();
     paragraph.layout(constraints);
-    canvas.drawParagraph(
-        paragraph, Offset(x * 8.46 - 9, size.height - y * 7.7 - 15));
+    canvas.drawParagraph(paragraph,
+        Offset(x * xCoefficient - 9, size.height - y * yCoefficient - 15));
   }
 
   @override

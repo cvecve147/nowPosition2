@@ -13,7 +13,8 @@ import '../class/Target.dart';
 
 List<Device> device = new List<Device>();
 List<Device> nowPosition = new List<Device>();
-
+double xCoefficient = 8.46;
+double yCoefficient = 7.7;
 // 初始化所有Tag 值
 // 取消多輸入的情形
 // 若取修多輸入 需修改定位過濾功能
@@ -107,8 +108,31 @@ class _PositionState extends State<Position> {
     X /= 3;
     Y /= 3;
     double dist = calculationPreDist(X, Y);
-    nowPosition.add(Device(mac: "", x: X, y: Y));
+    if (walkspace(X, Y)) {
+      nowPosition.add(Device(mac: "", x: X, y: Y));
+    }
     return "${X.toStringAsFixed(2)} , ${Y.toStringAsFixed(2)} 與上點距離為${dist.toStringAsFixed(2)}";
+  }
+
+  bool walkspace(double X, double Y) {
+    int startX = (X * xCoefficient).toInt();
+    int startY = (400 - Y * yCoefficient).toInt();
+    List<List<int>> g = List.generate(400, (i) => List.generate(400, (i) => 1));
+    for (var item in walkSpaceList) {
+      for (int i = (item.x * xCoefficient).toInt();
+          i < (item.x1 * xCoefficient).toInt();
+          i++) {
+        for (int j = (400 - item.y * yCoefficient).toInt();
+            j < (400 - item.y2 * yCoefficient).toInt();
+            j++) {
+          g[i][j] = 0;
+        }
+      }
+    }
+    if (g[startX][startY] == 0) {
+      return true;
+    }
+    return false;
   }
 
   putRssi(List<AcceptRssi> snapshot) {
