@@ -40,12 +40,14 @@ class _PositionState extends State<Position> {
     int count = 0;
     List<Device> point = List<Device>();
     for (var item in device) {
-      if (item.rssi.length >= needRssiCount) {
+      if (item.rssi.length >= needRssiCount && item.notGetRssi == 0) {
         count += 1;
       }
     }
     for (var item in device) {
-      if (count >= 3 && item.rssi.length >= needRssiCount) {
+      if (count >= 3 &&
+          item.rssi.length >= needRssiCount &&
+          item.notGetRssi == 0) {
         List<int> tmp = item.rssi.toList();
         tmp = tmp.sublist(0, 5); //不過濾最後一個
         int maxrssi = tmp.reduce(max); //負數最大
