@@ -117,18 +117,7 @@ class _PositionState extends State<Position> {
   bool walkspace(double X, double Y) {
     int startX = (X * xCoefficient).toInt();
     int startY = (400 - Y * yCoefficient).toInt();
-    List<List<int>> g = List.generate(400, (i) => List.generate(400, (i) => 1));
-    for (var item in walkSpaceList) {
-      for (int i = (item.x * xCoefficient).toInt();
-          i < (item.x1 * xCoefficient).toInt();
-          i++) {
-        for (int j = (400 - item.y * yCoefficient).toInt();
-            j < (400 - item.y2 * yCoefficient).toInt();
-            j++) {
-          g[i][j] = 0;
-        }
-      }
-    }
+
     if (g[startX][startY] == 0) {
       return true;
     }
@@ -167,6 +156,7 @@ class _PositionState extends State<Position> {
   List<Target> targetList = List<Target>();
   List<WalkSpace> walkSpaceList = List<WalkSpace>();
   DataStorage storage;
+  List<List<int>> g;
   @override
   void initState() {
     super.initState();
@@ -175,7 +165,7 @@ class _PositionState extends State<Position> {
     });
   }
 
-  Target _selectTarget;
+  Target _selectTarget = Target();
   int thead = 0;
   bool goMap = false;
   _getData() async {
@@ -186,52 +176,53 @@ class _PositionState extends State<Position> {
     var dio = Dio();
     device.clear();
     nowPosition.clear();
-    Response response = await dio.get(
-        'http://120.105.161.209:3000/position-tags?query=%7B%22where%22%3A%7B%22position%22%3A%22${widget.position}%22%7D%7D');
-
-    for (var item in response.data["data"]) {
-      device.add(Device(
-          mac: item["mac"],
-          x: double.parse(item["x"]),
-          y: double.parse(item["y"]),
-          rssiDef: int.parse(item["rssi"])));
+    List<String> getDataList = ["position-tags", "target-point", "walk"];
+    for (var path in getDataList) {
+      Response response = await dio.get(
+          'http://120.105.161.209:3000/${path}?query=%7B%22where%22%3A%7B%22position%22%3A%22${widget.position}%22%7D%7D');
+      for (var item in response.data["data"]) {
+        if (path == "target-point") {
+          targetList.add(Target(
+              position: item["position"],
+              x: double.parse(item["x"]),
+              y: double.parse(item["y"]),
+              targetName: item["targetName"]));
+        } else if (path == "walk") {
+          walkSpaceList.add(WalkSpace(
+            position: item["position"],
+            x: double.parse(item["x"]),
+            y: double.parse(item["y"]),
+            x1: double.parse(item["x1"]),
+            y1: double.parse(item["y1"]),
+          ));
+        } else if (path == "position-tags") {
+          device.add(Device(
+              mac: item["mac"],
+              x: double.parse(item["x"]),
+              y: double.parse(item["y"]),
+              rssiDef: int.parse(item["rssi"])));
+          if (widget.position == "Walk") {
+            widget.position = "7F";
+          }
+        }
+      }
     }
-    String positionName = "";
-    if (widget.position == "Walk") {
-      positionName = "7F";
-    } else {
-      positionName = widget.position;
-    }
-
-    response = await dio.get(
-        'http://120.105.161.209:3000/target-point?query=%7B%22where%22%3A%7B%22position%22%3A%22${positionName}%22%7D%7D');
-    for (var item in response.data["data"]) {
-      targetList.add(Target(
-          position: item["position"],
-          x: double.parse(item["x"]),
-          y: double.parse(item["y"]),
-          targetName: item["targetName"]));
-    }
-    response = await dio.get(
-        'http://120.105.161.209:3000/walk?query=%7B%22where%22%3A%7B%22position%22%3A%22${positionName}%22%7D%7D');
-    for (var item in response.data["data"]) {
-      walkSpaceList.add(WalkSpace(
-          position: item["position"],
-          x: double.parse(item["x"]),
-          y: double.parse(item["y"]),
-          x1: double.parse(item["x1"]),
-          y1: double.parse(item["y1"]),
-          x2: double.parse(item["x2"]),
-          y2: double.parse(item["y2"]),
-          x3: double.parse(item["x3"]),
-          y3: double.parse(item["y3"])));
+    this.g = List.generate(400, (i) => List.generate(400, (i) => 1));
+    for (var item in walkSpaceList) {
+      for (int i = (item.x * xCoefficient).toInt();
+          i < (item.x1 * xCoefficient).toInt();
+          i++) {
+        for (int j = (400 - item.y * yCoefficient).toInt();
+            j < (400 - item.y1 * yCoefficient).toInt();
+            j++) {
+          g[i][j] = 0;
+        }
+      }
     }
     setState(() {});
     this.position = "ok";
     if (targetList.length > 0) {
       _selectTarget = targetList[0];
-    } else {
-      _selectTarget = Target();
     }
   }
 
@@ -325,15 +316,12 @@ class _PositionState extends State<Position> {
                     if (!goMap)
                       canvasRoute(
                         widget.image,
-                        nowState: "0",
                       ),
                     if (goMap)
-                      canvasRoute(
-                        widget.image,
-                        targetPoint: this._selectTarget,
-                        space: this.walkSpaceList,
-                        nowState: "1",
-                      )
+                      canvasRoute(widget.image,
+                          targetPoint: this._selectTarget,
+                          space: this.walkSpaceList,
+                          g: this.g)
                   ],
                 ),
               )

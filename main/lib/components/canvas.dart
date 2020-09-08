@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:collection';
+import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:image/image.dart' as image;
@@ -11,7 +12,6 @@ import 'package:tuple/tuple.dart';
 import '../pages/position.dart';
 import '../class/WalkSpace.dart';
 import '../class/Point.dart';
-import 'dart:ui' as ui;
 
 double xCoefficient = 8.46;
 double yCoefficient = 7.7;
@@ -20,8 +20,8 @@ class canvasRoute extends StatefulWidget {
   String imageUrl = "";
   Target targetPoint = Target();
   List<WalkSpace> space = List<WalkSpace>();
-  String nowState = "";
-  canvasRoute(this.imageUrl, {this.targetPoint, this.space, this.nowState});
+  List<List<int>> g = List<List<int>>();
+  canvasRoute(this.imageUrl, {this.targetPoint, this.space, this.g});
 
   @override
   _canvasRouteState createState() => _canvasRouteState();
@@ -29,22 +29,22 @@ class canvasRoute extends StatefulWidget {
 
 class _canvasRouteState extends State<canvasRoute> {
   ui.Image images;
-  static Future<ui.Image> loadImageByProvider(ImageProvider provider) async {
-    ImageConfiguration config = ImageConfiguration(size: Size(400, 400));
+//   static Future<ui.Image> loadImageByProvider(ImageProvider provider) async {
+//     ImageConfiguration config = ImageConfiguration(size: Size(400, 400));
 
-    Completer<ui.Image> completer = Completer<ui.Image>(); //完成的回调
-    ImageStreamListener listener;
-    ImageStream stream = provider.resolve(config); //获取图片流
-    listener = ImageStreamListener((ImageInfo frame, bool sync) {
-//监听
+//     Completer<ui.Image> completer = Completer<ui.Image>(); //完成的回调
+//     ImageStreamListener listener;
+//     ImageStream stream = provider.resolve(config); //获取图片流
+//     listener = ImageStreamListener((ImageInfo frame, bool sync) {
+// //监听
 
-      ui.Image image = frame.image;
-      completer.complete(image); //完成
-      stream.removeListener(listener); //移除监听
-    });
-    stream.addListener(listener); //添加监听
-    return completer.future; //返回
-  }
+//       ui.Image image = frame.image;
+//       completer.complete(image); //完成
+//       stream.removeListener(listener); //移除监听
+//     });
+//     stream.addListener(listener); //添加监听
+//     return completer.future; //返回
+//   }
 
   Completer<ImageInfo> completer = Completer();
   Future<ui.Image> getImage(String path) async {
@@ -86,7 +86,6 @@ class _canvasRouteState extends State<canvasRoute> {
 
   @override
   Widget build(BuildContext context) {
-    print("now:" + widget.nowState);
     if (this.images == null) return Center(child: Text("loading Image"));
     return Container(
       child: CustomPaint(
@@ -94,7 +93,8 @@ class _canvasRouteState extends State<canvasRoute> {
         painter: MyPainter(
             image: this.images,
             targetPoint: this.widget.targetPoint,
-            space: this.widget.space),
+            space: this.widget.space,
+            g: this.widget.g),
       ),
     );
   }
@@ -106,7 +106,8 @@ class MyPainter extends CustomPainter {
   Target targetPoint = Target();
   List<WalkSpace> space = List<WalkSpace>();
   List<List<Tuple3<int, int, String>>> path;
-  MyPainter({this.image, this.targetPoint, this.space});
+  List<List<int>> g = List<List<int>>();
+  MyPainter({this.image, this.targetPoint, this.space, this.g});
   @override
   void paint(Canvas canvas, Size size) {
     painter = Paint();
@@ -144,12 +145,6 @@ class MyPainter extends CustomPainter {
   }
 
   bfs(Point start, Point end, Canvas canvas) {
-    //邊界判斷 如果起點> 終點 需 交換計算路徑
-    // if (start.x > end.x) {
-    //   Point tmp = start;
-    //   start = end;
-    //   end = tmp;
-    // }
     int startX = (start.x * xCoefficient).toInt();
     int startY = (400 - start.y * yCoefficient).toInt();
     int endX = (end.x * xCoefficient).toInt();
@@ -157,18 +152,6 @@ class MyPainter extends CustomPainter {
 
     path = List.generate(
         400, (i) => List.generate(400, (i) => Tuple3(-1, -1, "")));
-    List<List<int>> g = List.generate(400, (i) => List.generate(400, (i) => 1));
-    for (var item in space) {
-      for (int i = (item.x * xCoefficient).toInt();
-          i < (item.x1 * xCoefficient).toInt();
-          i++) {
-        for (int j = (400 - item.y * yCoefficient).toInt();
-            j < (400 - item.y2 * yCoefficient).toInt();
-            j++) {
-          g[i][j] = 0;
-        }
-      }
-    }
     List<List<int>> d =
         List.generate(400, (i) => List.generate(400, (i) => -1));
     d[startX][startY] = 0;
@@ -189,7 +172,7 @@ class MyPainter extends CustomPainter {
             a < 400 &&
             b >= 0 &&
             b < 400 &&
-            g[a][b] != 1 &&
+            this.g[a][b] != 1 &&
             d[a][b] == -1) {
           d[a][b] = d[t.x][t.y] + 1;
           path[a][b] = Tuple3(t.x, t.y, text[i]);
@@ -201,7 +184,6 @@ class MyPainter extends CustomPainter {
     while (d[endX][endY] > 0) {
       PointToInt start = PointToInt(x: endX, y: endY);
       var t = path[endX][endY];
-
       endX = t.item1;
       endY = t.item2;
       PointToInt end = PointToInt(x: endX, y: endY);
@@ -212,7 +194,6 @@ class MyPainter extends CustomPainter {
   }
 
   drawLine(Canvas canvas, PointToInt start, PointToInt end) {
-    final pointMode = ui.PointMode.polygon;
     final paint = Paint()
       ..color = Colors.green
       ..strokeWidth = 4;
