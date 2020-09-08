@@ -1,17 +1,18 @@
 import 'dart:async';
-import 'dart:collection';
 import 'dart:ui' as ui;
+import 'dart:collection';
 
-import 'package:flutter/material.dart';
-import 'package:image/image.dart' as image;
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart' show rootBundle;
-import 'package:nowPosition/class/PointToInt.dart';
-import 'package:nowPosition/class/Target.dart';
 import 'package:tuple/tuple.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:image/image.dart' as image;
+import 'package:nowPosition/class/Target.dart';
+import 'package:nowPosition/class/PointToInt.dart';
+import 'package:flutter/services.dart' show rootBundle;
+
+import '../class/Point.dart';
 import '../pages/position.dart';
 import '../class/WalkSpace.dart';
-import '../class/Point.dart';
 
 double xCoefficient = 8.46;
 double yCoefficient = 7.7;

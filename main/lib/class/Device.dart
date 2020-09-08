@@ -1,13 +1,13 @@
 import 'dart:collection';
 
 class Device {
-  final String mac;
-  final double x;
-  final double y;
-  double distance;
-  Queue<int> rssi; //抓取五個
-  int rssiDef;
+  double x;
+  double y;
+  String mac;
+  int rssiDef; //Tag 誤差
   int notGetRssi; //抓不到超過5次以上 清空
+  Queue<int> rssi; //抓取五個
+  double distance;
   Device({this.mac, this.x, this.y, this.rssiDef}) {
     this.notGetRssi = 0;
     this.distance = 0;
@@ -16,7 +16,6 @@ class Device {
 
   @override
   String toString() {
-    // TODO: implement toString
     return 'Device{mac: $mac, x: $x, y: $y,Def: $rssiDef}';
   }
 

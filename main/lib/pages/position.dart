@@ -1,15 +1,17 @@
+import 'dart:math';
 import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:nowPosition/class/AcceptRssi.dart';
 import 'package:nowPosition/class/WalkSpace.dart';
-import '../components/canvas.dart';
-import 'dart:math';
-import '../class/Device.dart';
+
 import '../searchTag.dart';
-import 'package:dio/dio.dart';
-import '../class/DataStorage.dart';
+import '../class/Device.dart';
 import '../class/Target.dart';
+import '../components/canvas.dart';
+import '../class/DataStorage.dart';
 
 List<Device> device = new List<Device>();
 List<Device> nowPosition = new List<Device>();
@@ -117,11 +119,14 @@ class _PositionState extends State<Position> {
   bool walkspace(double X, double Y) {
     int startX = (X * xCoefficient).toInt();
     int startY = (400 - Y * yCoefficient).toInt();
-
-    if (g[startX][startY] == 0) {
-      return true;
+    if (startX < 0 ||
+        startX >= 400 ||
+        startY < 0 ||
+        startY >= 400 ||
+        g[startX][startY] == 1) {
+      return false;
     }
-    return false;
+    return true;
   }
 
   putRssi(List<AcceptRssi> snapshot) {
@@ -151,12 +156,12 @@ class _PositionState extends State<Position> {
     setState(() {});
   }
 
-  List<ScanResult> topThreeDate = new List();
+  List<List<int>> g;
+  DataStorage storage;
   String position = "";
+  List<ScanResult> topThreeDate = List();
   List<Target> targetList = List<Target>();
   List<WalkSpace> walkSpaceList = List<WalkSpace>();
-  DataStorage storage;
-  List<List<int>> g;
   @override
   void initState() {
     super.initState();
@@ -166,20 +171,20 @@ class _PositionState extends State<Position> {
   }
 
   Target _selectTarget = Target();
-  int thead = 0;
+  int thead = -1;
   bool goMap = false;
   _getData() async {
     storage = DataStorage();
     await storage.writeNext(-1, widget.position);
-    thead = -1;
     this.position = "loading";
     var dio = Dio();
     device.clear();
     nowPosition.clear();
+    String tmp = widget.position;
     List<String> getDataList = ["position-tags", "target-point", "walk"];
     for (var path in getDataList) {
       Response response = await dio.get(
-          'http://120.105.161.209:3000/${path}?query=%7B%22where%22%3A%7B%22position%22%3A%22${widget.position}%22%7D%7D');
+          'http://120.105.161.209:3000/${path}?query=%7B%22where%22%3A%7B%22position%22%3A%22${tmp}%22%7D%7D');
       for (var item in response.data["data"]) {
         if (path == "target-point") {
           targetList.add(Target(
@@ -201,11 +206,14 @@ class _PositionState extends State<Position> {
               x: double.parse(item["x"]),
               y: double.parse(item["y"]),
               rssiDef: int.parse(item["rssi"])));
-          if (widget.position == "Walk") {
-            widget.position = "7F";
+          if (tmp == "Walk") {
+            tmp = "7F";
           }
         }
       }
+    }
+    if (targetList.length > 0) {
+      _selectTarget = targetList[0];
     }
     this.g = List.generate(400, (i) => List.generate(400, (i) => 1));
     for (var item in walkSpaceList) {
@@ -219,11 +227,8 @@ class _PositionState extends State<Position> {
         }
       }
     }
-    setState(() {});
     this.position = "ok";
-    if (targetList.length > 0) {
-      _selectTarget = targetList[0];
-    }
+    setState(() {});
   }
 
   @override

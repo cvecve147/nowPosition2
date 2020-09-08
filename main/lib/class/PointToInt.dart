@@ -5,7 +5,6 @@ class PointToInt {
 
   @override
   String toString() {
-    // TODO: implement toString
     return 'PointToInt{ x: $x, y: $y}';
   }
 }

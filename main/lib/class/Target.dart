@@ -1,7 +1,7 @@
 class Target {
-  final String position;
   final double x;
   final double y;
+  final String position;
   final String targetName;
   Target({this.position, this.x, this.y, this.targetName});
 

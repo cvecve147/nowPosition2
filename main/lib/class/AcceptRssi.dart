@@ -1,6 +1,6 @@
 class AcceptRssi {
-  String mac;
   int rssi;
+  String mac;
   AcceptRssi(this.mac, this.rssi);
   AcceptRssi.fromJson(Map<String, dynamic> json)
       : mac = json['mac'],
