@@ -24,215 +24,241 @@
   </head>
   <body>
     <div id="app">
-      <div class="d-flex flex-row">
-        <canvas
-          id="canvas"
-          width="800px"
-          height="800px"
-          @click="clickPosition"
-        ></canvas>
-        <div class="form-group ml-2" v-if="Walk">
-          <h1>新增可走區域</h1>
-          <div class="d-flex flex-row justify-content-around">
-            <div>
-              <label for="">X</label>
-              <input
-                type="text"
-                class="form-control"
-                aria-describedby="helpId"
-                placeholder=""
-                v-model="input.x"
-              />
-              <label for="">Y</label>
-              <input
-                type="text"
-                class="form-control"
-                aria-describedby="helpId"
-                placeholder=""
-                v-model="input.y"
-              />
-            </div>
-            <div>
-              <label for="">X1</label>
-              <input
-                type="text"
-                class="form-control"
-                aria-describedby="helpId"
-                placeholder=""
-                v-model="input.x1"
-              />
-              <label for="">Y1</label>
-              <input
-                type="text"
-                class="form-control"
-                aria-describedby="helpId"
-                placeholder=""
-                v-model="input.y1"
-              />
-            </div>
+      <button class="btn btn-primary mb-2" @click="showWalk=!showWalk">
+        切換
+      </button>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-6">
+            <canvas
+              id="canvas"
+              width="800px"
+              height="800px"
+              @click="clickPosition"
+            ></canvas>
           </div>
-          <hr />
-          <label for="">X</label>
-          <input
-            type="text"
-            class="form-control"
-            aria-describedby="helpId"
-            placeholder=""
-            v-model="mouse.x"
-          />
-          <label for="">Y</label>
-          <input
-            type="text"
-            class="form-control"
-            aria-describedby="helpId"
-            placeholder=""
-            v-model="mouse.y"
-          />
-
-          <button
-            class="btn btn-primary mt-2"
-            @click="nextPoint()"
-            v-if="nowPointIndex!=1"
-          >
-            下個點{{nowPointIndex}}
-          </button>
-          <button
-            class="btn btn-primary mt-2"
-            @click="prePoint()"
-            v-if="nowPointIndex>0"
-          >
-            上個點{{nowPointIndex}}
-          </button>
-          <button
-            class="btn btn-primary mt-2"
-            @click="PostWalk()"
-            v-if="nowPointIndex==1"
-          >
-            送出
-          </button>
-          <table class="table" v-if="Walk.length">
-            <thead>
-              <tr>
-                <th
-                  v-for="(item,index) in Walk[0]"
-                  v-if="index!='createdAt' && index!='updatedAt' && index!='__v' && index!='_id'"
-                >
-                  {{index}}
-                </th>
-                <th colspan="2" class="text-center">操作</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item1,index1) in Walk">
-                <template
-                  v-for="(item,index) in Walk[0]"
-                  v-if="index!='createdAt' && index!='updatedAt' && index!='__v' && index!='_id'"
-                >
-                  <td scope="row" class="my-auto">
-                    <input
-                      type="text"
-                      v-model="item1[index]"
-                      style="width: 50px"
-                    />
-                  </td>
-                </template>
-                <td>
-                  <button class="btn btn-info" @click="putWalk(item1)">
-                    修改
-                  </button>
-                </td>
-                <td><button class="btn btn-danger">刪除</button></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div v-else class="mx-2">
-          <h1>新增目標位子</h1>
-          <div class="d-flex flex-column justify-content-around">
-            <div>
+          <div class="col-4">
+            <div class="form-group ml-2" v-if="showWalk">
+              <h1>新增可走區域</h1>
+              <div class="d-flex flex-row justify-content-around">
+                <div>
+                  <label for="">X</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    aria-describedby="helpId"
+                    placeholder=""
+                    v-model="input.x"
+                  />
+                  <label for="">Y</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    aria-describedby="helpId"
+                    placeholder=""
+                    v-model="input.y"
+                  />
+                </div>
+                <div>
+                  <label for="">X1</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    aria-describedby="helpId"
+                    placeholder=""
+                    v-model="input.x1"
+                  />
+                  <label for="">Y1</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    aria-describedby="helpId"
+                    placeholder=""
+                    v-model="input.y1"
+                  />
+                </div>
+              </div>
+              <hr />
               <label for="">X</label>
               <input
                 type="text"
                 class="form-control"
                 aria-describedby="helpId"
+                placeholder=""
                 v-model="mouse.x"
               />
-            </div>
-            <div>
               <label for="">Y</label>
               <input
                 type="text"
                 class="form-control"
                 aria-describedby="helpId"
+                placeholder=""
                 v-model="mouse.y"
               />
-            </div>
-            <div>
-              <label for="">Name</label>
-              <input
-                type="text"
-                class="form-control"
-                v-model="targetinput.targetName"
-                placeholder="Name"
-              />
-            </div>
-            <div>
-              <label for="">Position</label>
-              <input
-                type="text"
-                class="form-control"
-                v-model="targetinput.position"
-                placeholder="Name"
-              />
-            </div>
 
-            <button class="btn btn-primary mt-2" @click="PostTarget()">
-              送出
-            </button>
-            <hr />
-            <table class="table" v-if="targetPoint.length">
-              <thead>
-                <tr>
-                  <th
-                    v-for="(item,index) in targetPoint[0]"
-                    v-if="index!='createdAt' && index!='updatedAt' && index!='__v' && index!='_id'"
-                  >
-                    {{index}}
-                  </th>
-                  <th colspan="2" class="text-center">操作</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(item1,index1) in targetPoint">
-                  <template
-                    v-for="(item,index) in targetPoint[0]"
-                    v-if="index!='createdAt' && index!='updatedAt' && index!='__v' && index!='_id'"
-                  >
-                    <td scope="row" class="my-auto">
-                      <input
-                        type="text"
-                        v-model="item1[index]"
-                        style="width: 50px"
-                      />
-                    </td>
-                  </template>
-                  <td>
-                    <button class="btn btn-info" @click="putTarget(item1)">
-                      修改
-                    </button>
-                  </td>
-                  <td>
-                    <button class="btn btn-danger" @click="deletTarget(item1)">
-                      刪除
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+              <button
+                class="btn btn-primary mt-2"
+                @click="nextPoint()"
+                v-if="nowPointIndex!=1"
+              >
+                下個點{{nowPointIndex}}
+              </button>
+              <button
+                class="btn btn-primary mt-2"
+                @click="prePoint()"
+                v-if="nowPointIndex>0"
+              >
+                上個點{{nowPointIndex}}
+              </button>
+              <button
+                class="btn btn-primary mt-2"
+                @click="PostWalk()"
+                v-if="nowPointIndex==1"
+              >
+                送出
+              </button>
+              <hr />
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th
+                        v-for="(item,index) in Walk[0]"
+                        v-if="index!='createdAt' && index!='updatedAt' && index!='__v' && index!='_id'"
+                      >
+                        {{index}}
+                      </th>
+                      <th colspan="2" class="text-center">操作</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="(item1,index1) in Walk">
+                      <template
+                        v-for="(item,index) in Walk[0]"
+                        v-if="index!='createdAt' && index!='updatedAt' && index!='__v' && index!='_id'"
+                      >
+                        <td scope="row" class="my-auto">
+                          <input
+                            type="text"
+                            v-model="item1[index]"
+                            style="width: 50px"
+                          />
+                        </td>
+                      </template>
+                      <td>
+                        <button class="btn btn-info" @click="PutWalk(item1)">
+                          修改
+                        </button>
+                      </td>
+                      <td>
+                        <button
+                          class="btn btn-danger"
+                          @click="DelWalk(item1._id)"
+                        >
+                          刪除
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div v-else class="mx-2">
+              <h1>新增目標位子</h1>
+              <div class="d-flex flex-column justify-content-around">
+                <div>
+                  <label for="">X</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    aria-describedby="helpId"
+                    v-model="mouse.x"
+                  />
+                </div>
+                <div>
+                  <label for="">Y</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    aria-describedby="helpId"
+                    v-model="mouse.y"
+                  />
+                </div>
+                <div>
+                  <label for="">Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    v-model="targetinput.targetName"
+                    placeholder="Name"
+                  />
+                </div>
+                <div>
+                  <label for="">Position</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    v-model="targetinput.position"
+                    placeholder="Name"
+                  />
+                </div>
+
+                <button class="btn btn-primary mt-2" @click="PostTarget()">
+                  送出
+                </button>
+                <hr />
+                <div class="table-responsive">
+                  <table class="table" v-if="targetPoint.length">
+                    <thead>
+                      <tr>
+                        <th
+                          v-for="(item,index) in targetPoint[0]"
+                          v-if="index!='createdAt' && index!='updatedAt' && index!='__v' && index!='_id'"
+                        >
+                          {{index}}
+                        </th>
+                        <th colspan="2" class="text-center">操作</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="(item1,index1) in targetPoint">
+                        <template
+                          v-for="(item,index) in targetPoint[0]"
+                          v-if="index!='createdAt' && index!='updatedAt' && index!='__v' && index!='_id'"
+                        >
+                          <td scope="row" class="my-auto">
+                            <input
+                              type="text"
+                              v-model="item1[index]"
+                              style="width: 50px"
+                            />
+                          </td>
+                        </template>
+                        <td>
+                          <button
+                            class="btn btn-info"
+                            @click="PutTarget(item1)"
+                          >
+                            修改
+                          </button>
+                        </td>
+                        <td>
+                          <button
+                            class="btn btn-danger"
+                            @click="DelTarget(item1._id)"
+                          >
+                            刪除
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      <button class="btn btn-primary mt-2" @click="Walk=!Walk">切換</button>
     </div>
 
     <!-- <drawing-board></drawing-board> -->
@@ -249,7 +275,7 @@
             x1: 0,
             y1: 0,
           },
-          Walk: true,
+          showWalk: true,
           mouse: {
             x: 0,
             y: 0,
@@ -266,7 +292,7 @@
           Walk: [],
         },
         methods: {
-          async putWalk(val) {
+          async PutWalk(val) {
             val.position = "7F"
             const res = await axios.put(
               "http://120.105.161.209:3000/walk/" + val._id,
@@ -293,6 +319,7 @@
             }
             await this.fecthAll()
           },
+
           async PostWalk() {
             this.input.position = "7F"
             this.nextPoint()
@@ -308,7 +335,19 @@
             }
             await this.fecthAll()
           },
-          async putTarget(val) {
+          async DelWalk(val) {
+            const res = await axios.delete(
+              "http://120.105.161.209:3000/walk/" + val
+            )
+            await this.fecthAll()
+          },
+          async DelTarget(val) {
+            const res = await axios.delete(
+              "http://120.105.161.209:3000/target-point/" + val
+            )
+            await this.fecthAll()
+          },
+          async PutTarget(val) {
             const res = await axios.put(
               "http://120.105.161.209:3000/target-point/" + val._id,
               val
