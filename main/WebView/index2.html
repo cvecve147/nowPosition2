@@ -105,14 +105,14 @@
               </button>
               <button
                 class="btn btn-primary mt-2"
-                @click="prePoint()"
+                @click="nowPointIndex--"
                 v-if="nowPointIndex>0"
               >
                 上個點{{nowPointIndex}}
               </button>
               <button
                 class="btn btn-primary mt-2"
-                @click="PostWalk()"
+                @click="PostData('walk',input)"
                 v-if="nowPointIndex==1"
               >
                 送出
@@ -146,14 +146,17 @@
                         </td>
                       </template>
                       <td>
-                        <button class="btn btn-info" @click="PutWalk(item1)">
+                        <button
+                          class="btn btn-info"
+                          @click="PutData('walk',item1)"
+                        >
                           修改
                         </button>
                       </td>
                       <td>
                         <button
                           class="btn btn-danger"
-                          @click="DelWalk(item1._id)"
+                          @click="DelData('walk',item1._id)"
                         >
                           刪除
                         </button>
@@ -172,7 +175,7 @@
                     type="text"
                     class="form-control"
                     aria-describedby="helpId"
-                    v-model="mouse.x"
+                    v-model="targetinput.x"
                   />
                 </div>
                 <div>
@@ -181,7 +184,7 @@
                     type="text"
                     class="form-control"
                     aria-describedby="helpId"
-                    v-model="mouse.y"
+                    v-model="targetinput.y"
                   />
                 </div>
                 <div>
@@ -203,7 +206,10 @@
                   />
                 </div>
 
-                <button class="btn btn-primary mt-2" @click="PostTarget()">
+                <button
+                  class="btn btn-primary mt-2"
+                  @click="PostData('target-point',targetinput)"
+                >
                   送出
                 </button>
                 <hr />
@@ -237,7 +243,7 @@
                         <td>
                           <button
                             class="btn btn-info"
-                            @click="PutTarget(item1)"
+                            @click="PutData('target-point',item1)"
                           >
                             修改
                           </button>
@@ -245,7 +251,7 @@
                         <td>
                           <button
                             class="btn btn-danger"
-                            @click="DelTarget(item1._id)"
+                            @click="DelData('target-point',item1._id)"
                           >
                             刪除
                           </button>
@@ -274,6 +280,7 @@
             y: 0,
             x1: 0,
             y1: 0,
+            position: "7F",
           },
           showWalk: true,
           mouse: {
@@ -292,20 +299,13 @@
           Walk: [],
         },
         methods: {
-          async PutWalk(val) {
-            val.position = "7F"
-            const res = await axios.put(
-              "http://120.105.161.209:3000/walk/" + val._id,
-              val
-            )
-            await this.fecthAll()
-          },
-          async PostTarget() {
-            this.targetinput.x = this.mouse.x
-            this.targetinput.y = this.mouse.y
+          async PostData(URL, data) {
+            if (URL == "walk") {
+              this.nextPoint()
+            }
             const res = await axios.post(
-              "http://120.105.161.209:3000/target-point",
-              this.targetinput
+              "http://120.105.161.209:3000/" + URL,
+              data
             )
             this.mouse = {
               x: 0,
@@ -317,16 +317,6 @@
               position: "7F",
               targetName: "",
             }
-            await this.fecthAll()
-          },
-
-          async PostWalk() {
-            this.input.position = "7F"
-            this.nextPoint()
-            const res = await axios.post(
-              "http://120.105.161.209:3000/walk",
-              this.input
-            )
             this.input = {
               x: 0,
               y: 0,
@@ -335,22 +325,16 @@
             }
             await this.fecthAll()
           },
-          async DelWalk(val) {
-            const res = await axios.delete(
-              "http://120.105.161.209:3000/walk/" + val
-            )
-            await this.fecthAll()
-          },
-          async DelTarget(val) {
-            const res = await axios.delete(
-              "http://120.105.161.209:3000/target-point/" + val
-            )
-            await this.fecthAll()
-          },
-          async PutTarget(val) {
+          async PutData(URL, data) {
             const res = await axios.put(
-              "http://120.105.161.209:3000/target-point/" + val._id,
-              val
+              "http://120.105.161.209:3000/" + URL + "/" + data._id,
+              data
+            )
+            await this.fecthAll()
+          },
+          async DelData(URL, _id) {
+            const res = await axios.delete(
+              "http://120.105.161.209:3000/" + URL + "/" + _id
             )
             await this.fecthAll()
           },
@@ -393,33 +377,33 @@
               x: ((event.pageX - position.x) / (8.46 * 2)).toFixed(2),
               y: ((400 * 2 - event.pageY + position.y) / (7.7 * 2)).toFixed(2),
             }
+            this.targetinput.x = this.mouse.x
+            this.targetinput.y = this.mouse.y
           },
           async fecthAll() {
-            await this.fetch()
-            await this.fetch2()
-            await this.fetch3()
-            await this.push()
+            fetchList = ["position-tags", "walk", "target-point"]
+            await fetchList.forEach(async (el) => {
+              const res = await axios.get(
+                `http://120.105.161.209:3000/${el}?query=%7B%22where%22%3A%7B%7D%2C%22limit%22%3A100%2C%22page%22%3A1%7D`
+              )
+              switch (el) {
+                case "position-tags":
+                  this.tags = res.data.data
+                  break
+                case "walk":
+                  this.Walk = res.data.data
+                  break
+                case "target-point":
+                  this.targetPoint = res.data.data
+                  await this.push()
+                  break
+                default:
+                  break
+              }
+            })
           },
-          async fetch() {
-            const res = await axios.get(
-              "http://120.105.161.209:3000/position-tags?query=%7B%22where%22%3A%7B%7D%2C%22limit%22%3A100%2C%22page%22%3A1%7D"
-            )
-            this.tags = res.data.data
-          },
-          async fetch2() {
-            const res = await axios.get(
-              "http://120.105.161.209:3000/walk?query=%7B%22where%22%3A%7B%7D%2C%22limit%22%3A100%2C%22page%22%3A1%7D"
-            )
-            this.Walk = res.data.data
-          },
-          async fetch3() {
-            const res = await axios.get(
-              "http://120.105.161.209:3000/target-point?query=%7B%22where%22%3A%7B%7D%2C%22limit%22%3A100%2C%22page%22%3A1%7D"
-            )
-            this.targetPoint = res.data.data
-          },
-          draw() {
-            this.tags.forEach((el) => {
+          async draw() {
+            await this.tags.forEach((el) => {
               let ctx7 = canvas.getContext("2d")
               ctx7.fillStyle = "#FF0000"
               ctx7.beginPath()
@@ -441,9 +425,9 @@
               )
             })
           },
-          draw2() {
+          async draw2() {
             console.log(this.Walk)
-            this.Walk.forEach((el) => {
+            await this.Walk.forEach((el) => {
               let ctx7 = canvas.getContext("2d")
               ctx7.fillStyle = "rgba(0,255,0,0.5)"
               ctx7.fillRect(
@@ -454,8 +438,8 @@
               )
             })
           },
-          draw3() {
-            this.targetPoint.forEach((el) => {
+          async draw3() {
+            await this.targetPoint.forEach((el) => {
               let ctx7 = canvas.getContext("2d")
               ctx7.fillStyle = "#FFFF00"
               ctx7.beginPath()
@@ -476,9 +460,6 @@
                 400 * 2 - el.y * 7.7 * 2 + 20
               )
             })
-          },
-          prePoint() {
-            this.nowPointIndex--
           },
           async push() {
             var c = document.getElementById("canvas")
