@@ -148,7 +148,13 @@ class _MyHomePageState extends State<MyHomePage> {
           });
           await storage.writeData(int.parse(data[0]), data[1], encode);
         } else {
-          await storage.writeNext((int.parse(data[0]) + 1) % 3, data[1]);
+          if (data.length <= 2) {
+            await storage.writeNext((int.parse(data[0]) + 1) % 3, data[1], 1);
+          } else if (data.length >= 3 && data[2].length < 2) {
+            await storage.writeNext((int.parse(data[0]) + 1) % 3, data[1], 1);
+          } else {
+            await storage.writeNext((int.parse(data[0]) + 1) % 3, data[1]);
+          }
           break;
         }
       }

@@ -36,10 +36,13 @@ class DataStorage {
         bluetoothData);
   }
 
-  Future<File> writeNext(int thread, String position) async {
+  Future<File> writeNext(int thread, String position, [int times]) async {
     final file = await _localFile;
     print("Thread Change:" + thread.toString());
-    return file
-        .writeAsString(thread.toString() + "\n" + position + "\n" + "-1");
+    if (times != null) {
+      return file.writeAsString(
+          thread.toString() + "\n" + position + "\n" + times.toString());
+    }
+    return file.writeAsString(thread.toString() + "\n" + position);
   }
 }

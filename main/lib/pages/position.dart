@@ -361,7 +361,6 @@ class _PositionState extends State<Position> {
                   setState(() {
                     condition = false;
                   });
-                  int count = 0;
                   while (true) {
                     if (condition) {
                       break;
@@ -371,17 +370,11 @@ class _PositionState extends State<Position> {
                     setState(() {
                       thread = int.parse(data[0]);
                     });
-
-                    if (count >= 2) {
-                      position = "切換App!!!";
-                    }
-                    if (data.length >= 3 && data[2] == "-1") {
-                      count++;
-                      print(count);
+                    if (data.length >= 3 && data[2].length < 2) {
+                      position = "切換App";
                       continue;
                     }
-                    if (data.length >= 3) {
-                      count = 0;
+                    if (data.length >= 4) {
                       if (laTime != data[2]) {
                         List<dynamic> decode = jsonDecode(data[3]);
                         laTime = data[2];
