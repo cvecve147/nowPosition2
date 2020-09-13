@@ -112,8 +112,9 @@ class _PositionState extends State<Position> {
     double dist = calculationPreDist(X, Y);
     if (walkspace(X, Y)) {
       nowPosition.add(Device(mac: "", x: X, y: Y));
+      return "${X.toStringAsFixed(2)} , ${Y.toStringAsFixed(2)} 與上點距離為${dist.toStringAsFixed(2)}";
     }
-    return "${X.toStringAsFixed(2)} , ${Y.toStringAsFixed(2)} 與上點距離為${dist.toStringAsFixed(2)}";
+    return "${X.toStringAsFixed(2)} , ${Y.toStringAsFixed(2)} 超出範圍";
   }
 
   bool walkspace(double X, double Y) {
