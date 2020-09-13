@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:async';
 import 'dart:ui' as ui;
 import 'dart:collection';
@@ -18,11 +19,13 @@ double xCoefficient = 8.46;
 double yCoefficient = 7.7;
 
 class canvasRoute extends StatefulWidget {
+  double rotate;
   String imageUrl = "";
   Target targetPoint = Target();
   List<WalkSpace> space = List<WalkSpace>();
   List<List<int>> g = List<List<int>>();
-  canvasRoute(this.imageUrl, {this.targetPoint, this.space, this.g});
+  canvasRoute(this.imageUrl,
+      {this.targetPoint, this.space, this.g, this.rotate});
 
   @override
   _canvasRouteState createState() => _canvasRouteState();
@@ -95,7 +98,8 @@ class _canvasRouteState extends State<canvasRoute> {
             image: this.images,
             targetPoint: this.widget.targetPoint,
             space: this.widget.space,
-            g: this.widget.g),
+            g: this.widget.g,
+            rotate: this.widget.rotate),
       ),
     );
   }
@@ -104,11 +108,13 @@ class _canvasRouteState extends State<canvasRoute> {
 class MyPainter extends CustomPainter {
   ui.Image image;
   Paint painter;
+  double rotate;
   Target targetPoint = Target();
   List<WalkSpace> space = List<WalkSpace>();
   List<List<Tuple3<int, int, String>>> path;
   List<List<int>> g = List<List<int>>();
-  MyPainter({this.image, this.targetPoint, this.space, this.g});
+
+  MyPainter({this.image, this.targetPoint, this.space, this.g, this.rotate});
   @override
   void paint(Canvas canvas, Size size) {
     painter = Paint();
@@ -130,6 +136,7 @@ class MyPainter extends CustomPainter {
       drawPoint(
           canvas, size, 12, 13, "", Colors.transparent, Colors.blue[300], 4);
     }
+    drawArc(canvas, start, size);
     if (targetPoint != null && space != null) {
       Point end = Point(x: targetPoint.x, y: targetPoint.y);
       bfs(start, end, canvas);
@@ -191,6 +198,34 @@ class MyPainter extends CustomPainter {
       if (endX != -1 && endY != -1) {
         drawLine(canvas, start, end);
       }
+    }
+  }
+
+  drawArc(Canvas canvas, Point start, Size size) {
+    Rect rect = new Rect.fromCircle(
+      center: new Offset(
+          start.x * xCoefficient, size.height - start.y * yCoefficient),
+      radius: 18.0,
+    );
+
+    // a fancy rainbow gradient
+    final Gradient gradient = new RadialGradient(
+      colors: <Color>[
+        Colors.blue.withOpacity(1.0),
+        Colors.blue.withOpacity(0.1),
+      ],
+      stops: [
+        0.0,
+        1.0,
+      ],
+    );
+    final Paint paint = new Paint()..shader = gradient.createShader(rect);
+    if (rotate > 0) {
+      canvas.drawArc(
+          rect, (-pi - rotate) / 4, (pi * 2 - rotate) / 4, true, paint);
+    } else {
+      canvas.drawArc(
+          rect, (rotate - pi) / 4, (pi * 2 - rotate) / 4, true, paint);
     }
   }
 

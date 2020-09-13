@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:nowPosition/class/AcceptRssi.dart';
 import 'package:nowPosition/class/WalkSpace.dart';
+import 'package:flutter_compass/flutter_compass.dart';
 
 import '../searchTag.dart';
 import '../class/Device.dart';
@@ -157,6 +158,7 @@ class _PositionState extends State<Position> {
     setState(() {});
   }
 
+  double _direction;
   List<List<int>> g;
   DataStorage storage;
   String position = "";
@@ -168,6 +170,11 @@ class _PositionState extends State<Position> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _getData();
+    });
+    FlutterCompass.events.listen((double direction) {
+      setState(() {
+        _direction = direction;
+      });
     });
   }
 
@@ -254,86 +261,113 @@ class _PositionState extends State<Position> {
           )
         ],
       ),
-      body: RefreshIndicator(
-        onRefresh: () =>
-            FlutterBlue.instance.startScan(timeout: Duration(seconds: 4)),
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  DropdownButton<Target>(
-                    value: this._selectTarget,
-                    iconSize: 24,
-                    elevation: 16,
-                    style: TextStyle(color: Colors.deepPurple),
-                    underline: Container(
-                      height: 2,
-                      color: Colors.deepPurpleAccent,
-                    ),
-                    onChanged: (Target newValue) {
-                      setState(() {
-                        _selectTarget = newValue;
-                      });
-                    },
-                    items: targetList
-                        .map<DropdownMenuItem<Target>>((Target value) {
-                      return DropdownMenuItem<Target>(
-                        value: value,
-                        child: Text(value.targetName),
-                      );
-                    }).toList(),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(left: 10.0, right: 10.0),
-                  ),
-                  RaisedButton(
-                      onPressed: () {
-                        this.setState(() {
-                          goMap = !goMap;
-                          print(goMap);
+      body: StreamBuilder<double>(
+        stream: FlutterCompass.events,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Text('Error reading heading: ${snapshot.error}');
+          }
+
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          double direction = snapshot.data;
+
+          // if direction is null, then device does not support this sensor
+          // show error message
+          if (direction == null)
+            return Center(
+              child: Text("Device does not have sensors !"),
+            );
+
+          return SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    DropdownButton<Target>(
+                      value: this._selectTarget,
+                      iconSize: 24,
+                      elevation: 16,
+                      style: TextStyle(color: Colors.deepPurple),
+                      underline: Container(
+                        height: 2,
+                        color: Colors.deepPurpleAccent,
+                      ),
+                      onChanged: (Target newValue) {
+                        setState(() {
+                          _selectTarget = newValue;
                         });
                       },
-                      textColor: Colors.white,
-                      color: Colors.blue,
-                      child: const Text('導航', style: TextStyle(fontSize: 16))),
-                ],
-              ),
-              Container(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    if (!condition) Text("開始掃描"),
-                    Text("Thread:" + thread.toString()),
-                    Text(
-                      position,
-                      style: TextStyle(fontSize: 18),
+                      items: targetList
+                          .map<DropdownMenuItem<Target>>((Target value) {
+                        return DropdownMenuItem<Target>(
+                          value: value,
+                          child: Text(value.targetName),
+                        );
+                      }).toList(),
                     ),
-                    for (var item in device)
-                      if (item.rssi.length > 0)
-                        Column(
-                          children: <Widget>[
-                            Text(item.mac),
-                            Text(item.rssi.join("、"))
-                          ],
-                        ),
-                    for (var item in topThreeDate) Text(item.rssi.toString()),
-                    if (!goMap)
-                      canvasRoute(
-                        widget.image,
-                      ),
-                    if (goMap)
-                      canvasRoute(widget.image,
-                          targetPoint: this._selectTarget,
-                          space: this.walkSpaceList,
-                          g: this.g)
+                    Container(
+                      margin: const EdgeInsets.only(left: 10.0, right: 10.0),
+                    ),
+                    RaisedButton(
+                        onPressed: () {
+                          this.setState(() {
+                            goMap = !goMap;
+                            print(goMap);
+                          });
+                        },
+                        textColor: Colors.white,
+                        color: Colors.blue,
+                        child:
+                            const Text('導航', style: TextStyle(fontSize: 16))),
                   ],
                 ),
-              )
-            ],
-          ),
-        ),
+                Container(
+                  alignment: Alignment.center,
+                  child: Text("Rotate:" +
+                      ((direction ?? 0) * (pi / 180) * -1).toString()),
+                ),
+                Container(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      if (!condition) Text("開始掃描"),
+                      Text("Thread:" + thread.toString()),
+                      Text(
+                        position,
+                        style: TextStyle(fontSize: 18),
+                      ),
+                      for (var item in device)
+                        if (item.rssi.length > 0)
+                          Column(
+                            children: <Widget>[
+                              Text(item.mac),
+                              Text(item.rssi.join("、"))
+                            ],
+                          ),
+                      for (var item in topThreeDate) Text(item.rssi.toString()),
+                      if (!goMap)
+                        canvasRoute(
+                          widget.image,
+                        ),
+                      if (goMap)
+                        canvasRoute(widget.image,
+                            targetPoint: this._selectTarget,
+                            space: this.walkSpaceList,
+                            g: this.g,
+                            rotate: ((direction ?? 0) * (pi / 180) * -1))
+                    ],
+                  ),
+                )
+              ],
+            ),
+          );
+        },
       ),
       floatingActionButton: StreamBuilder<bool>(
         stream: FlutterBlue.instance.isScanning,
