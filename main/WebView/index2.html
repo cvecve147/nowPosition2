@@ -27,7 +27,10 @@
       <button class="btn btn-primary mb-2" @click="showWalk=!showWalk">
         切換
       </button>
-      <div class="container-fluid">
+      <button class="btn btn-primary mb-2" @click="changeBig()">
+        查看大圖
+      </button>
+      <div class="container-fluid" :style="{ display: !bigImg?'block':'none'}">
         <div class="row">
           <div class="col-6">
             <canvas
@@ -265,6 +268,9 @@
           </div>
         </div>
       </div>
+      <div class="container-fluid" :style="{ display: bigImg?'block':'none'}">
+        <canvas id="canvas2" width="1600px" height="1600px"></canvas>
+      </div>
     </div>
 
     <!-- <drawing-board></drawing-board> -->
@@ -282,6 +288,7 @@
             y1: 0,
             position: "7F",
           },
+          bigImg: false,
           showWalk: true,
           mouse: {
             x: 0,
@@ -324,6 +331,15 @@
               y1: 0,
             }
             await this.fecthAll()
+          },
+          async changeBig() {
+            this.bigImg = !this.bigImg
+            if (this.bigImg) {
+              await this.push2()
+              await this.Bigdraw2()
+            } else {
+              await this.fecthAll()
+            }
           },
           async PutData(URL, data) {
             const res = await axios.put(
@@ -425,6 +441,39 @@
               )
             })
           },
+          async draw4(x, x1, y, y1) {
+            x = parseFloat(x)
+            x1 = parseFloat(x1)
+            y = parseFloat(y)
+            y1 = parseFloat(y1)
+            let ctx7 = canvas.getContext("2d")
+            ctx7.fillStyle = "#0000FF"
+            if (
+              Math.abs(400 * 2 - y1 * 7.7 * 2 - 400 * 2 - y * 7.7 * 2) >
+              x1 * 8.46 * 2 - x * 8.46 * 2
+            ) {
+              x += x1
+              x /= 2
+              console.log(y1, y)
+              for (let i = y - 1; i > y1; i -= 4.5) {
+                ctx7.beginPath()
+                ctx7.arc(x * 8.46 * 2, 400 * 2 - i * 7.7 * 2, 2, 0, 6 * Math.PI)
+                ctx7.stroke()
+                ctx7.fill()
+                console.log(400 * 2 - i * 7.7 * 2)
+              }
+
+              return
+            }
+            y += y1
+            y /= 2
+            for (let i = parseInt(x) + 1; i < x1; i += 4.5) {
+              ctx7.beginPath()
+              ctx7.arc(i * 8.46 * 2, 400 * 2 - y * 7.7 * 2, 2, 0, 6 * Math.PI)
+              ctx7.stroke()
+              ctx7.fill()
+            }
+          },
           async draw2() {
             console.log(this.Walk)
             await this.Walk.forEach((el) => {
@@ -435,6 +484,22 @@
                 400 * 2 - el.y * 7.7 * 2,
                 el.x1 * 8.46 * 2 - el.x * 8.46 * 2,
                 400 * 2 - el.y1 * 7.7 * 2 - (400 * 2 - el.y * 7.7 * 2)
+              )
+              if (el.x1 - el.x > 2.5) {
+                this.draw4(el.x, el.x1, el.y, el.y1)
+              }
+            })
+          },
+          async Bigdraw2() {
+            console.log(this.Walk)
+            await this.Walk.forEach((el) => {
+              let ctx7 = canvas2.getContext("2d")
+              ctx7.fillStyle = "rgba(0,255,0,0.5)"
+              ctx7.fillRect(
+                el.x * 8.46 * 4,
+                400 * 4 - el.y * 7.7 * 4,
+                el.x1 * 8.46 * 4 - el.x * 8.46 * 4,
+                400 * 4 - el.y1 * 7.7 * 4 - (400 * 4 - el.y * 7.7 * 4)
               )
             })
           },
@@ -461,6 +526,7 @@
               )
             })
           },
+
           async push() {
             var c = document.getElementById("canvas")
             var ctx = c.getContext("2d")
@@ -475,6 +541,23 @@
                 await app.draw2()
                 await app.draw()
                 await app.draw3()
+              }
+            }
+          },
+          async push2() {
+            var c = document.getElementById("canvas2")
+            var ctx = c.getContext("2d")
+            ctx.translate(0.5, 0.5)
+            ctx.imageSmoothingEnabled = false
+            var image = new Image()
+            image.src = "http://120.105.161.209/Nursemaid/image/7F.png"
+            image.onload = async function () {
+              if (image.complete) {
+                await ctx.drawImage(this, 0, 0, 1600, 1600)
+                console.log("complete")
+                await app.Bigdraw2()
+                // await app.draw()
+                // await app.draw3()
               }
             }
           },
