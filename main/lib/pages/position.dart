@@ -170,8 +170,8 @@ class _PositionState extends State<Position> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _getData();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await _getData();
     });
     FlutterCompass.events.listen((double direction) {
       setState(() {
@@ -180,10 +180,12 @@ class _PositionState extends State<Position> {
     });
   }
 
-  Target _selectTarget = Target();
+  Target _selectTarget;
   int thread = -1;
   bool goMap = false;
+  bool isloading = true;
   _getData() async {
+    isloading = true;
     storage = DataStorage();
     await storage.writeNext(-1, widget.position);
     this.position = "loading";
@@ -241,7 +243,9 @@ class _PositionState extends State<Position> {
       }
     }
     this.position = "ok";
-    setState(() {});
+    setState(() {
+      isloading = false;
+    });
   }
 
   @override
@@ -278,7 +282,9 @@ class _PositionState extends State<Position> {
               child: CircularProgressIndicator(),
             );
           }
-
+          if (isloading) {
+            return Text("loading Data");
+          }
           double direction = snapshot.data;
 
           // if direction is null, then device does not support this sensor
