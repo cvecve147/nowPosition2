@@ -190,11 +190,14 @@ class _PositionState extends State<Position> {
     var dio = Dio();
     device.clear();
     nowPosition.clear();
+    targetList.clear();
+    walkSpaceList.clear();
+    device.clear();
     String tmp = widget.position;
     List<String> getDataList = ["position-tags", "target-point", "walk"];
     for (var path in getDataList) {
       Response response = await dio.get(
-          'http://120.105.161.209:3000/${path}?query=%7B%22where%22%3A%7B%22position%22%3A%22${tmp}%22%7D%7D');
+          'http://120.105.161.209:3000/${path}?query={"where":{"position":"${tmp}"},"limit":100,"page":1}');
       for (var item in response.data["data"]) {
         if (path == "target-point") {
           targetList.add(Target(

@@ -202,10 +202,6 @@
         data() {
           return {
             loading: false,
-            position: [],
-            tag: [],
-            walk: [],
-            target: [],
             showTable: 0,
             fetchList: [
               { name: "position", data: [] },
@@ -233,7 +229,7 @@
             this.loading = true
             await this.fetchList.forEach(async (path, index) => {
               const res = await axios.get(
-                `http://120.105.161.209:3000/${path.name}?query=%7B%22where%22%3A%7B%7D%2C%22limit%22%3A100%2C%22page%22%3A1%7D`
+                `http://120.105.161.209:3000/${path.name}?query={"where":{},"limit":100,"page":1}`
               )
               res.data.data.forEach((el) => {
                 delete el.createdAt
