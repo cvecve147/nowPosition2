@@ -24,8 +24,8 @@ class canvasRoute extends StatefulWidget {
   Target targetPoint = Target();
   List<WalkSpace> space = List<WalkSpace>();
   List<List<int>> g = List<List<int>>();
-  canvasRoute(this.imageUrl,
-      {this.targetPoint, this.space, this.g, this.rotate});
+  canvasRoute(this.imageUrl, this.rotate,
+      {this.targetPoint, this.space, this.g});
 
   @override
   _canvasRouteState createState() => _canvasRouteState();
@@ -220,13 +220,10 @@ class MyPainter extends CustomPainter {
       ],
     );
     final Paint paint = new Paint()..shader = gradient.createShader(rect);
-    if (rotate > 0) {
-      canvas.drawArc(
-          rect, (-pi - rotate) / 4, (pi * 2 - rotate) / 4, true, paint);
-    } else {
-      canvas.drawArc(
-          rect, (rotate - pi) / 4, (pi * 2 - rotate) / 4, true, paint);
-    }
+    double caAlg = this.rotate;
+    print("rotate:" + rotate.toString());
+    print("pi:" + pi.toString());
+    canvas.drawArc(rect, caAlg, pi / 2, true, paint);
   }
 
   drawLine(Canvas canvas, PointToInt start, PointToInt end) {

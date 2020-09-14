@@ -282,7 +282,7 @@ class _PositionState extends State<Position> {
             return Center(
               child: Text("Device does not have sensors !"),
             );
-
+          print(((direction ?? 0) * (pi / 180) * -1));
           return SingleChildScrollView(
             child: Column(
               children: <Widget>[
@@ -353,14 +353,13 @@ class _PositionState extends State<Position> {
                       for (var item in topThreeDate) Text(item.rssi.toString()),
                       if (!goMap)
                         canvasRoute(
-                          widget.image,
-                        ),
+                            widget.image, ((direction ?? 0) * (pi / 180) * -1)),
                       if (goMap)
-                        canvasRoute(widget.image,
+                        canvasRoute(
+                            widget.image, ((direction ?? 0) * (pi / 180) * -1),
                             targetPoint: this._selectTarget,
                             space: this.walkSpaceList,
-                            g: this.g,
-                            rotate: ((direction ?? 0) * (pi / 180) * -1))
+                            g: this.g)
                     ],
                   ),
                 )
