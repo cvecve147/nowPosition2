@@ -116,13 +116,65 @@
               name=""
               id=""
               class="btn btn-primary mx-2"
-              @click="showTable=index"
+              @click="changeTable(index)"
               v-for="(item,index) in fetchList"
             >
               {{item.name}}
             </button>
           </div>
         </div>
+        <table class="table">
+          <thead>
+            <tr class="text-center">
+              <th
+                v-for="(item,index) in fetchList[showTable].data[0]"
+                :style="{ display: index=='_id'?'none':''}"
+              >
+                {{index}}
+              </th>
+              <th colspan="2">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td
+                v-for="(item1,index1) in fetchList[showTable].data[0]"
+                v-if="index1!='_id'"
+              >
+                <input
+                  type="text"
+                  class="form-control mx-auto text-center"
+                  aria-describedby="helpId"
+                  style="width: 70px"
+                  v-model="input[index1]"
+                  :style="{ width: index1=='img' ||index1=='targetName' || index1=='mac'?'372px':'80px'}"
+                />
+              </td>
+              <td>
+                <button
+                  type="button"
+                  name=""
+                  id=""
+                  class="btn btn-info"
+                  @click="postData(fetchList[showTable].name,input)"
+                >
+                  新增
+                </button>
+              </td>
+              <td>
+                <button
+                  type="button"
+                  name=""
+                  id=""
+                  class="btn btn-secondary"
+                  @click="input={}"
+                >
+                  清除
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
         <table class="table">
           <thead>
             <tr class="text-center">
@@ -203,6 +255,7 @@
           return {
             loading: false,
             showTable: 0,
+            input: {},
             fetchList: [
               { name: "position", data: [] },
               { name: "position-tags", data: [] },
@@ -212,6 +265,18 @@
           }
         },
         methods: {
+          changeTable(val) {
+            this.showTable = val
+            this.input = {}
+          },
+          async postData(path, val) {
+            const res = await axios.post(
+              "http://120.105.161.209:3000/" + path,
+              val
+            )
+            await this.fetch()
+            this.input = {}
+          },
           async putData(path, val) {
             const res = await axios.put(
               "http://120.105.161.209:3000/" + path + "/" + val._id,
