@@ -222,7 +222,7 @@ class _PositionState extends State<Position> {
         }
       }
     }
-    if (targetList.length > 0) {
+    if (targetList.length > 1) {
       _selectTarget = targetList[0];
     }
     this.g = List.generate(400, (i) => List.generate(400, (i) => 1));
@@ -266,7 +266,7 @@ class _PositionState extends State<Position> {
       body: StreamBuilder<double>(
         stream: FlutterCompass.events,
         builder: (context, snapshot) {
-          if (snapshot.hasError) {
+          if (snapshot.hasError || targetList == null) {
             return Text('Error reading heading: ${snapshot.error}');
           }
 
