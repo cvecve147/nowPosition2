@@ -221,8 +221,6 @@ class MyPainter extends CustomPainter {
     );
     final Paint paint = new Paint()..shader = gradient.createShader(rect);
     double caAlg = this.rotate;
-    print("rotate:" + rotate.toString());
-    print("pi:" + pi.toString());
     canvas.drawArc(rect, caAlg, pi / 2, true, paint);
   }
 

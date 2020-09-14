@@ -33,10 +33,8 @@ class MyHomePage extends StatefulWidget {
 class GetData {
   String position;
   String img;
-  GetData(x, y) {
-    this.position = x;
-    this.img = y;
-  }
+  double rotate;
+  GetData(this.position, this.img, this.rotate);
 }
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -44,7 +42,6 @@ class _MyHomePageState extends State<MyHomePage> {
   DataStorage storage = DataStorage();
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _asyncMethod();
@@ -56,7 +53,8 @@ class _MyHomePageState extends State<MyHomePage> {
     storage.writeNext(-1, "");
     Response response = await dio.get('http://120.105.161.209:3000/position');
     for (var item in response.data["data"]) {
-      position.add(GetData(item["position"], item["img"]));
+      position.add(
+          GetData(item["position"], item["img"], double.parse(item["rotate"])));
     }
     setState(() {});
   }
@@ -78,9 +76,11 @@ class _MyHomePageState extends State<MyHomePage> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => new Position(
-                              title: "Indoor Position ",
-                              position: position[index].position,
-                              image: position[index].img)));
+                                title: "Indoor Position ",
+                                position: position[index].position,
+                                image: position[index].img,
+                                rotate: position[index].rotate,
+                              )));
                 });
           },
         ));

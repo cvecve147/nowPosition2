@@ -25,7 +25,9 @@ int needRssiCount = 5;
 
 class Position extends StatefulWidget {
   String title = "", position = "", image = "";
-  Position({Key key, this.title, this.position, this.image}) : super(key: key);
+  double rotate = 0;
+  Position({Key key, this.title, this.position, this.image, this.rotate})
+      : super(key: key);
 
   @override
   _PositionState createState() => _PositionState();
@@ -282,7 +284,8 @@ class _PositionState extends State<Position> {
             return Center(
               child: Text("Device does not have sensors !"),
             );
-          print(((direction ?? 0) * (pi / 180) * -1));
+          double caculationAngle =
+              (((direction ?? 0) * (pi / 180) * -1) + this.widget.rotate * pi);
           return SingleChildScrollView(
             child: Column(
               children: <Widget>[
@@ -329,8 +332,7 @@ class _PositionState extends State<Position> {
                 ),
                 Container(
                   alignment: Alignment.center,
-                  child: Text("Rotate:" +
-                      ((direction ?? 0) * (pi / 180) * -1).toString()),
+                  child: Text("Rotate:" + caculationAngle.toString()),
                 ),
                 Container(
                   child: Column(
@@ -351,12 +353,9 @@ class _PositionState extends State<Position> {
                             ],
                           ),
                       for (var item in topThreeDate) Text(item.rssi.toString()),
-                      if (!goMap)
-                        canvasRoute(
-                            widget.image, ((direction ?? 0) * (pi / 180) * -1)),
+                      if (!goMap) canvasRoute(widget.image, caculationAngle),
                       if (goMap)
-                        canvasRoute(
-                            widget.image, ((direction ?? 0) * (pi / 180) * -1),
+                        canvasRoute(widget.image, caculationAngle,
                             targetPoint: this._selectTarget,
                             space: this.walkSpaceList,
                             g: this.g)
