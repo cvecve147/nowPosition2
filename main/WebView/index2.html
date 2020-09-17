@@ -24,204 +24,169 @@
   </head>
   <body>
     <div id="app">
-      <button class="btn btn-primary mb-2" @click="showWalk=!showWalk">
-        切換
-      </button>
-      <button class="btn btn-primary mb-2" @click="changeBig()">
-        查看大圖
-      </button>
-      <div class="container-fluid" :style="{ display: !bigImg?'block':'none'}">
-        <div class="row">
-          <div class="col-6">
-            <canvas
-              id="canvas"
-              width="800px"
-              height="800px"
-              @click="clickPosition"
-            ></canvas>
-          </div>
-          <div class="col-4">
-            <div class="form-group ml-2" v-if="showWalk">
-              <h1>新增可走區域</h1>
-              <div class="d-flex flex-row justify-content-around">
-                <div>
-                  <label for="">X</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    aria-describedby="helpId"
-                    placeholder=""
-                    v-model="input.x"
-                  />
-                  <label for="">Y</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    aria-describedby="helpId"
-                    placeholder=""
-                    v-model="input.y"
-                  />
-                </div>
-                <div>
-                  <label for="">X1</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    aria-describedby="helpId"
-                    placeholder=""
-                    v-model="input.x1"
-                  />
-                  <label for="">Y1</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    aria-describedby="helpId"
-                    placeholder=""
-                    v-model="input.y1"
-                  />
-                </div>
-              </div>
-              <hr />
-              <label for="">X</label>
-              <input
-                type="text"
-                class="form-control"
-                aria-describedby="helpId"
-                placeholder=""
-                v-model="mouse.x"
-              />
-              <label for="">Y</label>
-              <input
-                type="text"
-                class="form-control"
-                aria-describedby="helpId"
-                placeholder=""
-                v-model="mouse.y"
-              />
-
-              <button
-                class="btn btn-primary mt-2"
-                @click="nextPoint()"
-                v-if="nowPointIndex!=1"
+      <div
+        :style="{ display: positionList.length>0 && selectPosition.position!=''?'block':'none'}"
+      >
+        <table class="table">
+          <thead>
+            <tr>
+              <th
+                v-for="(item,index) in positionList[0]"
+                :style="{ display: index=='_id'?'none':''}"
               >
-                下個點{{nowPointIndex}}
-              </button>
-              <button
-                class="btn btn-primary mt-2"
-                @click="nowPointIndex--"
-                v-if="nowPointIndex>0"
+                {{index}}
+              </th>
+              <th>選擇</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(item,index) in positionList">
+              <td
+                scope="row"
+                v-for="(item1,index1) in positionList[0]"
+                :style="{ display: index1=='_id'?'none':''}"
               >
-                上個點{{nowPointIndex}}
-              </button>
-              <button
-                class="btn btn-primary mt-2"
-                @click="PostData('walk',input)"
-                v-if="nowPointIndex==1"
-              >
-                送出
-              </button>
-              <hr />
-              <div class="table-responsive">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th
-                        v-for="(item,index) in Walk[0]"
-                        v-if="index!='createdAt' && index!='updatedAt' && index!='__v' && index!='_id'"
-                      >
-                        {{index}}
-                      </th>
-                      <th colspan="2" class="text-center">操作</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="(item1,index1) in Walk">
-                      <template
-                        v-for="(item,index) in Walk[0]"
-                        v-if="index!='createdAt' && index!='updatedAt' && index!='__v' && index!='_id'"
-                      >
-                        <td scope="row" class="my-auto">
-                          <input
-                            type="text"
-                            v-model="item1[index]"
-                            style="width: 50px"
-                          />
-                        </td>
-                      </template>
-                      <td>
-                        <button
-                          class="btn btn-info"
-                          @click="PutData('walk',item1)"
-                        >
-                          修改
-                        </button>
-                      </td>
-                      <td>
-                        <button
-                          class="btn btn-danger"
-                          @click="DelData('walk',item1._id)"
-                        >
-                          刪除
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+                <input
+                  type="text"
+                  class="form-control mx-auto text-center"
+                  aria-describedby="helpId"
+                  style="width: 70px"
+                  v-model="item[index1]"
+                  :style="{ width: index1=='img' ||index1=='targetName' || index1=='mac'?'372px':'80px'}"
+                />
+              </td>
+              <td>
+                <button
+                  type="button"
+                  name=""
+                  id=""
+                  class="btn btn-primary"
+                  @click="click(item)"
+                >
+                  進入
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div :style="{ display: selectPosition.position ?'block':'none'}">
+        <button class="btn btn-primary mb-2" @click="showWalk=!showWalk">
+          切換
+        </button>
+        <button class="btn btn-primary mb-2" @click="changeBig()">
+          查看大圖
+        </button>
+        <div
+          class="container-fluid"
+          :style="{ display: !bigImg?'block':'none'}"
+        >
+          <div class="row">
+            <div class="col-6">
+              <canvas
+                id="canvas"
+                width="800px"
+                height="800px"
+                @click="clickPosition"
+              ></canvas>
             </div>
-            <div v-else class="mx-2">
-              <h1>新增目標位子</h1>
-              <div class="d-flex flex-column justify-content-around">
-                <div>
-                  <label for="">X</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    aria-describedby="helpId"
-                    v-model="targetinput.x"
-                  />
+            <div class="col-4">
+              <div class="form-group ml-2" v-if="showWalk">
+                <h1>新增可走區域</h1>
+                <div class="d-flex flex-row justify-content-around">
+                  <div>
+                    <label for="">X</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      aria-describedby="helpId"
+                      placeholder=""
+                      v-model="input.x"
+                    />
+                    <label for="">Y</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      aria-describedby="helpId"
+                      placeholder=""
+                      v-model="input.y"
+                    />
+                  </div>
+                  <div>
+                    <label for="">X1</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      aria-describedby="helpId"
+                      placeholder=""
+                      v-model="input.x1"
+                    />
+                    <label for="">Y1</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      aria-describedby="helpId"
+                      placeholder=""
+                      v-model="input.y1"
+                    />
+                  </div>
+                  <div>
+                    <label for="">Position</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      aria-describedby="helpId"
+                      placeholder=""
+                      v-model="input.position"
+                    />
+                  </div>
                 </div>
-                <div>
-                  <label for="">Y</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    aria-describedby="helpId"
-                    v-model="targetinput.y"
-                  />
-                </div>
-                <div>
-                  <label for="">Name</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    v-model="targetinput.targetName"
-                    placeholder="Name"
-                  />
-                </div>
-                <div>
-                  <label for="">Position</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    v-model="targetinput.position"
-                    placeholder="Name"
-                  />
-                </div>
+                <hr />
+                <label for="">X</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  aria-describedby="helpId"
+                  placeholder=""
+                  v-model="mouse.x"
+                />
+                <label for="">Y</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  aria-describedby="helpId"
+                  placeholder=""
+                  v-model="mouse.y"
+                />
 
                 <button
                   class="btn btn-primary mt-2"
-                  @click="PostData('target-point',targetinput)"
+                  @click="nextPoint()"
+                  v-if="nowPointIndex!=1"
+                >
+                  下個點{{nowPointIndex}}
+                </button>
+                <button
+                  class="btn btn-primary mt-2"
+                  @click="nowPointIndex--"
+                  v-if="nowPointIndex>0"
+                >
+                  上個點{{nowPointIndex}}
+                </button>
+                <button
+                  class="btn btn-primary mt-2"
+                  @click="PostData('walk',input)"
+                  v-if="nowPointIndex==1"
                 >
                   送出
                 </button>
                 <hr />
                 <div class="table-responsive">
-                  <table class="table" v-if="targetPoint.length">
+                  <table class="table">
                     <thead>
                       <tr>
                         <th
-                          v-for="(item,index) in targetPoint[0]"
+                          v-for="(item,index) in Walk[0]"
                           v-if="index!='createdAt' && index!='updatedAt' && index!='__v' && index!='_id'"
                         >
                           {{index}}
@@ -230,9 +195,9 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="(item1,index1) in targetPoint">
+                      <tr v-for="(item1,index1) in Walk">
                         <template
-                          v-for="(item,index) in targetPoint[0]"
+                          v-for="(item,index) in Walk[0]"
                           v-if="index!='createdAt' && index!='updatedAt' && index!='__v' && index!='_id'"
                         >
                           <td scope="row" class="my-auto">
@@ -246,7 +211,7 @@
                         <td>
                           <button
                             class="btn btn-info"
-                            @click="PutData('target-point',item1)"
+                            @click="PutData('walk',item1)"
                           >
                             修改
                           </button>
@@ -254,7 +219,7 @@
                         <td>
                           <button
                             class="btn btn-danger"
-                            @click="DelData('target-point',item1._id)"
+                            @click="DelData('walk',item1._id)"
                           >
                             刪除
                           </button>
@@ -264,12 +229,108 @@
                   </table>
                 </div>
               </div>
+              <div v-else class="mx-2">
+                <h1>新增目標位子</h1>
+                <div class="d-flex flex-column justify-content-around">
+                  <div>
+                    <label for="">X</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      aria-describedby="helpId"
+                      v-model="targetinput.x"
+                    />
+                  </div>
+                  <div>
+                    <label for="">Y</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      aria-describedby="helpId"
+                      v-model="targetinput.y"
+                    />
+                  </div>
+                  <div>
+                    <label for="">Name</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="targetinput.targetName"
+                      placeholder="Name"
+                    />
+                  </div>
+                  <div>
+                    <label for="">Position</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="targetinput.position"
+                      placeholder="Name"
+                    />
+                  </div>
+
+                  <button
+                    class="btn btn-primary mt-2"
+                    @click="PostData('target-point',targetinput)"
+                  >
+                    送出
+                  </button>
+                  <hr />
+                  <div class="table-responsive">
+                    <table class="table" v-if="targetPoint.length">
+                      <thead>
+                        <tr>
+                          <th
+                            v-for="(item,index) in targetPoint[0]"
+                            v-if="index!='createdAt' && index!='updatedAt' && index!='__v' && index!='_id'"
+                          >
+                            {{index}}
+                          </th>
+                          <th colspan="2" class="text-center">操作</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="(item1,index1) in targetPoint">
+                          <template
+                            v-for="(item,index) in targetPoint[0]"
+                            v-if="index!='createdAt' && index!='updatedAt' && index!='__v' && index!='_id'"
+                          >
+                            <td scope="row" class="my-auto">
+                              <input
+                                type="text"
+                                v-model="item1[index]"
+                                style="width: 50px"
+                              />
+                            </td>
+                          </template>
+                          <td>
+                            <button
+                              class="btn btn-info"
+                              @click="PutData('target-point',item1)"
+                            >
+                              修改
+                            </button>
+                          </td>
+                          <td>
+                            <button
+                              class="btn btn-danger"
+                              @click="DelData('target-point',item1._id)"
+                            >
+                              刪除
+                            </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="container-fluid" :style="{ display: bigImg?'block':'none'}">
-        <canvas id="canvas2" width="1600px" height="1600px"></canvas>
+        <div class="container-fluid" :style="{ display: bigImg?'block':'none'}">
+          <canvas id="canvas2" width="1600px" height="1600px"></canvas>
+        </div>
       </div>
     </div>
 
@@ -281,6 +342,7 @@
       var app = new Vue({
         el: "#app",
         data: {
+          positionList: [],
           input: {
             x: 0,
             y: 0,
@@ -301,6 +363,9 @@
             position: "7F",
             targetName: "",
           },
+          tmpinput: {},
+          tmptargetinput: {},
+          selectPosition: { name: "" },
           targetPoint: [],
           nowPointIndex: 0,
           tags: [],
@@ -319,18 +384,8 @@
               x: 0,
               y: 0,
             };
-            this.targetinput = {
-              x: 0,
-              y: 0,
-              position: "7F",
-              targetName: "",
-            };
-            this.input = {
-              x: 0,
-              y: 0,
-              x1: 0,
-              y1: 0,
-            };
+            this.targetinput = this.tmptargetinput;
+            this.input = this.tmpinput;
             await this.fecthAll();
           },
           async changeBig() {
@@ -388,6 +443,7 @@
             return { x: x, y: y };
           },
           clickPosition(event) {
+            console.log(event);
             var elem = document.querySelector("canvas");
             var position = this.getPosition(elem);
             this.mouse = {
@@ -401,7 +457,7 @@
             fetchList = ["position-tags", "walk", "target-point"];
             await fetchList.forEach(async (el) => {
               const res = await axios.get(
-                `http://120.105.161.209:3000/${el}?query=%7B%22where%22%3A%7B%7D%2C%22limit%22%3A100%2C%22page%22%3A1%7D`
+                `http://120.105.161.209:3000/${el}?query={"where":{"position":"${this.selectPosition.position}"},"limit":100,"page":1}`
               );
               switch (el) {
                 case "position-tags":
@@ -541,7 +597,7 @@
             ctx.translate(0.5, 0.5);
             ctx.imageSmoothingEnabled = false;
             var image = new Image();
-            image.src = "http://120.105.161.209/Nursemaid/image/7F.png";
+            image.src = this.selectPosition.img;
             image.onload = async function () {
               if (image.complete) {
                 await ctx.drawImage(this, 0, 0, c.scrollWidth, c.scrollHeight);
@@ -558,7 +614,7 @@
             ctx.translate(0.5, 0.5);
             ctx.imageSmoothingEnabled = false;
             var image = new Image();
-            image.src = "http://120.105.161.209/Nursemaid/image/7F.png";
+            image.src = this.selectPosition.img;
             image.onload = async function () {
               if (image.complete) {
                 await ctx.drawImage(this, 0, 0, 1600, 1600);
@@ -569,9 +625,30 @@
               }
             };
           },
+          async fetchPositionList() {
+            const res = await axios.get(
+              `http://120.105.161.209:3000/position?query={"where":{},"limit":100,"page":1}`
+            );
+            res.data.data.forEach((el) => {
+              delete el.createdAt;
+              delete el.updatedAt;
+              delete el.__v;
+              delete el.rotate;
+              delete el.sinCoefficient;
+            });
+            this.positionList = res.data.data;
+          },
+          async click(val) {
+            this.selectPosition = val;
+            this.input.position = val.position;
+            this.tmpinput = this.input;
+            this.targetinput.position = val.position;
+            this.tmptargetinput = this.targetinput;
+            await this.fecthAll();
+          },
         },
         async created() {
-          await this.fecthAll();
+          await this.fetchPositionList();
         },
       });
     </script>
