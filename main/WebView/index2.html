@@ -27,7 +27,7 @@
       <div
         :style="{ display: positionList.length>0 && selectPosition.position!=''?'block':'none'}"
       >
-        <table class="table">
+        <table class="table text-center">
           <thead>
             <tr>
               <th
@@ -594,7 +594,6 @@
           async push() {
             var c = document.getElementById("canvas");
             var ctx = c.getContext("2d");
-            ctx.translate(0.5, 0.5);
             ctx.imageSmoothingEnabled = false;
             var image = new Image();
             image.src = this.selectPosition.img;
