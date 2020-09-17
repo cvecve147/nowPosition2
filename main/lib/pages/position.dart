@@ -26,7 +26,9 @@ int needRssiCount = 5;
 class Position extends StatefulWidget {
   String title = "", position = "", image = "";
   double rotate = 0;
-  Position({Key key, this.title, this.position, this.image, this.rotate})
+  int sin;
+  Position(
+      {Key key, this.title, this.position, this.image, this.rotate, this.sin})
       : super(key: key);
 
   @override
@@ -221,9 +223,6 @@ class _PositionState extends State<Position> {
               x: double.parse(item["x"]),
               y: double.parse(item["y"]),
               rssiDef: int.parse(item["rssi"])));
-          if (tmp == "Walk") {
-            tmp = "7F";
-          }
         }
       }
     }
@@ -294,7 +293,8 @@ class _PositionState extends State<Position> {
               child: Text("Device does not have sensors !"),
             );
           double caculationAngle =
-              (((direction ?? 0) * (pi / 180) * -1) + this.widget.rotate * pi);
+              (((direction ?? 0) * (pi / 180) * this.widget.sin) +
+                  this.widget.rotate * pi);
           return SingleChildScrollView(
             child: Column(
               children: <Widget>[

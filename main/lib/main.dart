@@ -34,7 +34,8 @@ class GetData {
   String position;
   String img;
   double rotate;
-  GetData(this.position, this.img, this.rotate);
+  int sin;
+  GetData(this.position, this.img, this.rotate, this.sin);
 }
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -54,8 +55,8 @@ class _MyHomePageState extends State<MyHomePage> {
     Response response = await dio.get(
         'http://120.105.161.209:3000/position?query={"where":{},"limit":100,"page":1}');
     for (var item in response.data["data"]) {
-      position.add(
-          GetData(item["position"], item["img"], double.parse(item["rotate"])));
+      position.add(GetData(item["position"], item["img"],
+          double.parse(item["rotate"]), int.parse(item["sinCoefficient"])));
     }
     setState(() {});
   }
@@ -77,11 +78,11 @@ class _MyHomePageState extends State<MyHomePage> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => new Position(
-                                title: "Indoor Position ",
-                                position: position[index].position,
-                                image: position[index].img,
-                                rotate: position[index].rotate,
-                              )));
+                              title: "Indoor Position ",
+                              position: position[index].position,
+                              image: position[index].img,
+                              rotate: position[index].rotate,
+                              sin: position[index].sin)));
                 });
           },
         ));
