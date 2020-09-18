@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Title</title>
+    <title>Tags</title>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta
@@ -126,53 +126,53 @@
               rssi: "60",
             },
             Position: [],
-          };
+          }
         },
         methods: {
           async add() {
             const res = await axios.post(
               "http://120.105.161.209:3000/position-tags",
               this.input
-            );
-            this.fecth();
+            )
+            this.fecth()
           },
           async putTag(val) {
-            console.log(val);
+            console.log(val)
             const res = await axios.put(
               "http://120.105.161.209:3000/position-tags/" + val._id,
               val
-            );
-            await this.fecth();
+            )
+            await this.fecth()
           },
           async del(id) {
-            console.log(id);
+            console.log(id)
             const res = await axios.delete(
               "http://120.105.161.209:3000/position-tags/" + id
-            );
-            this.fecth();
+            )
+            this.fecth()
           },
           async fecthPosition() {
             const res = await axios.get(
               "http://120.105.161.209:3000/position?query=%7B%22limit%22%3A100%7D"
-            );
-            this.Position = res.data.data;
+            )
+            this.Position = res.data.data
           },
           async fecth() {
             const res = await axios.get(
               "http://120.105.161.209:3000/position-tags?query=%7B%22limit%22%3A100%7D"
-            );
-            this.TagData = res.data.data;
+            )
+            this.TagData = res.data.data
             this.TagData.forEach((el) => {
-              delete el.createdAt;
-              delete el.__v;
-            });
+              delete el.createdAt
+              delete el.__v
+            })
           },
         },
         async created() {
-          this.fecth();
-          this.fecthPosition();
+          this.fecth()
+          this.fecthPosition()
         },
-      });
+      })
     </script>
   </body>
 </html>
