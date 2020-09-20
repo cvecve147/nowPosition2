@@ -370,6 +370,7 @@
           nowPointIndex: 0,
           tags: [],
           Walk: [],
+          photoLocation: [],
         },
         methods: {
           async PostData(URL, data) {
@@ -454,7 +455,12 @@
             this.targetinput.y = this.mouse.y
           },
           async fecthAll() {
-            fetchList = ["position-tags", "walk", "target-point"]
+            fetchList = [
+              "position-tags",
+              "walk",
+              "target-point",
+              "photo-location",
+            ]
             await fetchList.forEach(async (el) => {
               const res = await axios.get(
                 `http://120.105.161.209:3000/${el}?query={"where":{"position":"${this.selectPosition.position}"},"limit":100,"page":1}`
@@ -468,6 +474,9 @@
                   break
                 case "target-point":
                   this.targetPoint = res.data.data
+                  break
+                case "photo-location":
+                  this.photoLocation = res.data.data
                   await this.push()
                   break
                 default:
@@ -513,12 +522,23 @@
             ) {
               x += x1
               x /= 2
-              console.log(y1, y)
               for (let i = y - 1; i > y1; i -= 4.5) {
                 ctx7.beginPath()
                 ctx7.arc(x * 8.46 * 2, 400 * 2 - i * 7.7 * 2, 2, 0, 6 * Math.PI)
                 ctx7.stroke()
                 ctx7.fill()
+                data = {
+                  x: x,
+                  y: i,
+                  num: this.count,
+                  position: this.input.position,
+                }
+                // const res = await axios.post(
+                //   "http://120.105.161.209:3000/photo-location",
+                //   data
+                // )
+                // this.count++
+                // console.log(res.data)
               }
 
               return
@@ -530,6 +550,14 @@
               ctx7.arc(i * 8.46 * 2, 400 * 2 - y * 7.7 * 2, 2, 0, 6 * Math.PI)
               ctx7.stroke()
               ctx7.fill()
+              data = {
+                x: i,
+                y: y,
+                num: this.count,
+                position: this.input.position,
+              }
+              this.count++
+              console.log(data)
             }
           },
           async draw2() {
@@ -584,7 +612,29 @@
               )
             })
           },
-
+          async drawPhoto() {
+            await this.photoLocation.forEach((el) => {
+              let ctx7 = canvas.getContext("2d")
+              ctx7.fillStyle = "#FF0000"
+              ctx7.beginPath()
+              ctx7.arc(
+                el.x * 8.46 * 2,
+                400 * 2 - el.y * 7.7 * 2,
+                5,
+                0,
+                2 * Math.PI
+              )
+              ctx7.stroke()
+              ctx7.fill()
+              ctx7.fillStyle = "#000000"
+              ctx7.font = "14px Arial"
+              ctx7.fillText(
+                el.num,
+                el.x * 8.46 * 2 - 15,
+                400 * 2 - el.y * 7.7 * 2 + 20
+              )
+            })
+          },
           async push() {
             var c = document.getElementById("canvas")
             var ctx = c.getContext("2d")
@@ -598,6 +648,7 @@
                 await app.draw2()
                 await app.draw()
                 await app.draw3()
+                await app.drawPhoto()
               }
             }
           },

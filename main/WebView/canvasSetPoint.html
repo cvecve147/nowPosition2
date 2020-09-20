@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <style>
+      body {
+        background-color: antiquewhite;
+      }
+      canvas {
+        background: white;
+        box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.2);
+      }
+      .lds-roller {
+        display: inline-block;
+        position: relative;
+        width: 80px;
+        height: 80px;
+      }
+      .lds-roller div {
+        animation: lds-roller 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+        transform-origin: 40px 40px;
+      }
+      .lds-roller div:after {
+        content: " ";
+        display: block;
+        position: absolute;
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #fff;
+        margin: -4px 0 0 -4px;
+      }
+      .lds-roller div:nth-child(1) {
+        animation-delay: -0.036s;
+      }
+      .lds-roller div:nth-child(1):after {
+        top: 63px;
+        left: 63px;
+      }
+      .lds-roller div:nth-child(2) {
+        animation-delay: -0.072s;
+      }
+      .lds-roller div:nth-child(2):after {
+        top: 68px;
+        left: 56px;
+      }
+      .lds-roller div:nth-child(3) {
+        animation-delay: -0.108s;
+      }
+      .lds-roller div:nth-child(3):after {
+        top: 71px;
+        left: 48px;
+      }
+      .lds-roller div:nth-child(4) {
+        animation-delay: -0.144s;
+      }
+      .lds-roller div:nth-child(4):after {
+        top: 72px;
+        left: 40px;
+      }
+      .lds-roller div:nth-child(5) {
+        animation-delay: -0.18s;
+      }
+      .lds-roller div:nth-child(5):after {
+        top: 71px;
+        left: 32px;
+      }
+      .lds-roller div:nth-child(6) {
+        animation-delay: -0.216s;
+      }
+      .lds-roller div:nth-child(6):after {
+        top: 68px;
+        left: 24px;
+      }
+      .lds-roller div:nth-child(7) {
+        animation-delay: -0.252s;
+      }
+      .lds-roller div:nth-child(7):after {
+        top: 63px;
+        left: 17px;
+      }
+      .lds-roller div:nth-child(8) {
+        animation-delay: -0.288s;
+      }
+      .lds-roller div:nth-child(8):after {
+        top: 56px;
+        left: 12px;
+      }
+      @keyframes lds-roller {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div class="container">
+        <div class="row">
+          <div class="col-4">
+            <div class="form-group">
+              <label for="">設定大小Canvas</label>
+              <input
+                type="number"
+                class="form-control my-2"
+                aria-describedby="helpId"
+                v-model="size"
+              />
+              <button class="btn btn-primary" @click="setCanvas(size)">
+                設定
+              </button>
+            </div>
+          </div>
+          <div class="col-8">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th
+                    v-for="(item,index) in location[0]"
+                    v-if="index=='position'"
+                  >
+                    {{index}}
+                  </th>
+                  <th>選擇</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="item in location">
+                  <td
+                    scope="row"
+                    v-for="(i,index) in location[0]"
+                    v-if="index=='position'"
+                  >
+                    {{item[index]}}
+                  </td>
+                  <td>
+                    <button
+                      type="button"
+                      name=""
+                      id=""
+                      class="btn btn-primary"
+                      @click="fetch(item)"
+                    >
+                      進入
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <button type="button" class="btn btn-primary" @click="changePage">
+        切換
+      </button>
+      <div class="d-flex my-2" :style="{ display: !loading?'block':'none'}">
+        <canvas id="canvas" @click="clickPosition" height="800"></canvas>
+        <div class="mx-2">
+          <h1>{{change?'新增目標':'新增區域'}}</h1>
+          <div class="row" v-if="!change">
+            <div
+              class="col-6"
+              v-for="(item,index) in input"
+              v-if="index!='position'"
+            >
+              <div class="form-group">
+                <label for="">{{index}}</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  aria-describedby="helpId"
+                  v-model="input[index]"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="row" v-if="!change">
+            <h3 class="col-12 text-center" v-if="!change">點選位子</h3>
+            <div
+              class="col-6"
+              v-for="(item,index) in mouse"
+              v-if="index!='position'"
+            >
+              <div class="form-group">
+                <label for="">{{index}}</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  aria-describedby="helpId"
+                  v-model="mouse[index]"
+                />
+              </div>
+            </div>
+            <div class="col-12" v-if="!change">
+              <button
+                type="button"
+                name=""
+                id=""
+                class="btn btn-primary"
+                @click="selectPoint(mouse)"
+              >
+                選擇
+              </button>
+              <button
+                type="button"
+                name=""
+                id=""
+                class="btn btn-primary"
+                v-if="submit"
+                @click="postData('walk',input)"
+              >
+                送出
+              </button>
+            </div>
+          </div>
+          <div class="row" v-if="change">
+            <div
+              class="col-6"
+              v-for="(item,index) in target"
+              v-if="index!='position'"
+            >
+              <div class="form-group">
+                <label for="">{{index}}</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  aria-describedby="helpId"
+                  v-model="target[index]"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="row" v-if="change">
+            <button
+              type="button"
+              name=""
+              id=""
+              class="btn btn-primary"
+              @click="postData('target-point',target)"
+            >
+              送出
+            </button>
+          </div>
+          <div class="row">
+            <div
+              class="col-12 table-responsive"
+              style="overflow: scroll; height: 400px"
+            >
+              <table class="table mx-5 w-100">
+                <thead>
+                  <tr>
+                    <th
+                      v-for="(item,index) in fetchList[change].data[0]"
+                      v-if="index!='_id'"
+                    >
+                      {{index}}
+                    </th>
+                    <th colspan="2">操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(item) in fetchList[change].data">
+                    <td
+                      v-for="(i,index) in fetchList[change].data[0]"
+                      v-if="index!='_id'"
+                    >
+                      <input
+                        type="text"
+                        class="form-control"
+                        aria-describedby="helpId"
+                        v-model="item[index]"
+                      />
+                    </td>
+                    <td>
+                      <button
+                        type="button"
+                        name=""
+                        id=""
+                        class="btn btn-info"
+                        @click="putData(fetchList[change].name,item)"
+                      >
+                        修改
+                      </button>
+                    </td>
+                    <td>
+                      <button
+                        type="button"
+                        name=""
+                        id=""
+                        class="btn btn-danger"
+                        @click="delData(fetchList[change].name,item._id)"
+                      >
+                        刪除
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container" :style="{ display: loading?'block':'none'}">
+        <div class="row">
+          <div class="col-12 text-center">
+            <div class="lds-roller">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.12/vue.js"></script>
+    <script>
+      var app = new Vue({
+        el: "#app",
+        data() {
+          return {
+            location: [],
+            canavs: {
+              width: 0,
+              height: 0,
+            },
+            change: 0,
+            mouse: {
+              x: 0,
+              y: 0,
+            },
+            input: {
+              x: 0,
+              y: 0,
+              x1: 0,
+              y1: 0,
+              position: "7F",
+            },
+            tmpinput: {},
+            target: {
+              x: 0,
+              y: 0,
+              targetName: "",
+              position: "7F",
+            },
+            tmptarget: {},
+            size: 800,
+            fetchList: [
+              { name: "walk", data: [] },
+              { name: "target-point", data: [] },
+              { name: "position-tags", data: [] },
+              { name: "photo-location", data: [] },
+            ],
+
+            tmpFetchList: [
+              { name: "walk", data: [] },
+              { name: "target-point", data: [] },
+              { name: "position-tags", data: [] },
+              { name: "photo-location", data: [] },
+            ],
+            loading: false,
+            submit: false,
+            selectPosition: {},
+          }
+        },
+        methods: {
+          //400 x 係數為8.46
+          delunnecessaryColumn(val) {
+            val = val.data.data
+            val.forEach((el) => {
+              delete el.createdAt
+              delete el.updatedAt
+              delete el.__v
+            })
+          },
+          changePage() {
+            this.change = this.change ? 0 : 1
+          },
+          async fetch(position) {
+            this.loading = true
+            this.selectPosition = position
+            this.fetchList = JSON.parse(JSON.stringify(this.tmpFetchList))
+            this.input.position = position.position
+            this.tmpinput = this.input
+            this.target.position = position.position
+            this.tmptarget = this.target
+            await this.fetchList.forEach(async (path, index) => {
+              const res = await axios.get(
+                `http://120.105.161.209:3000/${path.name}?query={"where":{"position":"${position.position}"},"limit":100,"page":1}`
+              )
+              this.delunnecessaryColumn(res)
+              this.fetchList[index].data = await res.data.data
+              if (index == this.fetchList.length - 1) {
+                this.loading = false
+                await this.drawCanvasImage(position.img)
+              }
+            })
+          },
+          async drawSpace() {
+            this.fetchList[0].data.forEach((el) => {
+              this.drawRect(el)
+            })
+          },
+          async drawRect(el) {
+            let ctx = canvas.getContext("2d")
+            let point1 = this.caculationPoint(el.x, el.y)
+            let point2 = this.caculationPoint(el.x1, el.y1)
+            ctx.fillStyle = "rgba(0,255,0,0.5)"
+            ctx.fillRect(
+              point1.x,
+              point1.y,
+              point2.x - point1.x,
+              point2.y - point1.y
+            )
+          },
+          async drawTagAndTargetAndPhoto() {
+            colorList = ["#FFFF00", "#FF0000", "#0000FF"]
+            sizeList = [5, 3, 3]
+            for (let i = 1; i < this.fetchList.length; i++) {
+              this.fetchList[i].data.forEach((el) => {
+                switch (i) {
+                  case 2:
+                    text = el.mac.substring(12, 17)
+                    break
+                  case 1:
+                    text = el.targetName
+                    break
+                  case 3:
+                    text = el.num
+                    break
+                  default:
+                    break
+                }
+                this.drawPoint(
+                  el.x,
+                  el.y,
+                  "#000000",
+                  text,
+                  colorList[i - 1],
+                  sizeList[i - 1]
+                )
+              })
+            }
+          },
+          async postData(path, val) {
+            this.selectPoint(this.mouse)
+            const res = await axios.post(
+              `http://120.105.161.209:3000/${path}`,
+              val
+            )
+            console.log(res)
+
+            this.input = JSON.parse(JSON.stringify(this.tmpinput))
+            this.target = JSON.parse(JSON.stringify(this.tmptarget))
+            await this.fetch(this.selectPosition)
+          },
+          selectPoint(val) {
+            if (this.submit) {
+              this.input.x1 = val.x
+              this.input.y1 = val.y
+            } else {
+              this.input.x = val.x
+              this.input.y = val.y
+            }
+            this.submit = !this.submit
+          },
+          getPosition(element) {
+            var x = 0
+            var y = 0
+            // 搭配上面的示意圖可比較輕鬆理解為何要這麼計算
+            while (element) {
+              x += element.offsetLeft - element.scrollLeft + element.clientLeft
+              y += element.offsetTop - element.scrollLeft + element.clientTop
+              element = element.offsetParent
+            }
+
+            return { x: x, y: y }
+          },
+          clickPosition(event) {
+            var elem = document.querySelector("canvas")
+            var position = this.getPosition(elem)
+            this.mouse = {
+              x: (
+                (event.pageX - position.x) /
+                ((8.46 / 400) * this.canavs.x)
+              ).toFixed(2),
+              y: (
+                (this.canavs.y - event.pageY + position.y) /
+                ((7.7 / 400) * this.canavs.y)
+              ).toFixed(2),
+            }
+            this.target.x = this.mouse.x
+            this.target.y = this.mouse.y
+          },
+          async drawCanvasImage(val) {
+            let c = document.getElementById("canvas")
+            let ctx = c.getContext("2d")
+            ctx.imageSmoothingEnabled = false
+            let image = new Image()
+            image.src = val
+            image.onload = async function () {
+              if (image.complete) {
+                await ctx.drawImage(this, 0, 0, c.scrollWidth, c.scrollHeight)
+                console.log("complete")
+                await app.drawSpace()
+                await app.drawTagAndTargetAndPhoto()
+              }
+            }
+          },
+          async putData(path, val) {
+            const res = await axios.put(
+              "http://120.105.161.209:3000/" + path + "/" + val._id,
+              val
+            )
+            await this.fetch(this.selectPosition)
+          },
+          async delData(path, val) {
+            const res = await axios.delete(
+              "http://120.105.161.209:3000/" + path + "/" + val
+            )
+            await this.fetch(this.selectPosition)
+          },
+          async fetchLocation() {
+            const res = await axios.get(
+              'http://120.105.161.209:3000/position?query={"where":{},"limit":100,"page":1}'
+            )
+            this.delunnecessaryColumn(res)
+            this.location = res.data.data
+            this.setCanvas(800)
+          },
+          setCanvas(size) {
+            let c = document.getElementById("canvas")
+            c.width = size
+            c.height = size
+            this.getCanvas()
+          },
+          getCanvas() {
+            let c = document.getElementById("canvas")
+            this.canavs.x = c.scrollWidth
+            this.canavs.y = c.scrollHeight
+          },
+          caculationPoint(x, y) {
+            Point = {
+              x: (8.46 / 400) * this.canavs.x * x,
+              y: this.canavs.y - (7.68 / 400) * this.canavs.y * y,
+            }
+            return Point
+          },
+          drawPoint(x, y, Textcolor, text, pointColor, pointSize) {
+            let ctx = canvas.getContext("2d")
+            ctx.fillStyle = pointColor
+            ctx.beginPath()
+            let point = this.caculationPoint(x, y)
+            ctx.arc(point.x, point.y, pointSize, 0, 2 * Math.PI)
+            ctx.stroke()
+            ctx.fill()
+            ctx.fillStyle = Textcolor
+            ctx.font = "14px Arial"
+            ctx.fillText(text, point.x - 20, point.y - 10)
+          },
+        },
+        async created() {
+          await this.fetchLocation()
+        },
+      })
+    </script>
+  </body>
+</html>

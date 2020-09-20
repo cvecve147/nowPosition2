@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_image/network.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:nowPosition/class/AcceptRssi.dart';
 import 'package:nowPosition/class/WalkSpace.dart';
@@ -13,6 +14,7 @@ import '../class/Device.dart';
 import '../class/Target.dart';
 import '../components/canvas.dart';
 import '../class/DataStorage.dart';
+import '../class/PhotoLocation.dart';
 
 List<Device> device = new List<Device>();
 List<Device> nowPosition = new List<Device>();
@@ -27,10 +29,16 @@ class Position extends StatefulWidget {
   String title = "", position = "", image = "";
   double rotate = 0;
   int sin;
+  int startPhotoNum;
   Position(
-      {Key key, this.title, this.position, this.image, this.rotate, this.sin})
+      {Key key,
+      this.title,
+      this.position,
+      this.image,
+      this.rotate,
+      this.sin,
+      this.startPhotoNum})
       : super(key: key);
-
   @override
   _PositionState createState() => _PositionState();
 }
@@ -116,10 +124,22 @@ class _PositionState extends State<Position> {
     Y /= 3;
     double dist = calculationPreDist(X, Y);
     if (walkspace(X, Y)) {
+      distPhoto(X, Y);
       nowPosition.add(Device(mac: "", x: X, y: Y));
       return "${X.toStringAsFixed(2)} , ${Y.toStringAsFixed(2)} 與上點距離為${dist.toStringAsFixed(2)}";
     }
     return "${X.toStringAsFixed(2)} , ${Y.toStringAsFixed(2)} 超出範圍";
+  }
+
+  distPhoto(X, Y) {
+    double distMin = 9999;
+    for (var item in this.photoLocation) {
+      double dist = sqrt(pow(item.x - X, 2) + pow(item.y - Y, 2));
+      if (distMin > dist) {
+        distMin = dist;
+        this.nearNum = item.number;
+      }
+    }
   }
 
   bool walkspace(double X, double Y) {
@@ -145,7 +165,7 @@ class _PositionState extends State<Position> {
       }
     }
     for (var getrssi in snapshot) {
-      print("${getrssi.mac}:${getrssi.rssi}");
+      // print("${getrssi.mac}:${getrssi.rssi}");
       for (var item in device) {
         if (item.mac == getrssi.mac.toString()) {
           item.notGetRssi = 0;
@@ -169,6 +189,7 @@ class _PositionState extends State<Position> {
   List<ScanResult> topThreeDate = List();
   List<Target> targetList = List<Target>();
   List<WalkSpace> walkSpaceList = List<WalkSpace>();
+  List<PhotoLocation> photoLocation = List<PhotoLocation>();
   @override
   void initState() {
     super.initState();
@@ -186,8 +207,11 @@ class _PositionState extends State<Position> {
   int thread = -1;
   bool goMap = false;
   bool isloading = true;
+  int photoNumber;
+  String nearNum = "0";
   _getData() async {
     isloading = true;
+
     storage = DataStorage();
     await storage.writeNext(-1, widget.position);
     this.position = "loading";
@@ -198,7 +222,12 @@ class _PositionState extends State<Position> {
     walkSpaceList.clear();
     device.clear();
     String tmp = widget.position;
-    List<String> getDataList = ["position-tags", "target-point", "walk"];
+    List<String> getDataList = [
+      "position-tags",
+      "target-point",
+      "walk",
+      "photo-location"
+    ];
     for (var path in getDataList) {
       Response response = await dio.get(
           'http://120.105.161.209:3000/${path}?query={"where":{"position":"${tmp}"},"limit":100,"page":1}');
@@ -223,6 +252,20 @@ class _PositionState extends State<Position> {
               x: double.parse(item["x"]),
               y: double.parse(item["y"]),
               rssiDef: int.parse(item["rssi"])));
+        } else if (path == "photo-location") {
+          double x;
+          double y;
+          if (item["x"] is String) {
+            x = double.parse(item["x"]);
+          } else {
+            x = item["x"];
+          }
+          if (item["y"] is String) {
+            y = double.parse(item["y"]);
+          } else {
+            y = item["y"];
+          }
+          photoLocation.add(PhotoLocation(number: item["num"], x: x, y: y));
         }
       }
     }
@@ -241,6 +284,7 @@ class _PositionState extends State<Position> {
         }
       }
     }
+    distPhoto(12.0, 13.0);
     this.position = "ok";
     setState(() {
       isloading = false;
@@ -250,6 +294,7 @@ class _PositionState extends State<Position> {
   @override
   Widget build(BuildContext context) {
     bool condition = true;
+    photoNumber = this.widget.startPhotoNum;
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title + widget.position),
@@ -286,12 +331,13 @@ class _PositionState extends State<Position> {
           }
           double direction = snapshot.data;
 
-          // if direction is null, then device does not support this sensor
-          // show error message
           if (direction == null)
             return Center(
               child: Text("Device does not have sensors !"),
             );
+          photoNumber += (direction / 90.0).round();
+          photoNumber %= 4;
+
           double caculationAngle =
               (((direction ?? 0) * (pi / 180) * this.widget.sin) +
                   this.widget.rotate * pi);
@@ -330,7 +376,6 @@ class _PositionState extends State<Position> {
                         onPressed: () {
                           this.setState(() {
                             goMap = !goMap;
-                            print(goMap);
                           });
                         },
                         textColor: Colors.white,
@@ -367,7 +412,11 @@ class _PositionState extends State<Position> {
                         canvasRoute(widget.image, caculationAngle,
                             targetPoint: this._selectTarget,
                             space: this.walkSpaceList,
-                            g: this.g)
+                            g: this.g),
+                      Image(
+                        image: new NetworkImageWithRetry(
+                            'http://120.105.161.209/Nursemaid/image/Walk/${nearNum}_${photoNumber.toString()}.jpg'),
+                      ),
                     ],
                   ),
                 )
