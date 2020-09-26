@@ -402,14 +402,14 @@
             this.selectPosition = position
             this.fetchList = JSON.parse(JSON.stringify(this.tmpFetchList))
             this.input.position = position.position
-            this.tmpinput = this.input
+            this.tmpinput = JSON.parse(JSON.stringify(this.input))
             this.target.position = position.position
-            this.tmptarget = this.target
+            this.tmptarget = JSON.parse(JSON.stringify(this.target))
             await this.fetchList.forEach(async (path, index) => {
               const res = await axios.get(
                 `http://120.105.161.209:3000/${path.name}?query={"where":{"position":"${position.position}"},"limit":100,"page":1}`
               )
-              this.delunnecessaryColumn(res)
+              await this.delunnecessaryColumn(res)
               this.fetchList[index].data = await res.data.data
               if (index == this.fetchList.length - 1) {
                 this.loading = false
