@@ -179,7 +179,7 @@ class _PositionState extends State<Position> {
         }
       }
     }
-    setState(() {});
+    // setState(() {});
   }
 
   double _direction;
@@ -314,116 +314,151 @@ class _PositionState extends State<Position> {
           )
         ],
       ),
-      body: StreamBuilder<double>(
-        stream: FlutterCompass.events,
-        builder: (context, snapshot) {
-          if (snapshot.hasError || targetList == null) {
-            return Text('Error reading heading: ${snapshot.error}');
-          }
+      body: RefreshIndicator(
+        onRefresh: () =>
+            FlutterBlue.instance.startScan(timeout: Duration(seconds: 4)),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              StreamBuilder<double>(
+                stream: FlutterCompass.events,
+                builder: (context, snapshot) {
+                  if (snapshot.hasError || targetList == null) {
+                    return Text('Error reading heading: ${snapshot.error}');
+                  }
 
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          if (isloading) {
-            return Text("loading Data");
-          }
-          double direction = snapshot.data;
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  if (isloading) {
+                    return Text("loading Data");
+                  }
+                  double direction = snapshot.data;
 
-          if (direction == null)
-            return Center(
-              child: Text("Device does not have sensors !"),
-            );
-          photoNumber += (direction / 90.0).round();
-          photoNumber %= 4;
+                  if (direction == null)
+                    return Center(
+                      child: Text("Device does not have sensors !"),
+                    );
+                  photoNumber += (direction / 90.0).round();
+                  photoNumber %= 4;
 
-          double caculationAngle =
-              (((direction ?? 0) * (pi / 180) * this.widget.sin) +
-                  this.widget.rotate * pi);
-          return SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    DropdownButton<Target>(
-                      value: this._selectTarget,
-                      iconSize: 24,
-                      elevation: 16,
-                      style: TextStyle(color: Colors.deepPurple),
-                      underline: Container(
-                        height: 2,
-                        color: Colors.deepPurpleAccent,
-                      ),
-                      onChanged: (Target newValue) {
-                        setState(() {
-                          _selectTarget = newValue;
-                        });
-                      },
-                      items: targetList
-                          .map<DropdownMenuItem<Target>>((Target value) {
-                        return DropdownMenuItem<Target>(
-                          value: value,
-                          child: Text(value.targetName),
-                        );
-                      }).toList(),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.only(left: 10.0, right: 10.0),
-                    ),
-                    RaisedButton(
-                        onPressed: () {
-                          this.setState(() {
-                            goMap = !goMap;
-                          });
-                        },
-                        textColor: Colors.white,
-                        color: Colors.blue,
-                        child:
-                            const Text('導航', style: TextStyle(fontSize: 16))),
-                  ],
-                ),
-                Container(
-                  alignment: Alignment.center,
-                  child: Text("Rotate:" + caculationAngle.toString()),
-                ),
-                Container(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      if (!condition) Text("開始掃描"),
-                      Text("Thread:" + thread.toString()),
-                      Text(
-                        position,
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      for (var item in device)
-                        if (item.rssi.length > 0)
-                          Column(
+                  double caculationAngle =
+                      (((direction ?? 0) * (pi / 180) * this.widget.sin) +
+                          this.widget.rotate * pi);
+                  return SingleChildScrollView(
+                    child: Column(
+                      children: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            DropdownButton<Target>(
+                              value: this._selectTarget,
+                              iconSize: 24,
+                              elevation: 16,
+                              style: TextStyle(color: Colors.deepPurple),
+                              underline: Container(
+                                height: 2,
+                                color: Colors.deepPurpleAccent,
+                              ),
+                              onChanged: (Target newValue) {
+                                setState(() {
+                                  _selectTarget = newValue;
+                                });
+                              },
+                              items: targetList.map<DropdownMenuItem<Target>>(
+                                  (Target value) {
+                                return DropdownMenuItem<Target>(
+                                  value: value,
+                                  child: Text(value.targetName),
+                                );
+                              }).toList(),
+                            ),
+                            Container(
+                              margin: const EdgeInsets.only(
+                                  left: 10.0, right: 10.0),
+                            ),
+                            RaisedButton(
+                                onPressed: () {
+                                  this.setState(() {
+                                    goMap = !goMap;
+                                  });
+                                },
+                                textColor: Colors.white,
+                                color: Colors.blue,
+                                child: const Text('導航',
+                                    style: TextStyle(fontSize: 16))),
+                          ],
+                        ),
+                        Container(
+                          alignment: Alignment.center,
+                          child: Text("Rotate:" + caculationAngle.toString()),
+                        ),
+                        Container(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
-                              Text(item.mac),
-                              Text(item.rssi.join("、"))
+                              if (!condition) Text("開始掃描"),
+                              Text("Thread:" + thread.toString()),
+                              Text(
+                                position,
+                                style: TextStyle(fontSize: 18),
+                              ),
+                              for (var item in device)
+                                if (item.rssi.length > 0)
+                                  Column(
+                                    children: <Widget>[
+                                      Text(item.mac),
+                                      Text(item.rssi.join("、"))
+                                    ],
+                                  ),
+                              for (var item in topThreeDate)
+                                Text(item.rssi.toString()),
+                              if (!goMap)
+                                canvasRoute(widget.image, caculationAngle),
+                              if (goMap)
+                                canvasRoute(widget.image, caculationAngle,
+                                    targetPoint: this._selectTarget,
+                                    space: this.walkSpaceList,
+                                    g: this.g),
+                              Image(
+                                image: new NetworkImageWithRetry(
+                                    'http://120.105.161.209/Nursemaid/image/Walk/${nearNum}_${photoNumber.toString()}.jpg'),
+                              ),
                             ],
                           ),
-                      for (var item in topThreeDate) Text(item.rssi.toString()),
-                      if (!goMap) canvasRoute(widget.image, caculationAngle),
-                      if (goMap)
-                        canvasRoute(widget.image, caculationAngle,
-                            targetPoint: this._selectTarget,
-                            space: this.walkSpaceList,
-                            g: this.g),
-                      Image(
-                        image: new NetworkImageWithRetry(
-                            'http://120.105.161.209/Nursemaid/image/Walk/${nearNum}_${photoNumber.toString()}.jpg'),
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
-          );
-        },
+                        )
+                      ],
+                    ),
+                  );
+                },
+              ),
+              StreamBuilder<List<ScanResult>>(
+                  stream: FlutterBlue.instance.scanResults,
+                  initialData: [],
+                  builder: (c, snapshot) {
+                    List<AcceptRssi> ac = List<AcceptRssi>();
+
+                    for (var item in snapshot.data.toSet()) {
+                      ac.add(AcceptRssi(item.device.id.toString(), item.rssi));
+                    }
+                    print(ac.toList());
+                    if (ac != null) {
+                      putRssi(ac);
+                    }
+                    List point = calculationDist();
+                    if (point.length >= 3) {
+                      position = calculationPosition(point);
+                    } else {
+                      position = "此次收集數量不足";
+                    }
+                    position += "\n";
+                    return Column();
+                  }),
+            ],
+          ),
+        ),
       ),
       floatingActionButton: StreamBuilder<bool>(
         stream: FlutterBlue.instance.isScanning,
@@ -445,47 +480,12 @@ class _PositionState extends State<Position> {
             return FloatingActionButton(
                 child: Icon(Icons.search),
                 onPressed: () async {
-                  FlutterBlue.instance
-                      .startScan(timeout: Duration(seconds: 999));
-                  await storage.writeNext(0, widget.position);
-                  String laTime = "";
-                  setState(() {
-                    condition = false;
-                  });
+                  condition = false;
                   while (true) {
-                    if (condition) {
-                      break;
-                    }
-
-                    List<String> data = await storage.readData();
-                    if (data.length <= 1 || data[0] == "") continue;
-                    setState(() {
-                      thread = int.parse(data[0]);
-                    });
-                    if (data.length >= 3 && data[2].length < 2) {
-                      position = "切換App";
-                      continue;
-                    }
-                    if (data.length >= 4) {
-                      if (laTime != data[2]) {
-                        List<dynamic> decode = jsonDecode(data[3]);
-                        laTime = data[2];
-                        List<AcceptRssi> de = List<AcceptRssi>();
-                        for (var item in decode) {
-                          de.add(AcceptRssi.fromJson(item));
-                        }
-                        if (de.length > 0) {
-                          putRssi(de);
-                        }
-                        List point = calculationDist();
-                        if (point.length >= 3) {
-                          position = calculationPosition(point);
-                        } else {
-                          position = "此次收集數量不足";
-                        }
-                        position += "\n";
-                      }
-                    }
+                    if (condition) break;
+                    await FlutterBlue.instance.startScan(
+                        allowDuplicates: true, timeout: Duration(seconds: 6));
+                    await FlutterBlue.instance.stopScan();
                   }
                 });
           }

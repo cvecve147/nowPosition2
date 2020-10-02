@@ -10,4 +10,9 @@ class AcceptRssi {
         'mac': mac,
         'rssi': rssi,
       };
+  @override
+  String toString() {
+    // TODO: implement toString
+    return "mac:${mac}, rssi:${rssi}";
+  }
 }
