@@ -456,6 +456,7 @@ class _PositionState extends State<Position> {
                     if (condition) {
                       break;
                     }
+
                     List<String> data = await storage.readData();
                     if (data.length <= 1 || data[0] == "") continue;
                     setState(() {
