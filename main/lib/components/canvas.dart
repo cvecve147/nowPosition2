@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:ui' as ui;
 import 'dart:collection';
 
+import 'package:nowPosition/class/Device.dart';
 import 'package:tuple/tuple.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -129,12 +130,12 @@ class MyPainter extends CustomPainter {
     Point start;
     if (n > 0) {
       drawPoint(canvas, size, nowPosition[n - 1].x, nowPosition[n - 1].y, "",
-          Colors.transparent, Colors.blue[300], 4);
+          Colors.transparent, Colors.blue[300], 7);
       start = Point(x: nowPosition[n - 1].x, y: nowPosition[n - 1].y);
     } else {
-      start = Point(x: 12.0, y: 13);
-      drawPoint(
-          canvas, size, 12, 13, "", Colors.transparent, Colors.blue[300], 4);
+      start = Point(x: 0, y: 13);
+      // drawPoint(
+      //     canvas, size, 12, 13, "", Colors.transparent, Colors.blue[300], 4);
     }
     drawArc(canvas, start, size);
     if (targetPoint != null && space != null) {
@@ -143,12 +144,19 @@ class MyPainter extends CustomPainter {
     }
 
     for (var item in device) {
-      drawPoint(canvas, size, item.x, item.y,
-          item.mac.substring(15, item.mac.length), Colors.black, Colors.red, 3);
+      drawPoint(
+          canvas,
+          size,
+          item.x,
+          item.y,
+          item.mac.substring(15, item.mac.length),
+          Colors.transparent,
+          Colors.yellow[700],
+          3);
     }
     if (targetPoint != null) {
       drawPoint(canvas, size, targetPoint.x, targetPoint.y,
-          targetPoint.targetName, Colors.black, Colors.yellow[700], 4);
+          targetPoint.targetName, Colors.black, Colors.red, 7);
     }
   }
 
@@ -157,15 +165,17 @@ class MyPainter extends CustomPainter {
     int startY = (400 - start.y * yCoefficient).toInt();
     int endX = (end.x * xCoefficient).toInt();
     int endY = (400 - end.y * yCoefficient).toInt();
-
+    if (path != null) {
+      path.clear();
+    }
     path = List.generate(
         400, (i) => List.generate(400, (i) => Tuple3(-1, -1, "")));
     List<List<int>> d =
         List.generate(400, (i) => List.generate(400, (i) => -1));
     d[startX][startY] = 0;
     Queue<PointToInt> q = Queue();
-    List<int> dx = [-1, 0, 1, 0];
-    List<int> dy = [0, 1, 0, -1];
+    List<int> dx = [0, 1, 0, -1];
+    List<int> dy = [1, 0, -1, 0];
     List<String> text = ["上", "左", "下", "右"];
     q.addLast(PointToInt(x: startX, y: startY));
     PointToInt target = PointToInt(x: endX, y: endY);
@@ -194,6 +204,14 @@ class MyPainter extends CustomPainter {
       var t = path[endX][endY];
       endX = t.item1;
       endY = t.item2;
+      if (d[endX][endY] == 2) {
+        print(endX.toString() + " " + endY.toString());
+        lastPoint = Device(
+            mac: "",
+            x: endX / xCoefficient,
+            y: 400 / yCoefficient - endY / yCoefficient,
+            rssiDef: 0);
+      }
       PointToInt end = PointToInt(x: endX, y: endY);
       if (endX != -1 && endY != -1) {
         drawLine(canvas, start, end);
@@ -202,10 +220,11 @@ class MyPainter extends CustomPainter {
   }
 
   drawArc(Canvas canvas, Point start, Size size) {
+    if (start.x == 0) return;
     Rect rect = new Rect.fromCircle(
       center: new Offset(
           start.x * xCoefficient, size.height - start.y * yCoefficient),
-      radius: 18.0,
+      radius: 30.0,
     );
 
     // a fancy rainbow gradient
@@ -227,7 +246,7 @@ class MyPainter extends CustomPainter {
   drawLine(Canvas canvas, PointToInt start, PointToInt end) {
     final paint = Paint()
       ..color = Colors.green
-      ..strokeWidth = 4;
+      ..strokeWidth = 6;
     canvas.drawLine(Offset(start.x.toDouble(), start.y.toDouble()),
         Offset(end.x.toDouble(), end.y.toDouble()), paint);
   }

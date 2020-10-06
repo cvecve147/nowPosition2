@@ -1,12 +1,14 @@
 import 'dart:math';
+import 'dart:async';
 import 'dart:convert';
-
+import 'dart:collection';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image/network.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:nowPosition/class/AcceptRssi.dart';
 import 'package:nowPosition/class/WalkSpace.dart';
+import 'package:nowPosition/class/PointToInt.dart';
 import 'package:flutter_compass/flutter_compass.dart';
 
 import '../searchTag.dart';
@@ -24,6 +26,7 @@ double yCoefficient = 7.7;
 // 取消多輸入的情形
 // 若取修多輸入 需修改定位過濾功能
 int needRssiCount = 5;
+Device lastPoint;
 
 class Position extends StatefulWidget {
   String title = "", position = "", image = "";
@@ -49,6 +52,14 @@ class _PositionState extends State<Position> {
     double prePointX = nowPosition[nowPosition.length - 1].x;
     double prePointY = nowPosition[nowPosition.length - 1].y;
     double dist = sqrt(pow(prePointX - x, 2) + pow(prePointY - y, 2));
+    return dist;
+  }
+
+  distTarget() {
+    double prePointX = nowPosition[nowPosition.length - 1].x;
+    double prePointY = nowPosition[nowPosition.length - 1].y;
+    double dist = sqrt(pow(_selectTarget.x - prePointX, 2) +
+        pow(_selectTarget.y - prePointY, 2));
     return dist;
   }
 
@@ -212,8 +223,8 @@ class _PositionState extends State<Position> {
   _getData() async {
     isloading = true;
 
-    storage = DataStorage();
-    await storage.writeNext(-1, widget.position);
+    // storage = DataStorage();
+    // await storage.writeNext(-1, widget.position);
     this.position = "loading";
     var dio = Dio();
     device.clear();
@@ -284,16 +295,37 @@ class _PositionState extends State<Position> {
         }
       }
     }
-    distPhoto(12.0, 13.0);
+    // distPhoto(12.0, 13.0);
     this.position = "ok";
     setState(() {
       isloading = false;
     });
   }
 
+  void showMyDialogWithStateBuilder(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return new AlertDialog(
+            title: new Text("提示"),
+            content: new Text("已到達實驗室，目的地在位子的右手邊"),
+            actions: <Widget>[
+              new FlatButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: new Text("確定"),
+              ),
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     bool condition = true;
+    bool showDio = false;
+
     photoNumber = this.widget.startPhotoNum;
     return Scaffold(
       appBar: AppBar(
@@ -381,40 +413,53 @@ class _PositionState extends State<Position> {
                             ),
                             RaisedButton(
                                 onPressed: () {
-                                  this.setState(() {
+                                  this.setState(() async {
                                     goMap = !goMap;
+                                    await Future.delayed(Duration(seconds: 3));
+                                    Timer.periodic(Duration(milliseconds: 100),
+                                        (timer) {
+                                      nowPosition.add(lastPoint);
+                                      distPhoto(lastPoint.x, lastPoint.y);
+                                      if (distTarget() <= 2 && !showDio) {
+                                        showMyDialogWithStateBuilder(context);
+                                        showDio = true;
+                                      }
+                                    });
                                   });
                                 },
                                 textColor: Colors.white,
-                                color: Colors.blue,
-                                child: const Text('導航',
+                                color: goMap ? Colors.red : Colors.blue,
+                                child: Text('${goMap ? "停止導航" : "導航"}',
                                     style: TextStyle(fontSize: 16))),
                           ],
                         ),
                         Container(
                           alignment: Alignment.center,
-                          child: Text("Rotate:" + caculationAngle.toString()),
+                          child: Text(
+                            "Rotate:" + caculationAngle.toString(),
+                            style: TextStyle(color: Colors.transparent),
+                          ),
                         ),
                         Container(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
-                              if (!condition) Text("開始掃描"),
-                              Text("Thread:" + thread.toString()),
-                              Text(
-                                position,
-                                style: TextStyle(fontSize: 18),
-                              ),
-                              for (var item in device)
-                                if (item.rssi.length > 0)
-                                  Column(
-                                    children: <Widget>[
-                                      Text(item.mac),
-                                      Text(item.rssi.join("、"))
-                                    ],
-                                  ),
-                              for (var item in topThreeDate)
-                                Text(item.rssi.toString()),
+                              // if (!condition) Text("開始掃描"),
+                              // Text("Thread:" + thread.toString()),
+                              // Text(
+                              //   position,
+                              //   style: TextStyle(fontSize: 18),
+                              // ),
+                              // for (var item in device)
+                              //   if (item.rssi.length > 0)
+                              //     Column(
+                              //       children: <Widget>[
+                              //         Text(item.mac),
+                              //         Text(item.rssi.join("、"))
+                              //       ],
+                              //     ),
+                              // for (var item in topThreeDate)
+                              //   Text(item.rssi.toString()),
                               if (!goMap)
                                 canvasRoute(widget.image, caculationAngle),
                               if (goMap)
@@ -471,7 +516,7 @@ class _PositionState extends State<Position> {
                 setState(() async {
                   condition = true;
                   await FlutterBlue.instance.stopScan();
-                  await storage.writeNext(-3, widget.position);
+                  // await storage.writeNext(-3, widget.position);
                 });
               },
               backgroundColor: Colors.red,
@@ -481,12 +526,16 @@ class _PositionState extends State<Position> {
                 child: Icon(Icons.search),
                 onPressed: () async {
                   condition = false;
-                  while (true) {
-                    if (condition) break;
-                    await FlutterBlue.instance.startScan(
-                        allowDuplicates: true, timeout: Duration(seconds: 6));
-                    await FlutterBlue.instance.stopScan();
-                  }
+                  FlutterBlue.instance.startScan(
+                      allowDuplicates: true, timeout: Duration(seconds: 99999));
+                  await Future.delayed(Duration(milliseconds: 1500));
+                  nowPosition.add(Device(mac: "", x: 36.5, y: 50.65));
+                  distPhoto(36.5, 50.65);
+                  //   while (true) {
+                  //     if (condition) break;
+                  //
+                  //     await FlutterBlue.instance.stopScan();
+                  //   }
                 });
           }
         },
