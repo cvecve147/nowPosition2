@@ -215,7 +215,7 @@
                 name=""
                 id=""
                 class="btn btn-primary"
-                @click="selectPoint(mouse)"
+                @click="selectPoint2(mouse)"
               >
                 選擇
               </button>
@@ -347,6 +347,12 @@
               x: 0,
               y: 0,
             },
+            fetchList2: [
+              {
+                x: 32.74,
+                y: 31.62,
+              },
+            ],
             input: {
               x: 0,
               y: 0,
@@ -393,6 +399,10 @@
           },
           changePage() {
             this.change = this.change ? 0 : 1
+          },
+          selectPoint2(val) {
+            this.fetchList2.push(val)
+            this.drawOther()
           },
           async fetch(position) {
             this.loading = true
@@ -527,23 +537,9 @@
             }
           },
           async drawOther() {
-            fetchList = [
-              {
-                x: 32.74,
-                y: 31.62,
-              },
-              {
-                x: 32.24,
-                y: 31.32,
-              },
-              {
-                x: 16.31,
-                y: 13.51,
-              },
-            ]
             colorList = ["#FF0000"]
             sizeList = [5]
-            fetchList.forEach((el) => {
+            this.fetchList2.forEach((el) => {
               this.drawPoint(
                 el.x,
                 el.y,
