@@ -53,6 +53,7 @@ class _PositionState extends State<Position> {
   }
 
   calculationDist() {
+    // push
     int count = 0;
     List<Device> point = List<Device>();
     for (var item in device) {
