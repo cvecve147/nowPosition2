@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import './pages/position.dart';
-import "./class/DataStorage.dart";
 
 void main() {
   runApp(MyApp());
@@ -41,7 +40,6 @@ class GetData {
 
 class _MyHomePageState extends State<MyHomePage> {
   List<GetData> position = [];
-  DataStorage storage = DataStorage();
   @override
   void initState() {
     super.initState();
@@ -52,7 +50,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   _asyncMethod() async {
     var dio = Dio();
-    storage.writeNext(-1, "");
     Response response = await dio.get(
         'http://120.105.161.209:3000/position?query={"where":{},"limit":100,"page":1}');
     for (var item in response.data["data"]) {

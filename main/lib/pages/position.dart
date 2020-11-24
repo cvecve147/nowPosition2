@@ -13,7 +13,6 @@ import '../searchTag.dart';
 import '../class/Device.dart';
 import '../class/Target.dart';
 import '../components/canvas.dart';
-import '../class/DataStorage.dart';
 import '../class/PhotoLocation.dart';
 
 List<Device> device = new List<Device>();
@@ -184,7 +183,6 @@ class _PositionState extends State<Position> {
 
   double _direction;
   List<List<int>> g;
-  DataStorage storage;
   String position = "";
   List<ScanResult> topThreeDate = List();
   List<Target> targetList = List<Target>();
@@ -212,8 +210,6 @@ class _PositionState extends State<Position> {
   _getData() async {
     isloading = true;
 
-    storage = DataStorage();
-    await storage.writeNext(-1, widget.position);
     this.position = "loading";
     var dio = Dio();
     device.clear();
@@ -471,7 +467,6 @@ class _PositionState extends State<Position> {
                 setState(() async {
                   condition = true;
                   await FlutterBlue.instance.stopScan();
-                  await storage.writeNext(-3, widget.position);
                 });
               },
               backgroundColor: Colors.red,
