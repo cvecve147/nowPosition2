@@ -76,15 +76,13 @@ class _PositionState extends State<Position> {
         point.add(item);
       }
     }
-    if (point.length > 0) {
-      point.sort((a, b) {
-        return a.distance > b.distance ? -1 : 1;
-      });
-    }
     return point;
   }
 
   calculationPosition(point) {
+    point.sort((a, b) {
+      return a.distance > b.distance ? 1 : -1;
+    });
     double X, Y;
     X = Y = 0;
     for (int i = 0; i < 2; i++) {
@@ -119,6 +117,9 @@ class _PositionState extends State<Position> {
         }
       }
     }
+    for (var item in device) {
+      item.DeviceClearRssi();
+    }
     X /= 3;
     Y /= 3;
     double dist = calculationPreDist(X, Y);
@@ -127,6 +128,7 @@ class _PositionState extends State<Position> {
       nowPosition.add(Device(mac: "", x: X, y: Y));
       return "${X.toStringAsFixed(2)} , ${Y.toStringAsFixed(2)} 與上點距離為${dist.toStringAsFixed(2)}";
     }
+
     return "${X.toStringAsFixed(2)} , ${Y.toStringAsFixed(2)} 超出範圍";
   }
 
@@ -154,7 +156,7 @@ class _PositionState extends State<Position> {
     return true;
   }
 
-  putRssi(List<AcceptRssi> snapshot) {
+  putRssi(List<AcceptRssi> snapshot) async {
     if (snapshot.length == 0) return;
     for (var item in device) {
       //如果超過10次沒收到 清空
@@ -465,7 +467,6 @@ class _PositionState extends State<Position> {
         stream: FlutterBlue.instance.isScanning,
         initialData: false,
         builder: (c, snapshot) {
-          print("重複");
           if (snapshot.data) {
             return FloatingActionButton(
               child: Icon(Icons.stop),

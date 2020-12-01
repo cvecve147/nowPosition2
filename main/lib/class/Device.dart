@@ -19,9 +19,12 @@ class Device {
     return 'Device{mac: $mac, x: $x, y: $y,Def: $rssiDef}';
   }
 
-  DeviceClearRssi() {
+  // ignore: non_constant_identifier_names
+  DeviceClearRssi() async {
     this.distance = 0;
     this.notGetRssi = 0;
-    this.rssi.clear();
+    if (this.rssi.length > 0) {
+      this.rssi.clear();
+    }
   }
 }
