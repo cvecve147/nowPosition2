@@ -71,7 +71,7 @@ class _PositionState extends State<Position> {
         int sum = item.rssi.reduce((a, b) => a + b);
         sum = sum.abs();
         double rssi = (sum + maxrssi + minrssi) / (item.rssi.length - 2);
-        double power = (rssi - item.rssiDef) / (10.0 * 3.3);
+        double power = (rssi.abs() - item.rssiDef) / (10.0 * 3.3);
         item.distance = pow(10, power);
         point.add(item);
       }
@@ -83,6 +83,13 @@ class _PositionState extends State<Position> {
     point.sort((a, b) {
       return a.distance > b.distance ? 1 : -1;
     });
+
+    print("point:" + point[0].rssi.toString());
+    print("point:" + point[0].mac + " dis:" + point[0].distance.toString());
+    print("point:" + point[1].rssi.toString());
+    print("point:" + point[1].mac + " dis:" + point[1].distance.toString());
+    print("point:" + point[2].rssi.toString());
+    print("point:" + point[2].mac + " dis:" + point[2].distance.toString());
     double X, Y;
     X = Y = 0;
     for (int i = 0; i < 2; i++) {
@@ -170,6 +177,9 @@ class _PositionState extends State<Position> {
       for (var item in device) {
         if (item.mac == getrssi.mac.toString()) {
           item.notGetRssi = 0;
+          if (item.rssi.isEmpty == false && item.rssi.last == getrssi.rssi) {
+            continue;
+          }
           if (item.rssi.length < needRssiCount) {
             item.rssi.add(getrssi.rssi);
           } else {
@@ -330,7 +340,7 @@ class _PositionState extends State<Position> {
                     for (var item in snapshot.data.toSet()) {
                       ac.add(AcceptRssi(item.device.id.toString(), item.rssi));
                     }
-                    print(ac.toList());
+                    // print(ac.toList());
                     if (ac != null) {
                       putRssi(ac);
                     }
