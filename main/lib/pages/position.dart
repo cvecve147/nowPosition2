@@ -17,6 +17,7 @@ import '../class/PhotoLocation.dart';
 
 List<Device> device = new List<Device>();
 List<Device> nowPosition = new List<Device>();
+List<Device> nowPositionAvg = new List<Device>();
 double xCoefficient = 8.46;
 double yCoefficient = 7.7;
 // 初始化所有Tag 值
@@ -51,7 +52,7 @@ class _PositionState extends State<Position> {
     return dist;
   }
 
-  calculationDist() {
+  calculationDist(bool ismin) {
     int count = 0;
     List<Device> point = List<Device>();
     for (var item in device) {
@@ -71,7 +72,11 @@ class _PositionState extends State<Position> {
         int sum = item.rssi.reduce((a, b) => a + b);
         sum = sum.abs();
         double rssi = (sum + maxrssi + minrssi) / (item.rssi.length - 2);
-        double power = (rssi.abs() - item.rssiDef) / (10.0 * 3.3);
+        if (ismin) {
+          double power = (minrssi - item.rssiDef) / (10.0 * 3.3);
+        } else {
+          double power = (rssi.abs() - item.rssiDef) / (10.0 * 3.3);
+        }
         item.distance = pow(10, power);
         point.add(item);
       }
@@ -79,7 +84,7 @@ class _PositionState extends State<Position> {
     return point;
   }
 
-  calculationPosition(point) {
+  calculationPosition(point, nowPosition) {
     point.sort((a, b) {
       return a.distance > b.distance ? 1 : -1;
     });
@@ -344,9 +349,11 @@ class _PositionState extends State<Position> {
                     if (ac != null) {
                       putRssi(ac);
                     }
-                    List point = calculationDist();
+                    List point = calculationDist(false);
+                    List point2 = calculationDist(true);
                     if (point.length >= 3) {
-                      position = calculationPosition(point);
+                      position = calculationPosition(point, nowPosition);
+                      position = calculationPosition(point2, nowPositionAvg);
                     } else {
                       position = "此次收集數量不足";
                     }

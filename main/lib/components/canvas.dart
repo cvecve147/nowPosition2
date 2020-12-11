@@ -130,6 +130,8 @@ class MyPainter extends CustomPainter {
     if (n > 0) {
       drawPoint(canvas, size, nowPosition[n - 1].x, nowPosition[n - 1].y, "",
           Colors.transparent, Colors.blue[300], 4);
+      drawPoint(canvas, size, nowPositionAvg[n - 1].x, nowPositionAvg[n - 1].y,
+          "Avg", Colors.transparent, Colors.blue[300], 4);
       start = Point(x: nowPosition[n - 1].x, y: nowPosition[n - 1].y);
     } else {
       start = Point(x: 12.0, y: 13);
