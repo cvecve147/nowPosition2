@@ -17,13 +17,13 @@ import '../class/PhotoLocation.dart';
 
 List<Device> device = new List<Device>();
 List<Device> nowPosition = new List<Device>();
-List<Device> nowPositionAvg = new List<Device>();
+List<Device> nowPositionMin = new List<Device>();
 double xCoefficient = 8.46;
 double yCoefficient = 7.7;
 // 初始化所有Tag 值
 // 取消多輸入的情形
 // 若取修多輸入 需修改定位過濾功能
-int needRssiCount = 20;
+int needRssiCount = 10;
 
 class Position extends StatefulWidget {
   String title = "", position = "", image = "";
@@ -52,14 +52,15 @@ class _PositionState extends State<Position> {
     return dist;
   }
 
-  calculationDist(bool ismin) {
+  List<Device> calculationDist(bool ismin) {
     int count = 0;
-    List<Device> point = List<Device>();
+    List<Device> point = new List<Device>();
     for (var item in device) {
       if (item.rssi.length >= needRssiCount && item.notGetRssi == 0) {
         count += 1;
       }
     }
+    point.clear();
     for (var item in device) {
       if (count >= 3 &&
           item.rssi.length >= needRssiCount &&
@@ -72,19 +73,26 @@ class _PositionState extends State<Position> {
         int sum = item.rssi.reduce((a, b) => a + b);
         sum = sum.abs();
         double rssi = (sum + maxrssi + minrssi) / (item.rssi.length - 2);
+        double power;
         if (ismin) {
-          double power = (minrssi - item.rssiDef) / (10.0 * 3.3);
+          power = (maxrssi.abs() - item.rssiDef) / (10.0 * 3.3);
         } else {
-          double power = (rssi.abs() - item.rssiDef) / (10.0 * 3.3);
+          power = (rssi.abs() - item.rssiDef) / (10.0 * 3.3);
         }
         item.distance = pow(10, power);
-        point.add(item);
+        print("dist:" + item.distance.toString());
+        point.add(Device(
+            mac: item.mac,
+            x: item.x,
+            y: item.y,
+            rssiDef: item.rssiDef,
+            distance: item.distance));
       }
     }
     return point;
   }
 
-  calculationPosition(point, nowPosition) {
+  calculationPosition(point, arr) {
     point.sort((a, b) {
       return a.distance > b.distance ? 1 : -1;
     });
@@ -129,15 +137,14 @@ class _PositionState extends State<Position> {
         }
       }
     }
-    for (var item in device) {
-      item.DeviceClearRssi();
-    }
+
     X /= 3;
     Y /= 3;
     double dist = calculationPreDist(X, Y);
+    print("x: " + X.toString() + " y: " + Y.toString());
     if (walkspace(X, Y)) {
       distPhoto(X, Y);
-      nowPosition.add(Device(mac: "", x: X, y: Y));
+      arr.add(Device(mac: "", x: X, y: Y));
       return "${X.toStringAsFixed(2)} , ${Y.toStringAsFixed(2)} 與上點距離為${dist.toStringAsFixed(2)}";
     }
 
@@ -349,11 +356,15 @@ class _PositionState extends State<Position> {
                     if (ac != null) {
                       putRssi(ac);
                     }
-                    List point = calculationDist(false);
-                    List point2 = calculationDist(true);
-                    if (point.length >= 3) {
-                      position = calculationPosition(point, nowPosition);
-                      position = calculationPosition(point2, nowPositionAvg);
+                    List<Device> point1 = calculationDist(false);
+                    print("min");
+                    List<Device> point2 = calculationDist(true);
+                    if (point1.length >= 3) {
+                      position = calculationPosition(point1, nowPosition);
+                      calculationPosition(point2, nowPositionMin);
+                      for (var item in device) {
+                        item.DeviceClearRssi();
+                      }
                     } else {
                       position = "此次收集數量不足";
                     }

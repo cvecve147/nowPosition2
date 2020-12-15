@@ -8,9 +8,8 @@ class Device {
   int notGetRssi; //抓不到超過5次以上 清空
   Queue<int> rssi; //抓取五個
   double distance;
-  Device({this.mac, this.x, this.y, this.rssiDef}) {
+  Device({this.mac, this.x, this.y, this.rssiDef, this.distance = 0}) {
     this.notGetRssi = 0;
-    this.distance = 0;
     this.rssi = Queue<int>();
   }
 

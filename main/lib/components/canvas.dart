@@ -19,7 +19,7 @@ double xCoefficient = 8.46;
 double yCoefficient = 7.7;
 
 class canvasRoute extends StatefulWidget {
-  double rotate;
+  double rotate = 0;
   String imageUrl = "";
   Target targetPoint = Target();
   List<WalkSpace> space = List<WalkSpace>();
@@ -108,7 +108,7 @@ class _canvasRouteState extends State<canvasRoute> {
 class MyPainter extends CustomPainter {
   ui.Image image;
   Paint painter;
-  double rotate;
+  double rotate = 0;
   Target targetPoint = Target();
   List<WalkSpace> space = List<WalkSpace>();
   List<List<Tuple3<int, int, String>>> path;
@@ -126,12 +126,15 @@ class MyPainter extends CustomPainter {
         painter);
 
     int n = nowPosition.length;
+    if (nowPositionMin.length > 0) {
+      drawPoint(canvas, size, nowPositionMin[n - 1].x, nowPositionMin[n - 1].y,
+          "min", Colors.yellow, Colors.yellow[700], 6);
+    }
     Point start;
     if (n > 0) {
       drawPoint(canvas, size, nowPosition[n - 1].x, nowPosition[n - 1].y, "",
           Colors.transparent, Colors.blue[300], 4);
-      drawPoint(canvas, size, nowPositionAvg[n - 1].x, nowPositionAvg[n - 1].y,
-          "Avg", Colors.blue, Colors.blue[100], 4);
+
       start = Point(x: nowPosition[n - 1].x, y: nowPosition[n - 1].y);
     } else {
       start = Point(x: 12.0, y: 13);
@@ -222,7 +225,8 @@ class MyPainter extends CustomPainter {
       ],
     );
     final Paint paint = new Paint()..shader = gradient.createShader(rect);
-    double caAlg = this.rotate - pi / 4;
+    double caAlg = 0;
+    caAlg = this.rotate - pi / 4;
     canvas.drawArc(rect, caAlg, pi / 2, true, paint);
   }
 
