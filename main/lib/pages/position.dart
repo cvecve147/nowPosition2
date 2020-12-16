@@ -97,11 +97,8 @@ class _PositionState extends State<Position> {
       return a.distance > b.distance ? 1 : -1;
     });
 
-    print("point:" + point[0].rssi.toString());
     print("point:" + point[0].mac + " dis:" + point[0].distance.toString());
-    print("point:" + point[1].rssi.toString());
     print("point:" + point[1].mac + " dis:" + point[1].distance.toString());
-    print("point:" + point[2].rssi.toString());
     print("point:" + point[2].mac + " dis:" + point[2].distance.toString());
     double X, Y;
     X = Y = 0;
@@ -357,7 +354,6 @@ class _PositionState extends State<Position> {
                       putRssi(ac);
                     }
                     List<Device> point1 = calculationDist(false);
-                    print("min");
                     List<Device> point2 = calculationDist(true);
                     if (point1.length >= 3) {
                       position = calculationPosition(point1, nowPosition);
