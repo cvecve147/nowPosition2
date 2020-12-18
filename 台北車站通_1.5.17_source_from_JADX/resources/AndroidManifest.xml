@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="65" android:versionName="1.5.17" android:compileSdkVersion="28" android:compileSdkVersionCodename="9" package="com.askey.taipeinavi" platformBuildVersionCode="28" platformBuildVersionName="9">
+    <uses-sdk android:minSdkVersion="23" android:targetSdkVersion="28"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.BLUETOOTH" android:required="false"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:required="false"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-feature android:name="android.hardware.camera"/>
+    <uses-feature android:name="android.hardware.camera.autofocus" android:required="false"/>
+    <uses-feature android:name="android.hardware.camera.flash" android:required="false"/>
+    <uses-feature android:name="android.hardware.bluetooth_le" android:required="false"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <permission android:name="com.askey.taipeinavi.permission.C2D_MESSAGE" android:protectionLevel="signature"/>
+    <uses-permission android:name="com.askey.taipeinavi.permission.C2D_MESSAGE"/>
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="com.sec.android.provider.badge.permission.READ"/>
+    <uses-permission android:name="com.sec.android.provider.badge.permission.WRITE"/>
+    <uses-permission android:name="com.htc.launcher.permission.READ_SETTINGS"/>
+    <uses-permission android:name="com.htc.launcher.permission.UPDATE_SHORTCUT"/>
+    <uses-permission android:name="com.sonyericsson.home.permission.BROADCAST_BADGE"/>
+    <uses-permission android:name="com.sonymobile.home.permission.PROVIDER_INSERT_BADGE"/>
+    <uses-permission android:name="com.anddoes.launcher.permission.UPDATE_COUNT"/>
+    <uses-permission android:name="com.majeur.launcher.permission.UPDATE_BADGE"/>
+    <uses-permission android:name="com.huawei.android.launcher.permission.CHANGE_BADGE"/>
+    <uses-permission android:name="com.huawei.android.launcher.permission.READ_SETTINGS"/>
+    <uses-permission android:name="com.huawei.android.launcher.permission.WRITE_SETTINGS"/>
+    <uses-permission android:name="android.permission.READ_APP_BADGE"/>
+    <uses-permission android:name="com.oppo.launcher.permission.READ_SETTINGS"/>
+    <uses-permission android:name="com.oppo.launcher.permission.WRITE_SETTINGS"/>
+    <uses-permission android:name="me.everything.badger.permission.BADGE_COUNT_READ"/>
+    <uses-permission android:name="me.everything.badger.permission.BADGE_COUNT_WRITE"/>
+    <uses-feature android:glEsVersion="20000" android:required="true"/>
+    <uses-permission android:name="com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE"/>
+    <uses-feature android:name="android.hardware.camera.front" android:required="false"/>
+    <uses-feature android:name="android.hardware.screen.landscape" android:required="false"/>
+    <uses-feature android:name="android.hardware.wifi" android:required="false"/>
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
+    <uses-permission android:name="android.permission.NFC"/>
+    <application android:theme="@style/AppTheme" android:label="@string/app_name" android:icon="@mipmap/ic_launcher" android:name="com.askey.taipeinavi.TaipeiNaviApplication" android:allowBackup="true" android:supportsRtl="true" android:networkSecurityConfig="@xml/network_security_config">
+        <activity android:theme="@style/StartAppTheme" android:name="com.askey.taipeinavi.TaipeiNaviActivity" android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="@string/scheme" android:host="@string/host"/>
+            </intent-filter>
+        </activity>
+        <activity android:theme="@style/AppTheme.ActionBar.Transparent" android:name="com.askey.taipeinavi.home.HomeActivity" android:launchMode="singleInstance" android:screenOrientation="portrait"/>
+        <activity android:theme="@style/StartAppTheme" android:name="com.askey.taipeinavi.tutorial.TutorialActivity" android:screenOrientation="portrait"/>
+        <meta-data android:name="io.fabric.ApiKey" android:value="25938ae6cd117b5d7269ea8030846f678e25f758"/>
+        <service android:name="com.askey.taipeinavi.notification.OSNotificationService" android:permission="android.permission.BIND_JOB_SERVICE" android:exported="false">
+            <intent-filter>
+                <action android:name="com.onesignal.NotificationExtender"/>
+            </intent-filter>
+        </service>
+        <meta-data android:name="com.onesignal.NotificationOpened.DEFAULT" android:value="DISABLE"/>
+        <activity android:theme="@style/AppColorTheme" android:name="com.askey.taipeinavi.parking.STOMapActivity" android:screenOrientation="portrait"/>
+        <activity android:theme="@style/AppColorTheme" android:name="com.sto.stolibrary.customActivities.BuildingSelectActivity" android:screenOrientation="portrait" android:parentActivityName="com.askey.taipeinavi.parking.STOMapActivity"/>
+        <activity android:theme="@style/AppColorTheme" android:name="com.sto.stolibrary.customActivities.BuildingSelectActivity2" android:screenOrientation="portrait" android:parentActivityName="com.askey.taipeinavi.parking.STOMapActivity"/>
+        <activity android:theme="@style/AppColorTheme" android:name="com.sto.stolibrary.customActivities.FunctionSelectionActivity" android:screenOrientation="portrait" android:parentActivityName="com.sto.stolibrary.customActivities.BuildingSelectActivity2"/>
+        <activity android:theme="@style/AppColorTheme" android:name="com.sto.stolibrary.customActivities.SearchingActivity" android:screenOrientation="portrait" android:parentActivityName="com.sto.stolibrary.customActivities.FunctionSelectionActivity"/>
+        <activity android:theme="@style/AppColorTheme" android:name="com.sto.stolibrary.customActivities.SearchResultActivity" android:screenOrientation="portrait" android:parentActivityName="com.sto.stolibrary.customActivities.BuildingSelectActivity"/>
+        <activity android:theme="@style/AppColorTheme" android:name="com.sto.stolibrary.customActivities.DetailActivity" android:screenOrientation="portrait" android:parentActivityName="com.sto.stolibrary.customActivities.SearchResultActivity"/>
+        <activity android:theme="@style/Theme.AppCompat.Translucent" android:name="com.sto.stolibrary.customActivities.HelpPopActivity" android:screenOrientation="portrait"/>
+        <meta-data android:name="com.google.android.geo.API_KEY" android:value="@string/google_API_key"/>
+        <service android:name="com.stomap.stomapbutterflysdk.STOMAPButterflySDK" android:enabled="true" android:exported="false"/>
+        <service android:name="com.whatsmedia.ibeaconshakingproject.shakingDetect.ServiceDetectShaking" android:enabled="true" android:exported="true"/>
+        <activity android:theme="@style/AppTheme.SplashTheme" android:name="com.openlife.checkme.activity.splash.SplashActivity" android:screenOrientation="portrait" android:noHistory="true"/>
+        <activity android:name="com.openlife.checkme.activity.guide.GuideActivity" android:screenOrientation="portrait"/>
+        <activity android:name="com.openlife.checkme.activity.home.MainActivity" android:screenOrientation="portrait"/>
+        <activity android:name="com.openlife.checkme.activity.login.LoginActivity" android:screenOrientation="portrait"/>
+        <activity android:name="com.openlife.checkme.activity.store.StoreActivity" android:screenOrientation="portrait" android:parentActivityName="com.openlife.checkme.activity.home.MainActivity">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".activity.home.MainActivity"/>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="com.askey.taipeinavi.checkme" android:host="@string/host_assignment" android:path="@string/path_corp_list"/>
+                <data android:scheme="com.askey.taipeinavi.checkme" android:host="@string/host_assignment" android:path="@string/path_street_list"/>
+            </intent-filter>
+        </activity>
+        <activity android:name="com.openlife.checkme.activity.mission.list.MissionListActivity" android:screenOrientation="portrait" android:parentActivityName="com.openlife.checkme.activity.store.StoreActivity">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".activity.store.StoreActivity"/>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="com.askey.taipeinavi.checkme" android:host="@string/host_assignment" android:path="@string/path_corp"/>
+            </intent-filter>
+        </activity>
+        <activity android:name="com.openlife.checkme.activity.mission.detail.MissionDetailActivity" android:screenOrientation="portrait" android:parentActivityName="com.openlife.checkme.activity.mission.list.MissionListActivity">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".activity.mission.list.MissionListActivity"/>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="com.askey.taipeinavi.checkme" android:host="@string/host_assignment" android:path="@string/path_detail"/>
+            </intent-filter>
+        </activity>
+        <activity android:name="com.openlife.checkme.activity.gift.list.GiftListActivity" android:screenOrientation="portrait" android:parentActivityName="com.openlife.checkme.activity.home.MainActivity">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".activity.home.MainActivity"/>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="com.askey.taipeinavi.checkme" android:host="@string/host_gift"/>
+            </intent-filter>
+        </activity>
+        <activity android:name="com.openlife.checkme.activity.gift.detail.GiftDetailActivity" android:screenOrientation="portrait" android:parentActivityName="com.openlife.checkme.activity.gift.list.GiftListActivity">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".activity.gift.list.GiftListActivity"/>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="com.askey.taipeinavi.checkme" android:host="@string/host_gift" android:path="@string/path_detail"/>
+            </intent-filter>
+        </activity>
+        <activity android:name="com.openlife.checkme.activity.other.OtherActivity" android:screenOrientation="portrait" android:parentActivityName="com.openlife.checkme.activity.home.MainActivity">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".activity.home.MainActivity"/>
+        </activity>
+        <activity android:name="com.openlife.checkme.activity.account.AccountActivity" android:screenOrientation="portrait" android:windowSoftInputMode="adjustPan" android:noHistory="true" android:parentActivityName="com.openlife.checkme.activity.other.OtherActivity">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".activity.other.OtherActivity"/>
+        </activity>
+        <activity android:name="com.openlife.checkme.activity.exploration.ExplorationActivity" android:screenOrientation="portrait" android:parentActivityName="com.openlife.checkme.activity.home.MainActivity">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".activity.home.MainActivity"/>
+        </activity>
+        <activity android:name="com.openlife.checkme.activity.scanner.ScannerActivity" android:screenOrientation="portrait" android:windowSoftInputMode="adjustPan"/>
+        <activity android:name="com.openlife.checkme.activity.login.smsbinding.SmsBindingActivity" android:screenOrientation="portrait"/>
+        <activity android:name="com.openlife.checkme.activity.login.phonebinding.PhoneBindingActivity" android:screenOrientation="portrait"/>
+        <activity android:name="com.openlife.checkme.activity.activity.ActivityActivity" android:screenOrientation="portrait" android:parentActivityName="com.openlife.checkme.activity.other.OtherActivity">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".activity.other.OtherActivity"/>
+        </activity>
+        <activity android:name="com.openlife.checkme.activity.account.redemption.detail.RedemptionDetailActivity" android:screenOrientation="portrait"/>
+        <activity android:name="com.openlife.checkme.activity.browser.BrowserActivity" android:screenOrientation="portrait" android:parentActivityName="com.openlife.checkme.activity.home.MainActivity">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".activity.home.MainActivity"/>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="com.askey.taipeinavi.checkme" android:host="@string/host_browser"/>
+            </intent-filter>
+        </activity>
+        <activity android:name="com.openlife.checkme.activity.browser.TinyGameActivity" android:screenOrientation="portrait" android:parentActivityName="com.openlife.checkme.activity.home.MainActivity">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".activity.home.MainActivity"/>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="com.askey.taipeinavi.checkme" android:host="@string/host_tinygame"/>
+            </intent-filter>
+        </activity>
+        <activity android:theme="@style/PointAnimationTheme" android:name="com.openlife.checkme.p100ui.PointAnimationActivity" android:screenOrientation="portrait"/>
+        <activity android:theme="@style/com_facebook_activity_theme" android:label="@string/app_name" android:name="com.facebook.FacebookActivity" android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize"/>
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+        <activity android:theme="@style/AppTheme.Transparent" android:name="com.openlife.checkme.CleanLeakActivity" android:screenOrientation="portrait"/>
+        <service android:name="com.openlife.checkme.beaconservice.BeaconService"/>
+        <service android:name="com.openlife.checkme.beaconservice.BeaconJobService" android:permission="android.permission.BIND_JOB_SERVICE"/>
+        <activity android:theme="@style/AppTheme.Transparent" android:name="com.openlife.checkme.sdk.CheckMeLoginActivity" android:noHistory="true"/>
+        <activity android:name="com.openlife.checkme.checkme_special.home.SpMainActivity" android:screenOrientation="portrait"/>
+        <activity android:theme="@style/AppTheme.SplashTheme" android:name="com.openlife.checkme.checkme_special.splash.SpSplashActivity" android:screenOrientation="portrait" android:noHistory="true"/>
+        <activity android:name="com.openlife.checkme.checkme_special.mission.SpMissionListActivity" android:screenOrientation="portrait"/>
+        <activity android:name="com.openlife.checkme.checkme_special.other.SpOtherActivity" android:screenOrientation="portrait" android:parentActivityName="com.openlife.checkme.checkme_special.home.SpMainActivity">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".checkme_special.home.SpMainActivity"/>
+        </activity>
+        <activity android:name="com.openlife.checkme.checkme_special.feedback.SpBackActivity" android:screenOrientation="portrait" android:windowSoftInputMode="adjustPan"/>
+        <activity android:name="com.openlife.checkme.TestMainActivity"/>
+        <receiver android:name="com.openlife.checkme.beaconservice.BeaconReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.USER_PRESENT"/>
+            </intent-filter>
+        </receiver>
+        <meta-data android:name="onesignal_app_id" android:value="4130c2e1-b27a-48ed-a7bc-421ef3fa0f92"/>
+        <meta-data android:name="onesignal_google_project_number" android:value="str:REMOTE"/>
+        <receiver android:name="com.onesignal.GcmBroadcastReceiver" android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter android:priority="999">
+                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
+                <category android:name="com.askey.taipeinavi"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.onesignal.NotificationOpenedReceiver"/>
+        <service android:name="com.onesignal.GcmIntentService"/>
+        <service android:name="com.onesignal.GcmIntentJobService" android:permission="android.permission.BIND_JOB_SERVICE"/>
+        <service android:name="com.onesignal.RestoreJobService" android:permission="android.permission.BIND_JOB_SERVICE"/>
+        <service android:name="com.onesignal.RestoreKickoffJobService" android:permission="android.permission.BIND_JOB_SERVICE"/>
+        <service android:name="com.onesignal.SyncService" android:stopWithTask="true"/>
+        <service android:name="com.onesignal.SyncJobService" android:permission="android.permission.BIND_JOB_SERVICE"/>
+        <activity android:theme="@style/Theme.Translucent.NoTitleBar" android:name="com.onesignal.PermissionsActivity"/>
+        <service android:name="com.onesignal.NotificationRestoreService"/>
+        <receiver android:name="com.onesignal.BootUpReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.QUICKBOOT_POWERON"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.onesignal.UpgradeReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.google.android.gms.measurement.AppMeasurementReceiver" android:enabled="true" android:exported="false"/>
+        <receiver android:name="com.google.android.gms.measurement.AppMeasurementInstallReferrerReceiver" android:permission="android.permission.INSTALL_PACKAGES" android:enabled="true" android:exported="true">
+            <intent-filter>
+                <action android:name="com.android.vending.INSTALL_REFERRER"/>
+            </intent-filter>
+        </receiver>
+        <service android:name="com.google.android.gms.measurement.AppMeasurementService" android:enabled="true" android:exported="false"/>
+        <service android:name="com.google.android.gms.measurement.AppMeasurementJobService" android:permission="android.permission.BIND_JOB_SERVICE" android:enabled="true" android:exported="false"/>
+        <service android:name="com.google.firebase.messaging.FirebaseMessagingService" android:exported="true">
+            <intent-filter android:priority="-500">
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+        <service android:name="com.google.firebase.components.ComponentDiscoveryService">
+            <meta-data android:name="com.google.firebase.components:com.google.firebase.iid.Registrar" android:value="com.google.firebase.components.ComponentRegistrar"/>
+        </service>
+        <receiver android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver" android:permission="com.google.android.c2dm.permission.SEND" android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
+                <category android:name="com.askey.taipeinavi"/>
+            </intent-filter>
+        </receiver>
+        <service android:name="com.google.firebase.iid.FirebaseInstanceIdService" android:exported="true">
+            <intent-filter android:priority="-500">
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
+        <activity android:theme="@style/Theme.Translucent.NoTitleBar" android:name="com.google.android.gms.common.api.GoogleApiActivity" android:exported="false"/>
+        <provider android:name="com.google.firebase.provider.FirebaseInitProvider" android:exported="false" android:authorities="com.askey.taipeinavi.firebaseinitprovider" android:initOrder="100"/>
+        <activity android:theme="@style/Theme.Translucent" android:name="com.google.android.gms.ads.AdActivity" android:exported="false" android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
+        <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version"/>
+        <activity android:theme="@style/zxing_CaptureTheme" android:name="com.journeyapps.barcodescanner.CaptureActivity" android:clearTaskOnLaunch="true" android:stateNotNeeded="true" android:screenOrientation="sensorLandscape" android:windowSoftInputMode="stateAlwaysHidden"/>
+        <activity android:name="com.facebook.CustomTabMainActivity"/>
+        <provider android:name="com.facebook.internal.FacebookInitProvider" android:exported="false" android:authorities="com.askey.taipeinavi.FacebookInitProvider"/>
+        <service android:name="p287me.tatarka.support.internal.job.JobServiceCompat"/>
+        <service android:name="p287me.tatarka.support.internal.job.JobSchedulerService"/>
+        <receiver android:name="p287me.tatarka.support.internal.receivers.NetworkReceiver" android:enabled="false">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:name="p287me.tatarka.support.internal.receivers.PowerReceiver" android:enabled="false">
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_BATTERY_LOW"/>
+                <action android:name="android.intent.action.ACTION_BATTERY_OKAY"/>
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED"/>
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED"/>
+                <action android:name="me.tatarka.support.server.job.controllers.PowerReceiver.ACTION_CHARGING_STABLE"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:name="p287me.tatarka.support.internal.receivers.BootReceiver" android:enabled="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:name="p287me.tatarka.support.internal.receivers.IdleReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.SCREEN_ON"/>
+                <action android:name="android.intent.action.SCREEN_OFF"/>
+                <action android:name="android.intent.action.DREAMING_STARTED"/>
+                <action android:name="android.intent.action.DREAMING_STOPPED"/>
+                <action android:name="me.tatarka.support.server.job.controllers.IdleReceiver.ACTION_TRIGGER_IDLE"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:name="p287me.tatarka.support.internal.receivers.TimeReceiver" android:exported="false">
+            <intent-filter>
+                <action android:name="me.tatarka.support.jobscheduler.JOB_DEADLINE_EXPIRED"/>
+                <action android:name="me.tatarka.support.jobscheduler.JOB_DELAY_EXPIRED"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:name="org.altbeacon.beacon.startup.StartupBroadcastReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED"/>
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED"/>
+            </intent-filter>
+        </receiver>
+        <service android:label="beacon" android:name="org.altbeacon.beacon.service.BeaconService" android:enabled="true" android:exported="false" android:isolatedProcess="false"/>
+        <service android:name="org.altbeacon.beacon.BeaconIntentProcessor" android:enabled="true" android:exported="false"/>
+        <service android:name="org.altbeacon.beacon.service.ScanJob" android:permission="android.permission.BIND_JOB_SERVICE">
+            <meta-data android:name="immediateScanJobId" android:value="208352939"/>
+            <meta-data android:name="periodicScanJobId" android:value="208352940"/>
+        </service>
+        <service android:name="org.altbeacon.bluetooth.BluetoothTestJob" android:permission="android.permission.BIND_JOB_SERVICE">
+            <meta-data android:name="jobId" android:value="1799803768"/>
+        </service>
+        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
+        <meta-data android:name="android.support.VERSION" android:value="26.1.0"/>
+        <meta-data android:name="com.android.vending.derived.apk.id" android:value="1"/>
+    </application>
+</manifest>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:orientation="vertical" android:background="?attr/selectableItemBackground" android:layout_width="match_parent" android:layout_height="wrap_content">
+    <TextView android:textSize="@dimen/primary_text" android:ellipsize="end" android:gravity="center_vertical" android:id="@+id/title" android:paddingLeft="@dimen/padding_16" android:layout_width="wrap_content" android:layout_height="@dimen/text_height" android:maxLines="1" android:paddingStart="@dimen/padding_16" style="@style/ChDimGrayText"/>
+    <android.support.p011v7.widget.SwitchCompat android:theme="@style/Theme.AppCompat.Light" android:id="@+id/switcher" android:padding="@dimen/padding_16" android:layout_width="match_parent" android:layout_height="wrap_content" android:checked="false" android:layout_alignBottom="@+id/title" style="@style/AlertDialog.AppCompat"/>
+    <View android:background="@color/mediumgray" android:layout_width="match_parent" android:layout_height="0.5dp" android:layout_below="@+id/title"/>
+</RelativeLayout>

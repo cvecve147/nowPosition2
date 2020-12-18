@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.p011v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_margin="@dimen/padding_4">
+    <android.support.percent.PercentRelativeLayout android:background="?attr/selectableItemBackground" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <ImageView android:id="@+id/cover" android:layout_width="0dp" android:layout_height="0dp" android:scaleType="fitCenter" android:adjustViewBounds="true" app:layout_aspectRatio="100%" app:layout_widthPercent="100%"/>
+        <TextView android:ellipsize="end" android:gravity="center" android:id="@+id/title" android:padding="@dimen/padding_8" android:layout_width="wrap_content" android:layout_height="wrap_content" android:maxLines="2" android:lines="2" android:layout_below="@+id/cover" android:layout_centerHorizontal="true" style="@style/ChDimGrayText"/>
+        <RelativeLayout android:id="@+id/info_layout" android:background="@color/blue" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_below="@+id/title">
+            <TextView android:id="@+id/last" android:paddingLeft="@dimen/padding_8" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:paddingStart="@dimen/padding_8" style="@style/ChWhiteText.Small"/>
+            <TextView android:id="@+id/point_title" android:paddingRight="@dimen/padding_4" android:paddingBottom="@dimen/padding_4" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/g_point" android:layout_alignBottom="@+id/point" android:layout_alignParentRight="true" android:paddingEnd="@dimen/padding_4" android:layout_alignParentEnd="true" style="@style/ChWhiteText.Small"/>
+            <TextView android:id="@+id/point" android:padding="@dimen/padding_4" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="123" android:layout_toLeftOf="@+id/point_title" android:layout_toStartOf="@+id/point_title" style="@style/ChWhiteText.Large"/>
+        </RelativeLayout>
+        <RelativeLayout android:gravity="center" android:id="@+id/mask" android:background="@color/lightblack" android:visibility="gone" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_alignTop="@+id/cover" android:layout_alignBottom="@+id/info_layout">
+            <ImageView android:id="@+id/mask_icon" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@mipmap/gift_img_empty" android:scaleType="fitCenter"/>
+        </RelativeLayout>
+    </android.support.percent.PercentRelativeLayout>
+</android.support.p011v7.widget.CardView>

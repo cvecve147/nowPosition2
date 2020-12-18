@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:background="#ffffff" android:layout_width="match_parent" android:layout_height="match_parent">
+    <TextView android:textColor="#9a9a9a" android:gravity="center" android:id="@+id/textView2" android:background="#f8f8f8" android:padding="8dp" android:layout_width="0dp" android:layout_height="wrap_content" android:text="@string/func_selection" app:layout_constraintLeft_toLeftOf="0" app:layout_constraintRight_toRightOf="0" app:layout_constraintTop_toTopOf="0"/>
+    <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@+id/func2" android:background="@drawable/btn_park" android:layout_width="0dp" android:layout_height="150dp" android:layout_margin="8dp" android:layout_marginTop="16dp" app:layout_constraintLeft_toRightOf="@+id/func1" app:layout_constraintRight_toRightOf="0" app:layout_constraintTop_toBottomOf="@+id/textView2">
+        <ImageView android:id="@+id/imageView5" android:paddingBottom="20dp" android:layout_width="80dp" android:layout_height="80dp" app:srcCompat="@drawable/icon_car"/>
+        <TextView android:textColor="#1a3c63" android:gravity="center" android:layout_gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/search_car2"/>
+    </LinearLayout>
+    <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@+id/func3" android:background="@drawable/btn_park" android:layout_width="0dp" android:layout_height="150dp" android:layout_margin="8dp" app:layout_constraintLeft_toLeftOf="0" app:layout_constraintRight_toLeftOf="@+id/func4" app:layout_constraintTop_toBottomOf="@+id/func1">
+        <ImageView android:id="@+id/imageView6" android:paddingBottom="20dp" android:layout_width="80dp" android:layout_height="80dp" app:srcCompat="@drawable/icon_help"/>
+        <TextView android:textColor="#1a3c63" android:gravity="center" android:layout_gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/sos"/>
+    </LinearLayout>
+    <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@+id/func1" android:background="@drawable/btn_park" android:layout_width="0dp" android:layout_height="150dp" android:layout_margin="8dp" android:layout_marginTop="16dp" app:layout_constraintHorizontal_bias="0.488" app:layout_constraintLeft_toLeftOf="0" app:layout_constraintRight_toLeftOf="@+id/func2" app:layout_constraintTop_toBottomOf="@+id/textView2">
+        <ImageView android:id="@+id/imageView" android:paddingBottom="20dp" android:layout_width="80dp" android:layout_height="80dp" app:srcCompat="@drawable/icon_pin"/>
+        <TextView android:textColor="#1a3c63" android:gravity="center" android:layout_gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/map_guide"/>
+    </LinearLayout>
+    <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@+id/func4" android:background="@drawable/btn_park" android:layout_width="0dp" android:layout_height="150dp" android:layout_margin="8dp" app:layout_constraintLeft_toRightOf="@+id/func3" app:layout_constraintRight_toRightOf="0" app:layout_constraintTop_toBottomOf="@+id/func2">
+        <ImageView android:id="@+id/imageView7" android:paddingBottom="20dp" android:layout_width="80dp" android:layout_height="80dp" app:srcCompat="@drawable/icon_fire"/>
+        <TextView android:textColor="#1a3c63" android:gravity="center" android:layout_gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/fire"/>
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

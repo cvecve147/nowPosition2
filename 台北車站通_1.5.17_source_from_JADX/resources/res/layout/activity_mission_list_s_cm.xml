@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:background="@color/gray" android:layout_width="match_parent" android:layout_height="match_parent">
+    <include layout="@layout/view_toolbar_cm"/>
+    <FrameLayout android:id="@+id/content_view" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_below="@+id/toolbar_layout"/>
+    <View android:background="@drawable/bg_shadow" android:layout_width="match_parent" android:layout_height="@dimen/shadow_height" android:layout_below="@+id/toolbar_layout"/>
+</RelativeLayout>

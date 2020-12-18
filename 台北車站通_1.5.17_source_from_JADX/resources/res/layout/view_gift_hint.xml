@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:orientation="vertical" android:background="@android:color/white" android:layout_width="wrap_content" android:layout_height="wrap_content">
+    <LinearLayout android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="12dp" android:layout_marginTop="27dp" android:layout_marginRight="12dp">
+        <TextView android:textSize="16sp" android:textColor="#4e4d50" android:id="@+id/txtHint1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:maxWidth="280dp" android:text="@string/txt_gift_tutorial_step1"/>
+    </LinearLayout>
+    <LinearLayout android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="12dp" android:layout_marginTop="25dp" android:layout_marginRight="12dp">
+        <TextView android:textSize="16sp" android:textColor="#4e4d50" android:id="@+id/txtHint2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:maxWidth="280dp" android:text="@string/txt_gift_tutorial_step2"/>
+    </LinearLayout>
+    <LinearLayout android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="12dp" android:layout_marginTop="25dp" android:layout_marginRight="12dp" android:layout_marginBottom="22dp">
+        <TextView android:textSize="16sp" android:textColor="#4e4d50" android:id="@+id/txtHint3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:maxWidth="280dp" android:text="@string/txt_gift_tutorial_step3"/>
+    </LinearLayout>
+</LinearLayout>

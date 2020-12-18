@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:layout_width="match_parent" android:layout_height="match_parent">
+    <SurfaceView android:id="@+id/preview_view" android:layout_width="match_parent" android:layout_height="match_parent"/>
+    <ImageView android:id="@+id/hint" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_margin="@dimen/padding_24" android:src="@mipmap/a_sight_block" android:scaleType="fitCenter" android:layout_centerHorizontal="true" android:layout_centerVertical="true"/>
+    <LinearLayout android:orientation="horizontal" android:id="@+id/qrcode_scan_hint_layout" android:layout_width="wrap_content" android:layout_height="wrap_content" android:weightSum="2" android:layout_alignLeft="@+id/hint" android:layout_alignTop="@+id/hint" android:layout_alignRight="@+id/hint" android:layout_alignBottom="@+id/hint" android:layout_centerVertical="true" android:layout_alignStart="@+id/hint" android:layout_alignEnd="@+id/hint">
+        <View android:layout_width="0dp" android:layout_height="0dp" android:layout_weight="0.1"/>
+        <FrameLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="0.9">
+            <ImageView android:padding="@dimen/padding_16" android:layout_width="match_parent" android:layout_height="match_parent" android:src="@mipmap/a_sight" android:scaleType="centerInside"/>
+            <ImageView android:id="@+id/left_done" android:padding="@dimen/padding_16" android:visibility="invisible" android:layout_width="match_parent" android:layout_height="match_parent" android:src="@mipmap/a_sight_ok" android:scaleType="centerInside"/>
+        </FrameLayout>
+        <FrameLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="0.9">
+            <ImageView android:padding="@dimen/padding_16" android:layout_width="match_parent" android:layout_height="match_parent" android:src="@mipmap/a_sight" android:scaleType="centerInside"/>
+            <ImageView android:id="@+id/right_done" android:padding="@dimen/padding_16" android:visibility="invisible" android:layout_width="match_parent" android:layout_height="match_parent" android:src="@mipmap/a_sight_ok" android:scaleType="centerInside"/>
+        </FrameLayout>
+        <View android:layout_width="0dp" android:layout_height="0dp" android:layout_weight="0.1"/>
+    </LinearLayout>
+    <TextView android:gravity="center" android:id="@+id/remind" android:background="@color/lightblack" android:padding="@dimen/padding_16" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_above="@+id/hint" android:layout_alignLeft="@+id/hint" android:layout_alignRight="@+id/hint" android:layout_alignStart="@+id/hint" android:layout_alignEnd="@+id/hint" style="@style/ChWhiteText"/>
+    <Button android:theme="@style/MainCyanBtn" android:textAppearance="@style/ChWhiteText" android:id="@+id/manual" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="@dimen/padding_16" android:text="@string/scanner_b_manual" android:layout_alignParentBottom="true"/>
+</RelativeLayout>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:orientation="vertical" android:background="@color/bg_fragment" android:paddingTop="42dp" android:layout_width="match_parent" android:layout_height="match_parent">
+    <TextView android:textSize="18sp" android:textColor="@color/main" android:gravity="center" android:id="@+id/tbtnSearchTransport" android:background="@color/light_gray" android:paddingTop="15dp" android:paddingBottom="14dp" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/tbtn_search" android:layout_alignParentBottom="true"/>
+    <LinearLayout android:orientation="vertical" android:paddingLeft="37dp" android:paddingRight="37dp" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <TextView android:textSize="14sp" android:textColor="@android:color/white" android:id="@+id/labOrigin" android:background="@drawable/bg_oval_shape" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/txt_origin"/>
+        <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@+id/llaySelectOrigin" android:background="@drawable/bg_picker" android:paddingBottom="4dp" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="10dp">
+            <TextView android:id="@+id/txtOrigin" android:layout_width="wrap_content" android:layout_height="wrap_content" android:freezesText="true" android:layout_weight="1"/>
+            <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:adjustViewBounds="true" app:srcCompat="@mipmap/icon_arrow_more"/>
+        </LinearLayout>
+        <LinearLayout android:gravity="center_horizontal" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="21dp" android:layout_marginBottom="4dp">
+            <ImageButton android:id="@+id/ibtnSwitch" android:background="?attr/selectableItemBackgroundBorderless" android:layout_width="wrap_content" android:layout_height="wrap_content" android:adjustViewBounds="true" app:srcCompat="@mipmap/btn_train_exchange"/>
+        </LinearLayout>
+        <TextView android:textSize="14sp" android:textColor="@android:color/white" android:id="@+id/labDest" android:background="@drawable/bg_oval_shape" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/txt_dest"/>
+        <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@+id/llaySelectDest" android:background="@drawable/bg_picker" android:paddingBottom="4dp" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="10dp">
+            <TextView android:id="@+id/txtDest" android:layout_width="wrap_content" android:layout_height="wrap_content" android:freezesText="true" android:layout_weight="1"/>
+            <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:adjustViewBounds="true" app:srcCompat="@mipmap/icon_arrow_more"/>
+        </LinearLayout>
+        <TextView android:textSize="14sp" android:textColor="@android:color/white" android:id="@+id/labTime" android:background="@drawable/bg_oval_shape" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="32dp" android:text="@string/txt_time"/>
+        <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@+id/llaySelectTime" android:background="@drawable/bg_picker" android:paddingBottom="4dp" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="10dp">
+            <TextView android:id="@+id/txtTime" android:layout_width="wrap_content" android:layout_height="wrap_content" android:freezesText="true" android:layout_weight="1"/>
+            <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:adjustViewBounds="true" app:srcCompat="@mipmap/icon_arrow_more"/>
+        </LinearLayout>
+        <LinearLayout android:orientation="vertical" android:id="@+id/llayType" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="32dp">
+            <TextView android:textSize="14sp" android:textColor="@android:color/white" android:id="@+id/labType" android:background="@drawable/bg_oval_shape" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/txt_type"/>
+            <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@+id/llaySelectType" android:background="@drawable/bg_picker" android:paddingBottom="4dp" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="10dp">
+                <TextView android:id="@+id/txtType" android:layout_width="wrap_content" android:layout_height="wrap_content" android:freezesText="true" android:layout_weight="1"/>
+                <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:adjustViewBounds="true" app:srcCompat="@mipmap/icon_arrow_more"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

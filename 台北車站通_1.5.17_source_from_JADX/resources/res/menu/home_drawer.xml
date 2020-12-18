@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt">
+    <group android:id="@+id/gp1" android:checkableBehavior="none">
+        <item android:icon="@drawable/ic_drawer_mission" android:id="@+id/navMission" android:title="@string/txt_mission_gain_point"/>
+    </group>
+    <group android:id="@+id/gp2" android:checkableBehavior="none">
+        <item android:icon="@drawable/ic_drawer_setting" android:id="@+id/navSetting" android:title="@string/txt_setting"/>
+    </group>
+    <group android:id="@+id/gp3" android:checkableBehavior="none">
+        <item android:icon="@drawable/ic_drawer_empty" android:id="@+id/navEvaluation" android:title="@string/btxt_evaluation"/>
+    </group>
+    <group android:id="@+id/gp4" android:checkableBehavior="none">
+        <item android:icon="@drawable/ic_drawer_empty" android:id="@+id/navContactUs" android:title="@string/btxt_contact_us"/>
+    </group>
+</menu>

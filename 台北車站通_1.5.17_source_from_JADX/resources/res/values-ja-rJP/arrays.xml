@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="rail_type_filter_name">
+        <item>制限なし</item>
+        <item>特別急行列車</item>
+        <item>普通電車</item>
+    </array>
+    <array name="rail_type_name">
+        <item>Tze-Chiang Limited Express</item>
+        <item>Chu-Kuang Express</item>
+        <item>Local Train</item>
+        <item>Fast Local Train</item>
+        <item>Taroko</item>
+        <item>Puyuma</item>
+    </array>
+    <array name="sos_org">
+        <item>警察局</item>
+        <item>消防署</item>
+        <item>市民専用電話 １９９９</item>
+    </array>
+</resources>

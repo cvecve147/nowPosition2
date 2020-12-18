@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:id="@+id/toolbar_layout" android:fitsSystemWindows="true" android:layout_width="match_parent" android:layout_height="wrap_content" android:stateListAnimator="@null" app:elevation="0dp">
+    <android.support.p011v7.widget.Toolbar android:theme="@style/AppTheme.ToolBar" android:id="@+id/toolbar" android:layout_width="match_parent" android:layout_height="wrap_content" app:popupTheme="@style/AppTheme.PopupOverlay">
+        <ImageView android:layout_gravity="center" android:id="@+id/toolbar_icon" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+        <TextView android:layout_gravity="center" android:id="@+id/point" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:drawableLeft="@mipmap/nav_icon_coin" android:drawablePadding="@dimen/padding_4" android:drawableStart="@mipmap/nav_icon_coin" style="@style/Base.TextAppearance.Widget.AppCompat.Toolbar.Title"/>
+    </android.support.p011v7.widget.Toolbar>
+</android.support.design.widget.AppBarLayout>

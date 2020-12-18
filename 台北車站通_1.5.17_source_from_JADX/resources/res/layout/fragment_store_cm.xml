@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:layout_width="match_parent" android:layout_height="wrap_content">
+    <android.support.design.widget.CoordinatorLayout android:id="@+id/coordinator_layout" android:layout_width="match_parent" android:layout_height="match_parent">
+        <android.support.design.widget.AppBarLayout android:id="@+id/appbar_layout" android:background="@color/white" android:fitsSystemWindows="true" android:layout_width="match_parent" android:layout_height="wrap_content" android:stateListAnimator="@null" app:layout_behavior="com.openlife.checkme.ui.FixAppBarLayoutBehavior">
+            <android.support.percent.PercentRelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" app:layout_scrollFlags="1" app:tabGravity="0" app:tabMode="1">
+                <com.openlife.checkme.p100ui.CarouselViewpager android:id="@+id/view_pager" android:layout_width="0dp" android:layout_height="0dp" app:layout_aspectRatio="200%" app:layout_widthPercent="100%"/>
+                <com.viewpagerindicator.CirclePageIndicator android:id="@+id/indicator" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="@dimen/store_indicator_padding" android:layout_alignBottom="@+id/view_pager" app:fillColor="@color/white" app:pageColor="@color/mask_white" app:radius="@dimen/indicator_radius" app:strokeWidth="0dp"/>
+                <RelativeLayout android:id="@+id/layout" android:paddingLeft="@dimen/padding_24" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_below="@+id/view_pager" android:paddingStart="@dimen/padding_24">
+                    <android.support.design.widget.TabLayout android:id="@+id/tab_layout" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_toLeftOf="@+id/mode" android:layout_toStartOf="@+id/mode" app:tabIndicatorColor="@color/rusty" app:tabMode="0"/>
+                    <ImageButton android:id="@+id/mode" android:background="?attr/selectableItemBackgroundBorderless" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="@dimen/padding_24" android:src="@mipmap/icon_list_medium" android:layout_alignBottom="@+id/tab_layout" android:layout_alignParentTop="true" android:layout_alignParentRight="true" android:layout_marginEnd="@dimen/padding_24" android:layout_alignParentEnd="true"/>
+                </RelativeLayout>
+            </android.support.percent.PercentRelativeLayout>
+        </android.support.design.widget.AppBarLayout>
+        <android.support.p007v4.view.ViewPager android:id="@+id/content_view_pager" android:layout_width="match_parent" android:layout_height="wrap_content" app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+    </android.support.design.widget.CoordinatorLayout>
+</RelativeLayout>

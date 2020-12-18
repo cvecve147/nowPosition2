@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="rail_type_filter_name">
+        <item>所有車種</item>
+        <item>對號列車</item>
+        <item>非對號列車</item>
+    </array>
+    <array name="rail_type_name">
+        <item>自強</item>
+        <item>莒光</item>
+        <item>區間車</item>
+        <item>區間快</item>
+        <item>太魯閣</item>
+        <item>普悠瑪</item>
+    </array>
+    <array name="sos_org">
+        <item>警察局</item>
+        <item>消防局</item>
+        <item>市民專線1999</item>
+    </array>
+</resources>

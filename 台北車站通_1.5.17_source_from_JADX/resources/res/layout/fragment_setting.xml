@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:background="@color/bg_fragment" android:layout_width="match_parent" android:layout_height="match_parent">
+    <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent">
+        <View android:background="#c8c7cc" android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginTop="34dp"/>
+        <LinearLayout android:orientation="vertical" android:background="@android:color/white" android:paddingLeft="14.3dp" android:layout_width="match_parent" android:layout_height="wrap_content">
+            <LinearLayout android:gravity="center" android:orientation="horizontal" android:id="@+id/cellPushMessage" android:layout_width="match_parent" android:layout_height="44dp" android:layout_marginRight="14.3dp">
+                <TextView android:textSize="16sp" android:textStyle="bold" android:textColor="@color/dark_gray" android:id="@+id/labPushMessage" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/btxt_push_message"/>
+                <Space android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
+                <Switch android:id="@+id/sbtnPushMessage" android:layout_width="wrap_content" android:layout_height="wrap_content" android:checked="true"/>
+            </LinearLayout>
+            <View android:background="#c8c7cc" android:layout_width="match_parent" android:layout_height="1dp"/>
+            <LinearLayout android:gravity="center" android:orientation="horizontal" android:id="@+id/cellBarrierFree" android:visibility="gone" android:layout_width="match_parent" android:layout_height="44dp" android:layout_marginRight="14.3dp">
+                <TextView android:textSize="16sp" android:textStyle="bold" android:textColor="@color/dark_gray" android:id="@+id/labBarrierFree" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/btxt_barrier_free_route"/>
+                <Space android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
+                <Switch android:id="@+id/sbtnBarrierFree" android:layout_width="wrap_content" android:layout_height="wrap_content" android:checked="false"/>
+            </LinearLayout>
+            <View android:background="#c8c7cc" android:visibility="gone" android:layout_width="match_parent" android:layout_height="1dp"/>
+            <LinearLayout android:gravity="center" android:orientation="horizontal" android:id="@+id/cellTts" android:layout_width="match_parent" android:layout_height="44dp" android:layout_marginRight="14.3dp">
+                <TextView android:textSize="16sp" android:textStyle="bold" android:textColor="@color/dark_gray" android:id="@+id/labTts" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/btxt_tts"/>
+                <ImageView android:id="@+id/imgTtsHint" android:paddingLeft="5dp" android:paddingRight="5dp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@android:drawable/ic_menu_info_details" android:adjustViewBounds="false" android:cropToPadding="false"/>
+                <Space android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
+                <Switch android:id="@+id/sbtnTts" android:layout_width="wrap_content" android:layout_height="wrap_content" android:checked="false"/>
+            </LinearLayout>
+            <View android:background="#c8c7cc" android:layout_width="match_parent" android:layout_height="1dp"/>
+            <LinearLayout android:gravity="center" android:orientation="horizontal" android:id="@+id/cellVersion" android:layout_width="match_parent" android:layout_height="44dp" android:layout_marginRight="14.3dp">
+                <TextView android:textSize="16sp" android:textStyle="bold" android:textColor="@color/dark_gray" android:id="@+id/labVersion" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/btxt_version"/>
+                <Space android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
+                <TextView android:textSize="16sp" android:textColor="@color/gray" android:id="@+id/txtVersion" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+            </LinearLayout>
+            <View android:background="#c8c7cc" android:layout_width="match_parent" android:layout_height="1dp"/>
+            <LinearLayout android:gravity="center" android:orientation="horizontal" android:id="@+id/cellMoreLink" android:layout_width="match_parent" android:layout_height="44dp" android:layout_marginRight="14.3dp">
+                <TextView android:textSize="16sp" android:textStyle="bold" android:textColor="@color/dark_gray" android:id="@+id/labMoreLink" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/btxt_more_link"/>
+                <Space android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
+                <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:adjustViewBounds="true" app:srcCompat="@mipmap/icon_setting_next"/>
+            </LinearLayout>
+            <View android:background="#c8c7cc" android:layout_width="match_parent" android:layout_height="1dp"/>
+            <LinearLayout android:gravity="center" android:orientation="horizontal" android:id="@+id/cellHelloTaipei" android:layout_width="match_parent" android:layout_height="44dp" android:layout_marginRight="14.3dp">
+                <TextView android:textSize="16sp" android:textStyle="bold" android:textColor="@color/dark_gray" android:id="@+id/labHelloTaipei" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/btxt_hello_taipei"/>
+                <Space android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
+                <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:adjustViewBounds="true" app:srcCompat="@mipmap/icon_setting_next"/>
+            </LinearLayout>
+            <View android:background="#c8c7cc" android:layout_width="match_parent" android:layout_height="1dp"/>
+            <LinearLayout android:gravity="center" android:orientation="horizontal" android:id="@+id/cellFanGroup" android:layout_width="match_parent" android:layout_height="44dp" android:layout_marginRight="14.3dp">
+                <TextView android:textSize="16sp" android:textStyle="bold" android:textColor="@color/dark_gray" android:id="@+id/labFanGroup" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/btxt_fan_group"/>
+                <Space android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
+                <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:adjustViewBounds="true" app:srcCompat="@mipmap/icon_setting_next"/>
+            </LinearLayout>
+            <View android:background="#c8c7cc" android:layout_width="match_parent" android:layout_height="1dp"/>
+            <LinearLayout android:gravity="center" android:orientation="horizontal" android:id="@+id/cellTutorial" android:layout_width="match_parent" android:layout_height="44dp" android:layout_marginRight="14.3dp">
+                <TextView android:textSize="16sp" android:textStyle="bold" android:textColor="@color/dark_gray" android:id="@+id/labTutorial" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/btxt_tutorial"/>
+                <Space android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
+                <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:adjustViewBounds="true" app:srcCompat="@mipmap/icon_setting_next"/>
+            </LinearLayout>
+            <View android:background="#c8c7cc" android:layout_width="match_parent" android:layout_height="1dp"/>
+            <LinearLayout android:gravity="center" android:orientation="horizontal" android:id="@+id/cellLanguage" android:layout_width="match_parent" android:layout_height="44dp" android:layout_marginRight="14.3dp">
+                <TextView android:textSize="16sp" android:textStyle="bold" android:textColor="@color/dark_gray" android:id="@+id/labLanguage" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/btxt_language"/>
+                <Space android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
+                <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:adjustViewBounds="true" app:srcCompat="@mipmap/icon_setting_next"/>
+            </LinearLayout>
+        </LinearLayout>
+        <View android:background="#c8c7cc" android:layout_width="match_parent" android:layout_height="1dp"/>
+    </LinearLayout>
+</ScrollView>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:layout_width="match_parent" android:layout_height="match_parent">
+    <ScrollView android:layout_width="0dp" android:layout_height="0dp" android:layout_marginLeft="8dp" android:layout_marginTop="8dp" android:layout_marginRight="8dp" android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintLeft_toLeftOf="0" app:layout_constraintRight_toRightOf="0" app:layout_constraintTop_toTopOf="0">
+        <LinearLayout android:gravity="center_horizontal" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_marginLeft="8dp" android:layout_marginTop="8dp" android:layout_marginRight="8dp" android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintLeft_toLeftOf="0" app:layout_constraintRight_toRightOf="0" app:layout_constraintTop_toTopOf="0">
+            <LinearLayout android:gravity="center" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8dp">
+                <ImageView android:id="@+id/imageView3" android:layout_width="20dp" android:layout_height="20dp" android:layout_weight="1" app:srcCompat="@drawable/icon_car_blue_s"/>
+                <TextView android:textColor="#4081fd" android:id="@+id/textView4" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="8dp" android:text="@string/vehicle_licence" android:layout_weight="1"/>
+            </LinearLayout>
+            <TextView android:textSize="18sp" android:textColor="#1a3c63" android:gravity="center" android:id="@+id/detail_licence" android:paddingLeft="24dp" android:paddingTop="8dp" android:paddingRight="24dp" android:paddingBottom="8dp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8dp" android:text="@string/null_info"/>
+            <LinearLayout android:gravity="center" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8dp">
+                <ImageView android:id="@+id/imageView4" android:layout_width="20dp" android:layout_height="20dp" android:layout_weight="1" app:srcCompat="@drawable/icon_pin_blue_s"/>
+                <TextView android:textColor="#4081fd" android:gravity="center" android:id="@+id/detail_building_id" android:paddingLeft="8dp" android:paddingRight="8dp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="BuildingID" android:layout_weight="1"/>
+                <TextView android:textColor="#4081fd" android:id="@+id/detail_lot_type" android:paddingRight="8dp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="lot_type" android:layout_weight="1"/>
+                <TextView android:textColor="#4081fd" android:id="@+id/detail_lot_code" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="lot_code" android:layout_weight="1"/>
+            </LinearLayout>
+            <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="16dp" android:layout_marginRight="16dp" android:layout_marginBottom="8dp" android:weightSum="2">
+                <Button android:textColor="#ffffff" android:id="@+id/detail_btn_map_guide" android:background="@drawable/shape_rectangle_blue" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginRight="8dp" android:text="@string/lot_guide" android:layout_weight="1"/>
+                <Button android:textColor="#1a3c63" android:id="@+id/detail_btn_out_notify" android:background="@drawable/shape_rectangle_transparent" android:layout_width="0dp" android:layout_height="wrap_content" android:text="@string/out_notify" android:layout_weight="1"/>
+            </LinearLayout>
+            <LinearLayout android:gravity="center" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8dp">
+                <ImageView android:id="@+id/imageView3321312" android:layout_width="20dp" android:layout_height="20dp" android:layout_weight="1" app:srcCompat="@drawable/icon_car_grey_s"/>
+                <TextView android:textColor="#9b9b9b" android:id="@+id/textView431312" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="8dp" android:text="@string/inside_datetime" android:layout_weight="1"/>
+            </LinearLayout>
+            <TextView android:textSize="18sp" android:textColor="#4a4a4a" android:gravity="center" android:id="@+id/detail_entry_datetime" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8dp" android:text="@string/null_info"/>
+            <TextView android:id="@+id/divider31312" android:background="#224269" android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginLeft="8dp" android:layout_marginRight="8dp" android:layout_marginBottom="8dp"/>
+            <LinearLayout android:gravity="center" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8dp">
+                <ImageView android:id="@+id/imageView332143" android:layout_width="20dp" android:layout_height="20dp" android:layout_weight="1" app:srcCompat="@drawable/icon_time_grey"/>
+                <TextView android:textColor="#9b9b9b" android:id="@+id/textView442342" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="8dp" android:text="@string/acc_time_and_pay" android:layout_weight="1"/>
+            </LinearLayout>
+            <LinearLayout android:gravity="center" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8dp">
+                <TextView android:textSize="18sp" android:textColor="#4a4a4a" android:gravity="center" android:id="@+id/detail_acc_time" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="8dp" android:text="@string/null_info" android:layout_weight="1"/>
+                <TextView android:textSize="24sp" android:textColor="#4a4a4a" android:gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="8dp" android:text="NT$" android:layout_weight="1"/>
+                <TextView android:textSize="24sp" android:textColor="#4a4a4a" android:gravity="center" android:id="@+id/detail_acc_pay" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="8dp" android:text="@string/null_info" android:layout_weight="1"/>
+            </LinearLayout>
+            <TextView android:id="@+id/divider2" android:background="#224269" android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginLeft="8dp" android:layout_marginRight="8dp" android:layout_marginBottom="8dp"/>
+            <LinearLayout android:gravity="center" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8dp">
+                <ImageView android:id="@+id/imageView3421" android:layout_width="20dp" android:layout_height="20dp" android:layout_weight="1" app:srcCompat="@drawable/icon_pay_grey"/>
+                <TextView android:textColor="#9b9b9b" android:id="@+id/textView423523" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="8dp" android:text="@string/pay_rule" android:layout_weight="1"/>
+            </LinearLayout>
+            <HorizontalScrollView android:layout_width="match_parent" android:layout_height="match_parent">
+                <LinearLayout android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="match_parent">
+                    <TextView android:textSize="18sp" android:textColor="#4a4a4a" android:gravity="left" android:id="@+id/detail_pay_rule" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="8dp" android:text="@string/null_info"/>
+                </LinearLayout>
+            </HorizontalScrollView>
+            <TextView android:id="@+id/divider" android:background="#224269" android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginLeft="8dp" android:layout_marginRight="8dp" android:layout_marginBottom="8dp"/>
+            <LinearLayout android:gravity="center" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8dp">
+                <ImageView android:id="@+id/imageView31421" android:layout_width="20dp" android:layout_height="20dp" android:layout_weight="1" app:srcCompat="@drawable/icon_phone_grey"/>
+                <TextView android:textColor="#9b9b9b" android:id="@+id/textView42352" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="8dp" android:text="@string/contact_phone" android:layout_weight="1"/>
+            </LinearLayout>
+            <TextView android:textSize="18sp" android:textColor="#4a4a4a" android:gravity="center" android:id="@+id/detail_contact_phone" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="8dp" android:text="@string/null_info"/>
+        </LinearLayout>
+    </ScrollView>
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:layout_width="match_parent" android:layout_height="match_parent">
+    <View android:id="@+id/viewMapViewMask" android:background="@android:color/white" android:layout_width="match_parent" android:layout_height="match_parent"/>
+    <LinearLayout android:orientation="vertical" android:id="@+id/llayTopView" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <RelativeLayout android:id="@+id/rlayTargetInfo" android:background="@android:color/white" android:paddingLeft="33dp" android:paddingTop="12dp" android:paddingRight="20dp" android:paddingBottom="12dp" android:visibility="gone" android:layout_width="match_parent" android:layout_height="64dp">
+            <ImageView android:id="@+id/imgTargetIcon" android:layout_width="wrap_content" android:layout_height="wrap_content" android:adjustViewBounds="true" android:layout_centerVertical="true"/>
+            <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="21dp" android:layout_toRightOf="@+id/imgTargetIcon" android:layout_centerVertical="true">
+                <TextView android:textSize="14sp" android:textColor="#303030" android:id="@+id/txtTargetName" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="starbucks統一星巴克(台鐵一門市)"/>
+                <TextView android:textSize="14sp" android:textColor="#e2231a" android:id="@+id/txtTargetMapName" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Taipei Train Station 2F "/>
+            </LinearLayout>
+        </RelativeLayout>
+        <View android:background="@drawable/shadow" android:layout_width="match_parent" android:layout_height="1dp" android:layout_alignParentBottom="true"/>
+        <TextView android:textSize="14sp" android:textColor="#ff4e4d50" android:gravity="left|center_vertical|center_horizontal|center" android:id="@+id/txtCurrentMap" android:background="@android:drawable/dialog_holo_light_frame" android:paddingLeft="20dp" android:paddingTop="12dp" android:paddingRight="20dp" android:paddingBottom="12dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+    </LinearLayout>
+    <LinearLayout android:gravity="right" android:orientation="vertical" android:id="@+id/llayBottomView" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_alignParentBottom="true">
+        <ImageView android:id="@+id/ibtnUserVisionMode" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="9dp" android:src="@drawable/icon_direction_off" android:adjustViewBounds="true"/>
+        <ImageView android:id="@+id/ibtnUserWhere" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="9dp" android:layout_marginBottom="5dp" android:src="@drawable/icon_location" android:adjustViewBounds="true"/>
+        <LinearLayout android:orientation="horizontal" android:id="@+id/llayStartRouting" android:background="@android:color/white" android:visibility="gone" android:layout_width="match_parent" android:layout_height="wrap_content">
+            <TextView android:textSize="16sp" android:textColor="@android:color/white" android:gravity="center" android:id="@+id/tbtnRoute" android:background="#4a90e2" android:paddingTop="10dp" android:paddingBottom="10dp" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginRight="1dp" android:text="@string/tbtn_start_routing" android:maxLines="1" android:layout_weight="1"/>
+            <TextView android:textSize="16sp" android:textColor="@android:color/white" android:gravity="center" android:id="@+id/tbtnRouteBarrierFree" android:background="#4a90e2" android:paddingTop="10dp" android:paddingBottom="10dp" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginLeft="1dp" android:text="@string/tbtn_start_barrier_free_routing" android:maxLines="1" android:layout_weight="1"/>
+        </LinearLayout>
+        <RelativeLayout android:id="@+id/llayRouteIndicator" android:background="@android:color/white" android:visibility="gone" android:layout_width="match_parent" android:layout_height="70dp">
+            <TextView android:textSize="14sp" android:textColor="#ffffff" android:gravity="center" android:id="@+id/ibtnCloseRouting" android:background="@drawable/bg_routing" android:paddingLeft="14dp" android:paddingTop="6dp" android:paddingRight="14dp" android:paddingBottom="6dp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="21dp" android:text="@string/txt_close_routing" android:layout_centerVertical="true" android:paddingStart="14dp" android:paddingEnd="14dp" android:layout_alignParentEnd="true"/>
+            <LinearLayout android:gravity="left|center_vertical|center_horizontal|center" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="20dp" android:layout_marginRight="13.2dp" android:layout_toLeftOf="@+id/ibtnCloseRouting" android:layout_centerVertical="true">
+                <TextView android:textSize="18sp" android:textColor="#e2231a" android:gravity="left" android:id="@+id/txtRouteIndicator" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/txt_ind_keep_going"/>
+                <TextView android:textSize="14sp" android:textColor="#303030" android:gravity="left" android:id="@+id/txtRouteDistanceIndicator" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+            </LinearLayout>
+            <View android:background="@drawable/shadow" android:layout_width="match_parent" android:layout_height="1dp" android:layout_alignParentTop="true"/>
+        </RelativeLayout>
+    </LinearLayout>
+    <com.wang.avi.AVLoadingIndicatorView android:id="@+id/pgbMapLoading" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true" app:indicatorColor="@android:color/darker_gray" app:indicatorName="LineSpinFadeLoaderIndicator"/>
+</RelativeLayout>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:layout_width="match_parent" android:layout_height="match_parent">
+    <LinearLayout android:orientation="vertical" android:id="@+id/search_result" android:layout_width="0dp" android:layout_height="0dp" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintLeft_toLeftOf="0" app:layout_constraintRight_toRightOf="0" app:layout_constraintTop_toTopOf="0">
+        <HorizontalScrollView android:background="#ffaaaaaa" android:layout_width="match_parent" android:layout_height="wrap_content" app:layout_constraintHorizontal_bias="0" app:layout_constraintLeft_toLeftOf="0" app:layout_constraintRight_toRightOf="0" app:layout_constraintTop_toTopOf="0">
+            <LinearLayout android:orientation="horizontal" android:id="@+id/page_container" android:background="#d2d2d2" android:layout_width="match_parent" android:layout_height="match_parent" android:divider="@android:drawable/divider_horizontal_bright" android:showDividers="middle"/>
+        </HorizontalScrollView>
+        <ScrollView android:layout_width="match_parent" android:layout_height="wrap_content">
+            <LinearLayout android:orientation="vertical" android:id="@+id/result_container" android:layout_width="match_parent" android:layout_height="50dp"/>
+        </ScrollView>
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

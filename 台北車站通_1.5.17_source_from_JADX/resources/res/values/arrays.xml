@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="WheelArrayDefault">
+        <item>AigeStudio</item>
+        <item>Aige</item>
+        <item>爱哥</item>
+        <item>الحب  اخي</item>
+        <item>jeg elsker</item>
+        <item>사랑해요 형</item>
+        <item>Amor de irmão</item>
+        <item>armastan</item>
+        <item>愛の兄</item>
+        <item>обичам те</item>
+        <item>любовь - братa</item>
+        <item>miłość bracie</item>
+        <item>Liebe</item>
+        <item>Lamour</item>
+        <item>rakastan sinua</item>
+        <item>láska..</item>
+        <item>dragostea.</item>
+        <item>jag älskar</item>
+        <item>ljubezen, brat.</item>
+        <item>愛哥</item>
+        <item>ชอบพี่</item>
+        <item>αγάπη μου</item>
+        <item>a szerelem.</item>
+        <item>Amore, fratello.</item>
+    </array>
+    <array name="WheelArrayWeek">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
+    </array>
+    <array name="checkme_s_qa_event_title_array">
+        <item>@string/checkme_s_qa_event_store</item>
+        <item>@string/checkme_s_qa_event_scan</item>
+        <item>@string/checkme_s_qa_event_cost</item>
+    </array>
+    <array name="checkme_s_qa_qustion_title_array">
+        <item>@string/checkme_s_qa_question_store</item>
+        <item>@string/checkme_s_qa_question_advice</item>
+    </array>
+    <array name="gift_sort_array">
+        <item>@string/gift_a_brand</item>
+        <item>@string/gift_a_height_to_low</item>
+        <item>@string/gift_a_low_to_height</item>
+    </array>
+    <array name="guide_taipei_pic_array">
+        <item>@mipmap/taipei_teaching_01</item>
+        <item>@mipmap/taipei_teaching_02</item>
+        <item>@mipmap/taipei_teaching_03</item>
+        <item>@mipmap/taipei_teaching_04</item>
+        <item>@mipmap/taipei_teaching_05</item>
+    </array>
+    <array name="point_animation_array">
+        <item>@mipmap/getpoint_0</item>
+        <item>@mipmap/getpoint_1</item>
+        <item>@mipmap/getpoint_2</item>
+        <item>@mipmap/getpoint_3</item>
+        <item>@mipmap/getpoint_4</item>
+        <item>@mipmap/getpoint_5</item>
+        <item>@mipmap/getpoint_6</item>
+        <item>@mipmap/getpoint_7</item>
+        <item>@mipmap/getpoint_8</item>
+    </array>
+    <array name="rail_type_filter_name">
+        <item>All Types</item>
+        <item>Express</item>
+        <item>Ordinary</item>
+    </array>
+    <array name="rail_type_name">
+        <item>Tze-Chiang Limited Express</item>
+        <item>Chu-Kuang Express</item>
+        <item>Local Train</item>
+        <item>Fast Local Train</item>
+        <item>Taroko</item>
+        <item>Puyuma</item>
+    </array>
+    <array name="sos_org">
+        <item>Police Department</item>
+        <item>Fire Department</item>
+        <item>1999 Citizen Hotline</item>
+    </array>
+</resources>

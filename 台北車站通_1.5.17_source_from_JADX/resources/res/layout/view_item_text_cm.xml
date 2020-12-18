@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:id="@+id/layout" android:background="?attr/selectableItemBackground" android:layout_width="match_parent" android:layout_height="wrap_content">
+    <TextView android:gravity="center_vertical" android:id="@+id/title" android:layout_width="wrap_content" android:layout_height="@dimen/text_height" android:layout_marginLeft="@dimen/padding_16" android:layout_alignParentTop="true" style="@style/ChDimGrayText"/>
+    <TextView android:gravity="right|center_vertical|center_horizontal|center" android:id="@+id/sub_title" android:layout_width="match_parent" android:layout_height="@dimen/text_height" android:layout_marginRight="@dimen/padding_16" android:layout_toRightOf="@+id/title" android:layout_alignParentTop="true" android:layout_toEndOf="@+id/title" style="@style/ChDimGrayText"/>
+    <View android:background="@color/mediumgray" android:layout_width="match_parent" android:layout_height="0.5dp" android:layout_below="@+id/title"/>
+</RelativeLayout>

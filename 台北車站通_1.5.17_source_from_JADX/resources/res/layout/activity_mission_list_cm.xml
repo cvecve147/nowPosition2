@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:layout_width="match_parent" android:layout_height="match_parent">
+    <include layout="@layout/view_toolbar_cm"/>
+    <FrameLayout android:id="@+id/content_view" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_below="@+id/layout"/>
+    <RelativeLayout android:id="@+id/layout" android:paddingLeft="@dimen/padding_24" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_below="@+id/toolbar_layout" android:paddingStart="@dimen/padding_24">
+        <Button android:id="@+id/store" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/Widget.AppCompat.Button.Borderless"/>
+        <ImageButton android:id="@+id/mode" android:background="?attr/selectableItemBackgroundBorderless" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="@dimen/padding_24" android:src="@mipmap/icon_list_medium" android:layout_alignParentRight="true" android:layout_centerVertical="true" android:layout_marginEnd="@dimen/padding_24" android:layout_alignParentEnd="true"/>
+    </RelativeLayout>
+    <View android:background="@drawable/bg_shadow" android:layout_width="match_parent" android:layout_height="@dimen/shadow_height" android:layout_below="@+id/layout"/>
+</RelativeLayout>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:orientation="vertical" android:background="@android:color/white" android:layout_width="wrap_content" android:layout_height="wrap_content">
+    <TextView android:textSize="20sp" android:textStyle="bold" android:textColor="#dd000000" android:id="@+id/txtHintTitle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="23dp" android:layout_marginTop="20dp" android:text="@string/txt_tts_hint_title" android:layout_marginStart="23dp"/>
+    <LinearLayout android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="12dp" android:layout_marginTop="27dp" android:layout_marginRight="12dp">
+        <ImageView android:id="@+id/imgHint1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@mipmap/tts_hint_01" android:adjustViewBounds="true"/>
+        <TextView android:textSize="16sp" android:textColor="#4e4d50" android:id="@+id/txtHint1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10dp" android:maxWidth="280dp" android:text="@string/txt_tts_hint_step1"/>
+    </LinearLayout>
+    <LinearLayout android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="12dp" android:layout_marginTop="25dp" android:layout_marginRight="12dp">
+        <ImageView android:id="@+id/imgHint2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@mipmap/tts_hint_02" android:adjustViewBounds="true"/>
+        <TextView android:textSize="16sp" android:textColor="#4e4d50" android:id="@+id/txtHint2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10dp" android:maxWidth="280dp" android:text="@string/txt_tts_hint_step2"/>
+    </LinearLayout>
+    <LinearLayout android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="12dp" android:layout_marginTop="25dp" android:layout_marginRight="12dp" android:layout_marginBottom="22dp">
+        <ImageView android:id="@+id/imgHint3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@mipmap/tts_hint_03" android:adjustViewBounds="true"/>
+        <TextView android:textSize="16sp" android:textColor="#4e4d50" android:id="@+id/txtHint3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10dp" android:maxWidth="280dp" android:text="@string/txt_tts_hint_step3"/>
+    </LinearLayout>
+</LinearLayout>

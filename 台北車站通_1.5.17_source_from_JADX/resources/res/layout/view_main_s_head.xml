@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:id="@+id/background" android:layout_width="match_parent" android:layout_height="wrap_content">
+    <RelativeLayout android:id="@+id/logo_layout" android:background="@color/white" android:layout_width="match_parent" android:layout_height="40dp">
+        <ImageView android:id="@+id/head_image" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_centerHorizontal="true" android:layout_centerVertical="true"/>
+    </RelativeLayout>
+    <com.openlife.checkme.p100ui.CarouselViewpager android:id="@+id/view_pager" android:layout_width="match_parent" android:layout_height="188dp" android:layout_below="@+id/logo_layout"/>
+    <com.viewpagerindicator.CirclePageIndicator android:id="@+id/indicator" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="5.6dp" android:layout_marginBottom="@dimen/store_indicator_padding" android:layout_alignBottom="@+id/view_pager" android:layout_alignParentRight="true" app:centered="false" app:fillColor="@color/checkme_s_light" app:pageColor="@color/checkme_s_dark" app:radius="@dimen/indicator_radius" app:strokeWidth="0dp"/>
+    <RelativeLayout android:background="@android:color/transparent" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_below="@+id/view_pager">
+        <LinearLayout android:orientation="horizontal" android:id="@+id/middle_bar_layout" android:background="@color/taipeinavi" android:layout_width="match_parent" android:layout_height="53dp">
+            <TextView android:textSize="16sp" android:textColor="@color/white" android:gravity="center" android:id="@+id/mission_his_tv" android:layout_width="0dp" android:layout_height="match_parent" android:text="@string/checkme_s_mission_his_list" android:layout_weight="1"/>
+            <View android:layout_width="110dp" android:layout_height="match_parent"/>
+            <TextView android:textSize="16sp" android:textColor="@color/white" android:gravity="center" android:id="@+id/problem_feedback_tv" android:layout_width="0dp" android:layout_height="match_parent" android:text="@string/checkme_s_problem_feedback" android:layout_weight="1"/>
+        </LinearLayout>
+        <LinearLayout android:background="@color/taipeinavi_dark" android:layout_width="match_parent" android:layout_height="4dp" android:layout_below="@+id/middle_bar_layout"/>
+    </RelativeLayout>
+    <RelativeLayout android:background="@android:color/transparent" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="200dp">
+        <android.support.p011v7.widget.AppCompatImageView android:id="@+id/execute_img" android:layout_width="110dp" android:layout_height="110dp" android:layout_alignLeft="@+id/collection_tv" android:layout_alignParentTop="true" android:layout_alignStart="@+id/collection_tv" app:srcCompat="@drawable/ic_execute"/>
+        <TextView android:textSize="18sp" android:textColor="@color/white" android:gravity="center" android:id="@+id/collection_tv" android:layout_width="110dp" android:layout_height="wrap_content" android:layout_marginTop="24dp" android:text="@string/checkme_s_execute_collection" android:layout_centerHorizontal="true"/>
+        <TextView android:textSize="42sp" android:textColor="@color/white" android:gravity="center" android:layout_width="110dp" android:layout_height="wrap_content" android:layout_marginTop="-10dp" android:text="@string/checkme_s_go" android:layout_below="@+id/collection_tv" android:layout_centerHorizontal="true"/>
+    </RelativeLayout>
+</RelativeLayout>

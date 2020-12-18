@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:orientation="vertical" android:background="@drawable/shape_oval_white_stroke" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="10dp">
+    <LinearLayout android:gravity="center" android:orientation="horizontal" android:id="@+id/floor_container_closed" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="5dp" android:divider="@drawable/divider">
+        <TextView android:textSize="22sp" android:textStyle="bold" android:textColor="#000000" android:gravity="center" android:id="@+id/floor_textview" android:paddingLeft="20dp" android:paddingRight="20dp" android:clickable="true" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Bn"/>
+        <TextView android:textSize="14sp" android:textColor="#000000" android:gravity="center" android:id="@+id/ext_symbol" android:clickable="true" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_margin="10dp" android:text="▼"/>
+    </LinearLayout>
+    <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@+id/floor_container" android:paddingBottom="10dp" android:visibility="gone" android:layout_width="match_parent" android:layout_height="match_parent" android:divider="@drawable/divider" android:showDividers="middle"/>
+</LinearLayout>
