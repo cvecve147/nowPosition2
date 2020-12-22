@@ -211,12 +211,10 @@ class MyPainter extends CustomPainter {
     painter
       ..style = PaintingStyle.fill
       ..color = rectColor;
-    int X = start.x.round();
-    int Y = start.y.round();
+    int X = (start.x.round() * xCoefficient).round();
+    int Y = (size.height - start.y.round() * yCoefficient).round();
 
-    canvas.drawRect(
-        Offset(X * xCoefficient, size.height - Y * yCoefficient) & Size(20, 10),
-        painter);
+    canvas.drawRect(Offset(X.toDouble(), Y.toDouble()) & Size(20, 10), painter);
   }
 
   drawArc(Canvas canvas, Point start, Size size) {
