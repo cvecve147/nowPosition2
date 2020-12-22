@@ -126,21 +126,29 @@ class MyPainter extends CustomPainter {
         painter);
 
     int n = nowPosition.length;
+    int n1 = nowPositionMin.length;
     if (nowPositionMin.length > 0) {
-      drawPoint(canvas, size, nowPositionMin[n - 1].x, nowPositionMin[n - 1].y,
-          "min", Colors.yellow, Colors.yellow[700], 6);
+      drawPoint(
+          canvas,
+          size,
+          nowPositionMin[n1 - 1].x,
+          nowPositionMin[n1 - 1].y,
+          "min",
+          Colors.yellow,
+          Colors.yellow[700],
+          6);
     }
     Point start;
     if (n > 0) {
       start = Point(x: nowPosition[n - 1].x, y: nowPosition[n - 1].y);
       drawRect(canvas, start, Colors.blue[300], size, Size(20, 20));
       drawPoint(canvas, size, nowPosition[n - 1].x, nowPosition[n - 1].y, "",
-          Colors.transparent, Colors.yellow[500], 4);
+          Colors.transparent, Colors.red[700], 4);
     } else {
       start = Point(x: 12.0, y: 13);
-      drawRect(canvas, start, Colors.blue[300], size, Size(20, 20));
+      drawRect(canvas, start, Colors.blue[700], size, Size(20, 20));
       drawPoint(
-          canvas, size, 12, 13, "", Colors.transparent, Colors.yellow[500], 4);
+          canvas, size, 12, 13, "", Colors.transparent, Colors.red[500], 4);
     }
     drawArc(canvas, start, size);
     if (targetPoint != null && space != null) {

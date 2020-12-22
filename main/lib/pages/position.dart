@@ -23,7 +23,7 @@ double yCoefficient = 7.7;
 // 初始化所有Tag 值
 // 取消多輸入的情形
 // 若取修多輸入 需修改定位過濾功能
-int needRssiCount = 20;
+int needRssiCount = 50;
 
 class Position extends StatefulWidget {
   String title = "", position = "", image = "";
@@ -424,16 +424,16 @@ class _PositionState extends State<Position> {
                                   position,
                                   style: TextStyle(fontSize: 18),
                                 ),
-                                for (var item in device)
-                                  if (item.rssi.length > 0)
-                                    Column(
-                                      children: <Widget>[
-                                        Text(item.mac),
-                                        Text(item.rssi.join("、"))
-                                      ],
-                                    ),
-                                for (var item in topThreeDate)
-                                  Text(item.rssi.toString()),
+                                // for (var item in device)
+                                //   if (item.rssi.length > 0)
+                                //     Column(
+                                //       children: <Widget>[
+                                //         Text(item.mac),
+                                //         Text(item.rssi.join("、"))
+                                //       ],
+                                //     ),
+                                // for (var item in topThreeDate)
+                                //   Text(item.rssi.toString()),
                                 if (!goMap)
                                   canvasRoute(widget.image, caculationAngle),
                                 if (goMap)
