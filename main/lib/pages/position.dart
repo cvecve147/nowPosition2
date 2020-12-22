@@ -23,7 +23,7 @@ double yCoefficient = 7.7;
 // 初始化所有Tag 值
 // 取消多輸入的情形
 // 若取修多輸入 需修改定位過濾功能
-int needRssiCount = 10;
+int needRssiCount = 20;
 
 class Position extends StatefulWidget {
   String title = "", position = "", image = "";
@@ -186,9 +186,6 @@ class _PositionState extends State<Position> {
       for (var item in device) {
         if (item.mac == getrssi.mac.toString()) {
           item.notGetRssi = 0;
-          if (item.rssi.isEmpty == false && item.rssi.last == getrssi.rssi) {
-            continue;
-          }
           if (item.rssi.length < needRssiCount) {
             item.rssi.add(getrssi.rssi);
           } else {

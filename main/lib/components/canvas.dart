@@ -133,14 +133,14 @@ class MyPainter extends CustomPainter {
     Point start;
     if (n > 0) {
       start = Point(x: nowPosition[n - 1].x, y: nowPosition[n - 1].y);
-      drawRect(canvas, start, Colors.blue[300], Size(200, 100));
+      drawRect(canvas, start, Colors.blue[300], size, Size(20, 20));
       drawPoint(canvas, size, nowPosition[n - 1].x, nowPosition[n - 1].y, "",
-          Colors.transparent, Colors.blue[100], 4);
+          Colors.transparent, Colors.yellow[500], 4);
     } else {
       start = Point(x: 12.0, y: 13);
-      drawRect(canvas, start, Colors.blue[300], Size(200, 100));
+      drawRect(canvas, start, Colors.blue[300], size, Size(20, 20));
       drawPoint(
-          canvas, size, 12, 13, "", Colors.transparent, Colors.blue[100], 4);
+          canvas, size, 12, 13, "", Colors.transparent, Colors.yellow[500], 4);
     }
     drawArc(canvas, start, size);
     if (targetPoint != null && space != null) {
@@ -207,14 +207,21 @@ class MyPainter extends CustomPainter {
     }
   }
 
-  drawRect(Canvas canvas, Point start, Color rectColor, Size size) {
+  drawRect(Canvas canvas, Point start, Color rectColor, Size size, Size size2) {
     painter
       ..style = PaintingStyle.fill
       ..color = rectColor;
-    int X = (start.x.round() * xCoefficient).round();
-    int Y = (size.height - start.y.round() * yCoefficient).round();
+    int minX = (start.x.round() / 3).round();
+    int minY = (start.y.round() / 3).round();
+    int X = (minX * xCoefficient).round() * 3;
+    int Y = (size.height - (minY * yCoefficient) * 3).round();
+    Y -= 10;
+    X -= 10;
+    X < 0 ? X = 0 : X = X;
+    Y < 0 ? Y = 0 : Y = Y;
 
-    canvas.drawRect(Offset(X.toDouble(), Y.toDouble()) & Size(20, 10), painter);
+    print(X.toString() + " " + Y.toString());
+    canvas.drawRect(Offset(X.toDouble(), Y.toDouble()) & size2, painter);
   }
 
   drawArc(Canvas canvas, Point start, Size size) {
