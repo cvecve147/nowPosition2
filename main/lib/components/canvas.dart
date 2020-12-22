@@ -110,8 +110,10 @@ class MyPainter extends CustomPainter {
   Paint painter;
   double rotate = 0;
   Target targetPoint = Target();
+  // ignore: deprecated_member_use
   List<WalkSpace> space = List<WalkSpace>();
   List<List<Tuple3<int, int, String>>> path;
+  // ignore: deprecated_member_use
   List<List<int>> g = List<List<int>>();
 
   MyPainter({this.image, this.targetPoint, this.space, this.g, this.rotate});
