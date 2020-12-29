@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -424,16 +423,6 @@ class _PositionState extends State<Position> {
                                   position,
                                   style: TextStyle(fontSize: 18),
                                 ),
-                                // for (var item in device)
-                                //   if (item.rssi.length > 0)
-                                //     Column(
-                                //       children: <Widget>[
-                                //         Text(item.mac),
-                                //         Text(item.rssi.join("、"))
-                                //       ],
-                                //     ),
-                                // for (var item in topThreeDate)
-                                //   Text(item.rssi.toString()),
                                 if (!goMap)
                                   canvasRoute(widget.image, caculationAngle),
                                 if (goMap)

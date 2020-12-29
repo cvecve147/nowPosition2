@@ -33,22 +33,6 @@ class canvasRoute extends StatefulWidget {
 
 class _canvasRouteState extends State<canvasRoute> {
   ui.Image images;
-//   static Future<ui.Image> loadImageByProvider(ImageProvider provider) async {
-//     ImageConfiguration config = ImageConfiguration(size: Size(400, 400));
-
-//     Completer<ui.Image> completer = Completer<ui.Image>(); //完成的回调
-//     ImageStreamListener listener;
-//     ImageStream stream = provider.resolve(config); //获取图片流
-//     listener = ImageStreamListener((ImageInfo frame, bool sync) {
-// //监听
-
-//       ui.Image image = frame.image;
-//       completer.complete(image); //完成
-//       stream.removeListener(listener); //移除监听
-//     });
-//     stream.addListener(listener); //添加监听
-//     return completer.future; //返回
-//   }
 
   Completer<ImageInfo> completer = Completer();
   Future<ui.Image> getImage(String path) async {
