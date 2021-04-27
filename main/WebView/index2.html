@@ -492,14 +492,14 @@
               ctx7.arc(
                 el.x * 8.46 * 2,
                 400 * 2 - el.y * 7.7 * 2,
-                2,
+                10,
                 0,
                 2 * Math.PI
               )
               ctx7.stroke()
               ctx7.fill()
               ctx7.fillStyle = "#000000"
-              ctx7.font = "14px Arial"
+              ctx7.font = "18px Arial"
               ctx7.fillText(
                 el.mac.substring(12, 17),
                 el.x * 8.46 * 2 - 15,
@@ -645,10 +645,10 @@
               if (image.complete) {
                 await ctx.drawImage(this, 0, 0, c.scrollWidth, c.scrollHeight)
                 console.log("complete")
-                await app.draw2()
+                // await app.draw2()
                 await app.draw()
-                await app.draw3()
-                await app.drawPhoto()
+                // await app.draw3()
+                // await app.drawPhoto()
               }
             }
           },
