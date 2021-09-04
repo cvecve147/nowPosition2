@@ -597,9 +597,9 @@
               ctx7.arc(
                 el.x * 8.46 * 2,
                 400 * 2 - el.y * 7.7 * 2,
-                5,
+                10,
                 0,
-                2 * Math.PI
+                10 * Math.PI
               )
               ctx7.stroke()
               ctx7.fill()
@@ -615,12 +615,12 @@
           async drawPhoto() {
             await this.photoLocation.forEach((el) => {
               let ctx7 = canvas.getContext("2d")
-              ctx7.fillStyle = "#FF0000"
+              ctx7.fillStyle = "#0000FF"
               ctx7.beginPath()
               ctx7.arc(
                 el.x * 8.46 * 2,
                 400 * 2 - el.y * 7.7 * 2,
-                5,
+                8,
                 0,
                 2 * Math.PI
               )
@@ -646,9 +646,9 @@
                 await ctx.drawImage(this, 0, 0, c.scrollWidth, c.scrollHeight)
                 console.log("complete")
                 // await app.draw2()
-                await app.draw()
+                // await app.draw()
                 // await app.draw3()
-                // await app.drawPhoto()
+                await app.drawPhoto()
               }
             }
           },
